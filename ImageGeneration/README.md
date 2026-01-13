@@ -23,7 +23,6 @@ Individual Projects for MWIT
 
   Quellen: 
   OpenCV (Python) – Install/Docs: https://pypi.org/project/opencv-python/
-  OpenCV Dokumentation (offiziell): https://docs.opencv.org/
   Haar-Cascades (Face Detection, OpenCV Doku): https://docs.opencv.org/4.x/d7/d8b/tutorial_py_face_detection.html
   NumPy (für Arrays/Masken): https://numpy.org/doc/
   ChatGPT
