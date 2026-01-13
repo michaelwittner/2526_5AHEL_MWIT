@@ -25,6 +25,8 @@ Du willst eine **offline** laufende Spracherkennungs-Anwendung auf einem **Andro
 * **Android 13**
 * **RAM:** **16 GB**
 
+https://amzn.eu/d/37imvau
+
 
 ## Warum diese Wahl
 
@@ -40,4 +42,5 @@ Du willst eine **offline** laufende Spracherkennungs-Anwendung auf einem **Andro
 4. Keyword-System definieren (Regeln → Aktionen)
 5. UI „polish“: Live-Text, Statusanzeigen, Logs/History, Start/Stop
 
+Verwendet: https://chatgpt.com/
 
