@@ -10,8 +10,21 @@ Individual Projects for MWIT
   Setup/Installation
   - Projekt in PyCHarm angelegt und eine virtuelle Umgebung (.venv) verwendet
   - Installierte Bibliotheken:
-        - 
+        - opencv-python (Computer Vision / Kamera / Bildverarbeitung)
+        - numpy (Bilddaten als Arrays, Masken, Blending)
 
   Webcam + Gesichtserkennung:
-  - Webcam angebunden
-  - 
+  - Webcam-Stream über cv2.VideoCapture(...) öffnen
+  - Ausgabe als Live-Preview
+
+  Template
+  soll an der Loch-Position transparent sein, damit das eingefügte Gesicht sichtbar wird.
+  Mit Photoshop Bereich entfernt, Export als PNG
+
+  Quellen: 
+  OpenCV (Python) – Install/Docs: https://pypi.org/project/opencv-python/
+  OpenCV Dokumentation (offiziell): https://docs.opencv.org/
+  Haar-Cascades (Face Detection, OpenCV Doku): https://docs.opencv.org/4.x/d7/d8b/tutorial_py_face_detection.html
+  NumPy (für Arrays/Masken): https://numpy.org/doc/
+  ChatGPT
+
