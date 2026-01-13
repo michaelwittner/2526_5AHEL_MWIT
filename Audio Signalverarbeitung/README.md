@@ -1,6 +1,7 @@
 # Einführung:
 
-[Python Lib](https://www.htl-steyr.ac.at/)
+[Python Lib](https://wiki.python.org/moin/Audio)
 
-[Python Audio Bsp](https://medium.com/@mateus.d.assis.silva/processing-audio-with-python-b6ec37ac2f40)
+[Processing Audio with python](https://medium.com/@mateus.d.assis.silva/processing-audio-with-python-b6ec37ac2f40)
+
 
