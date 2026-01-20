@@ -22,8 +22,8 @@ Individual Projects for MWIT
   Mit Photoshop Bereich entfernt, Export als PNG
 
   Quellen: 
-  OpenCV (Python) – Install/Docs: https://pypi.org/project/opencv-python/
-  Haar-Cascades (Face Detection, OpenCV Doku): https://docs.opencv.org/4.x/d7/d8b/tutorial_py_face_detection.html
-  NumPy (für Arrays/Masken): https://numpy.org/doc/
-  ChatGPT
+  - OpenCV (Python) – Install/Docs: https://pypi.org/project/opencv-python/
+  - Haar-Cascades (Face Detection, OpenCV Doku): https://docs.opencv.org/4.x/d7/d8b/tutorial_py_face_detection.html
+  - NumPy (für Arrays/Masken): https://numpy.org/doc/
+  - ChatGPT
 
