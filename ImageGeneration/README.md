@@ -1,32 +1,43 @@
 # 2526_5AHEL_MWIT
 Individual Projects for MWIT 
 
-13.01.2026
+# Programmdokumentation – Face in Hole
 
-  Ziel:
-  Umsetzung eines Python-Projekts mit OpenCV (cv2):
-  Webcam-Bild erfassen, Gesicht erkennen und später das Gesicht in ein vorgegebenes Bild mit “Loch”    einsetzen.
+## Projektziel
+Ziel dieses Projekts ist es, ein Webcam-Bild so mit einem PNG-Template zu kombinieren,  
+dass das Gesicht einer Person durch ein transparentes „Loch“ im Bild sichtbar wird  .
 
-  Setup/Installation
-  - Projekt in PyCHarm angelegt und eine virtuelle Umgebung (.venv) verwendet
-  - Installierte Bibliotheken:
-        - opencv-python (Computer Vision / Kamera / Bildverarbeitung)
-        - numpy (Bilddaten als Arrays, Masken, Blending)
+Dabei soll das Template im Vordergrund liegen, während das Kamerabild im Hintergrund sichtbar ist.
 
-  Webcam + Gesichtserkennung:
-  - Webcam-Stream über cv2.VideoCapture(...) öffnen
-  - Ausgabe als Live-Preview
+---
 
-  Template
-  soll an der Loch-Position transparent sein, damit das eingefügte Gesicht sichtbar wird.
-  Mit Photoshop Bereich entfernt, Export als PNG
+## Verwendete Technologien
+- **Python 3**
+- **OpenCV (cv2)** für:
+  - Zugriff auf die Webcam
+  - Gesichtserkennung
+  - Bildverarbeitung
+- **PNG mit Alpha-Kanal** zur Darstellung des Vordergrund-Templates
+- **GitHub** zur Versionsverwaltung
 
-  Quellen: 
-  - OpenCV (Python) – Install/Docs: https://pypi.org/project/opencv-python/
-  - Haar-Cascades (Face Detection, OpenCV Doku): https://docs.opencv.org/4.x/d7/d8b/tutorial_py_face_detection.html
-  - NumPy (für Arrays/Masken): https://numpy.org/doc/
-  - ChatGPT
+---
 
-20.01.2026
+## Programmübersicht
+Das Programm besteht aus folgenden Hauptschritten:
+
+1. Laden des PNG-Templates mit Transparenz
+2. Initialisierung der Webcam
+3. Gesichtserkennung im Kamerabild
+4. Verarbeitung und Transformation des Kamerabildes
+5. Alpha-Compositing (Überlagerung von Template und Webcam)
+6. Anzeige des Ergebnisses
+
+---
+
+## Laden des Templates
+Das Template wird als PNG mit Alpha-Kanal geladen:
+
+```python
+template = cv2.imread(TEMPLATE_PATH, cv2.IMREAD_UNCHANGED)
 
 
