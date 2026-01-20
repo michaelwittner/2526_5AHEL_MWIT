@@ -51,5 +51,25 @@
 - Automatische Zentrierung des Gesichts im Loch funktioniert nicht zuverlässig
 - Unterschiedliches Verhalten je nach Abstand, Licht und Kamerawinkel
 
+## Verwendete Quellen 
+
+### OpenCV – Dokumentation
+- https://docs.opencv.org/
+- zuletzt besucht: 20.01.2026
+
+### Haar Cascade Klassifikatoren
+- https://github.com/opencv/opencv/tree/master/data/haarcascades
+- zuletzt besucht: 20.01.2026
+
+### Alpha-Compositing / Alpha-Blending
+- https://learnopencv.com/alpha-blending-using-opencv-cpp-python/
+- zuletzt besucht: 20.01.2026
+
+### KI-Unterstützung
+- ChatGPT (OpenAI)
+- Einsatz zur Unterstützung bei Code-Analyse, Strukturierung und Erklärung
+- Inhalte wurden eigenständig überprüft und getestet
+
+
 
 
