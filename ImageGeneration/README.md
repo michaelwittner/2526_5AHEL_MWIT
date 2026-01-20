@@ -27,3 +27,6 @@ Individual Projects for MWIT
   - NumPy (für Arrays/Masken): https://numpy.org/doc/
   - ChatGPT
 
+20.01.2026
+
+
