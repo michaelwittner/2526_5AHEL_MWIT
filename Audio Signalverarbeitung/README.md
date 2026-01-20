@@ -18,7 +18,27 @@
 
 ## Wie wird Audio verarbeitet?
 
+Es wird automatisch ein Eingabegerät (Mikrofon / Line-In) gesucht
 
+Danach wird eine funktionierende Samplerate gewählt
+
+DEVICE = pick_input_device()
+
+FS = pick_samplerate(DEVICE)
+
+Fensterfunktion gegen Leakage
+
+window = np.hanning(N)
+
+x = buffer * window
+
+Danach wird die eigentliche FFT gemacht (Zeit -> Frequenz) und das Ergebnis in db umgerechnet.
+
+Damit man ein ruhigeres Bild bekommt, wird folgender Code verwendet:
+
+smoothed = (1 - ALPHA) * smoothed + ALPHA * band_db
+
+Abschließend mit matplot ausgegeben
 
 
 
