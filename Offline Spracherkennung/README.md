@@ -1,7 +1,6 @@
 # 2526_5AHEL_MWIT
 
 ## 13.01.2026 ##
-Christoph, hier ist eine kurze Doku/Übersicht zu dem, was du herausgefunden hast und vorhast:
 
 ## Projektziel
 
@@ -44,3 +43,39 @@ https://amzn.eu/d/37imvau
 
 Verwendet: https://chatgpt.com/
 
+
+
+## 20.01.2026 ##
+
+([Past chat][1])([Past chat][1])([Past chat][1])([Past chat][1])([Past chat][2])
+
+Christoph, hier ist die **kurze Markdown-Doku** zu allem, was **seit „Projekt anlegen“** besprochen/entschieden wurde (inkl. Vosk-Link).
+
+---
+
+# Projekt-Doku (Stand: seit „Projekt anlegen“)
+
+## Ziel
+
+Ein **Android-Tablet** soll **offline** Sprache erkennen (Dauerbetrieb), den erkannten Text als **Fließtext** anzeigen und bei **Triggern/Keywords** definierte **Aktionen/Routinen** auslösen.
+
+## Link
+
+* **Vosk API (GitHub):** [https://github.com/alphacep/vosk-api](https://github.com/alphacep/vosk-api)
+
+## Hardware / Ressourcen (Zielgerät)
+
+* Zielgerät: **Blackview Mega1**
+* Eckdaten (relevant fürs Projekt): **Android 13**, **16 GB RAM**, 256 GB Speicher (Reserve für größere Modelle / längere Sessions)
+* Einschätzung: Realtime-Performance hängt eher an **CPU/Latency** als nur an RAM.
+
+## Offline-Routinen (geplant)
+
+* Routinen werden als **Aktionen nach Keyword-Erkennung** umgesetzt (Mechanik steht, konkrete Liste kann wachsen).
+* Beispiel-Richtung: „Aufwachen“ / „Gute Nacht“ (Details werden bei der Implementierung finalisiert).
+  *(Wenn deine Freundin das Tablet nutzt, kann sie natürlich dieselben Routinen genauso auslösen.)*
+
+## UI / Design
+
+* Ziel-Seitenverhältnis fürs Layout: **16:9**
+* UI soll enthalten: **Live-Text**, **Start/Stop**, **Status/Logs** (übersichtlich + „schön“).
