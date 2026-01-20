@@ -75,3 +75,5 @@ Ein **Android-Tablet** soll **offline** Sprache erkennen (Dauerbetrieb), den erk
 
 * Ziel-Seitenverhältnis fürs Layout: **16:9**
 * UI soll enthalten: **Live-Text**, **Start/Stop**, **Status/Logs** (übersichtlich + „schön“).
+
+Verwendet: https://chatgpt.com/
