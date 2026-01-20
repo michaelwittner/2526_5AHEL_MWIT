@@ -14,7 +14,9 @@
 
 [Processing Audio with python](https://medium.com/@mateus.d.assis.silva/processing-audio-with-python-b6ec37ac2f40) Zuletzt besucht am: 13.01.2026
 
-[KI](https://chatgpt.com/) Zuletzt besucht am: 20.01.2026
+[ChatGPT](https://chatgpt.com/) Zuletzt besucht am: 20.01.2026
+
+## Wie wird Audio verarbeitet?
 
 
 
