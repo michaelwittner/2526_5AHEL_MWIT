@@ -47,15 +47,8 @@ Verwendet: https://chatgpt.com/
 
 ## 20.01.2026 ##
 
-([Past chat][1])([Past chat][1])([Past chat][1])([Past chat][1])([Past chat][2])
 
-Christoph, hier ist die **kurze Markdown-Doku** zu allem, was **seit „Projekt anlegen“** besprochen/entschieden wurde (inkl. Vosk-Link).
-
----
-
-# Projekt-Doku (Stand: seit „Projekt anlegen“)
-
-## Ziel
+## Ziel (neu festgelegt)
 
 Ein **Android-Tablet** soll **offline** Sprache erkennen (Dauerbetrieb), den erkannten Text als **Fließtext** anzeigen und bei **Triggern/Keywords** definierte **Aktionen/Routinen** auslösen.
 
