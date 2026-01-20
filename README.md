@@ -17,3 +17,4 @@ Individual Projects for MWIT
 * Eine Dokumentation im Markdown-Format zum Projekt ist laufend zu erstellen.
 * Alle besuchten Links sind zu dokumentieren - auch wann diese zum letzten Mal besucht wurden.
 * Durch die KI generierter Inhalt ist durch zusätzliche Recherche zu überprüfen - die entsprechenden Links dazu sind anzugeben
+* Zum Abschluss gibt es eine Präsentation
