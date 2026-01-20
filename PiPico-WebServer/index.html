@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Pico W – Sensordaten</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 40px;
+        }
+
+```
+    h1 {
+        margin-bottom: 30px;
+    }
+
+    .container {
+        display: flex;
+        align-items: flex-start;
+        gap: 40px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 600px;
+        background-color: #ffffff;
+    }
+
+    th, td {
+        border: 1px solid #cccccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #e9ecef;
+    }
+
+    caption {
+        caption-side: bottom;
+        margin-top: 10px;
+        font-size: 0.9em;
+        color: #555555;
+    }
+
+    .image-box {
+        width: 300px;
+    }
+
+    .image-box img {
+        width: 100%;
+        border: 1px solid #cccccc;
+        background-color: #ffffff;
+    }
+
+    .image-box p {
+        text-align: center;
+        font-size: 0.9em;
+        color: #555555;
+        margin-top: 8px;
+    }
+</style>
+```
+
+</head>
+<body>
+
+```
+<h1>Motorrad-Sensordaten</h1>
+
+<div class="container">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Messgröße</th>
+                <th>X-Achse</th>
+                <th>Y-Achse</th>
+                <th>Z-Achse</th>
+                <th>Einheit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Beschleunigung</td>
+                <td id="acc_x">–</td>
+                <td id="acc_y">–</td>
+                <td id="acc_z">–</td>
+                <td>m/s²</td>
+            </tr>
+            <tr>
+                <td>Neigung (Gyro)</td>
+                <td id="gyro_x">–</td>
+                <td id="gyro_y">–</td>
+                <td id="gyro_z">–</td>
+                <td>°/s</td>
+            </tr>
+            <tr>
+                <td>Winkel (Roll / Pitch)</td>
+                <td id="roll">–</td>
+                <td id="pitch">–</td>
+                <td>–</td>
+                <td>°</td>
+            </tr>
+        </tbody>
+        <caption>
+            Datenquelle: Raspberry Pi Pico W
+        </caption>
+    </table>
+
+    <div class="image-box">
+        <img src="bike.jpg" alt="Motorrad Darstellung">
+        <p>Fahrzeugansicht / Lagevisualisierung</p>
+    </div>
+
+</div>
+```
+
+</body>
+</html>
+
