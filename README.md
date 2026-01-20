@@ -1,10 +1,10 @@
 # 2526_5AHEL_MWIT
-Individual Projects for MWIT 
+Individual Projects for MWIT 2025/2026
 
 
 * Baumann Markus - [WebServer auf PiPico-W](./PiPico-WebServer/README.md)
 * Dietachmair Julian - [HomeAssistant](./HomeAssistant/README.md) 
-* Hiebl Florian 
+* Hiebl Florian - [Authentifizierungsmöglichkeiten](./Auth/README.md)
 * Kronsteiner Anna - [Bild Generierung](./ImageGeneration/README.md) (CV2 Bild mit Loch - WebCam Gesichtserkennung und einfügen in vorgegebenes Bild)
 * Mittermair Christoph - [Offline Spracherkennung](./Offline%20Spracherkennung/README.md) + ????
 * Riha Christopher - [Audio Signalverarbeitung](./Audio%20Signalverarbeitung/README.md)  (zuerst Pyhton PC dann PiPico; )
