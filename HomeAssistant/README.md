@@ -35,6 +35,51 @@ Individual Projects for MWIT
           deviceID:
             - browser_mod_nothing_phone_2
           path: /dashboard-smartphone
+  
+
+  -20.01.2026
+
+  BrowserMod automatisierung wurde die letzte Woche getestet und funktionierte zwar einigermaßen zuverlässig jedoch gab es den Fehler, dass sich ein   anderer Browser (also ein Gerät zB mein Tablet) ebenfalls zyklisch auf das Smartphone Dashboard navigiert wurde, obwohl ein Zielgerät definiert
+  wurde. Nach etwas recherge bin ich auf die GUI Variante davon gestoßen welche robuster sein soll, da diese keine Automatisierung darstellt sondern   von Browser Mod selbst verarbeitet wird. Damit klappts zum Aktuellen Zeitpunkt sehr gut und zuverlässig.
+
+  HA OS auf Raspberry PI 3 Model B+ installieren
+
+  Zuerst Raspberry PI Imager installieren:
+  https://www.raspberrypi.com/software/
+
+  Mithilfe von dieser Doku SD Karte flashen:
+  https://www.home-assistant.io/installation/raspberrypi/#install-home-assistant-operating-system
+  -> Modell auswählen: Raspberry PI 3
+  -> Betriebssystem auswählen: Other specific- purpose OS -> Homeautomation -> Homeassistant OS
+  -> SD Karte auswählen
+  -> Schreiben
+
+  Erster Start von HA:
+  -> PI anschließen und SD Karte einfügen
+  -> HA startet nun von selbst und öffnet nach vollständigen Start die HA CLI
+  -> HA zeigt die IP Adresse und Port des Servers an
+  -> IP: 192.168.98.154:8123
+
+    User anlegen:
+    Name: HTLSteyr
+    Benutzername: htlsteyr
+    Passwort: terra123
+
+  Nun landet man auf der Startseite
+
+  Erste Configs:
+  Einstellungen -> Add-ons:
+  
+  Mosquitto broker -> Zum verwenden und verwalten von MQTT Geräten
+
+  File editor -> Ermöglicht einfaches und unkompliziertes Arbeiten mit HA Files vorallem für YAML Configurationen wichtig
+
+  
+
+  
+  
+  
+
      
   
   
