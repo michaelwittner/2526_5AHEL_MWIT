@@ -1,1 +1,55 @@
 
+13.01.2026
+
+  Ziel:
+  Umsetzung eines Python-Projekts mit OpenCV (cv2):
+  Webcam-Bild erfassen, Gesicht erkennen und später das Gesicht in ein vorgegebenes Bild mit “Loch”    einsetzen.
+
+  Setup/Installation
+  - Projekt in PyCHarm angelegt und eine virtuelle Umgebung (.venv) verwendet
+  - Installierte Bibliotheken:
+        - opencv-python (Computer Vision / Kamera / Bildverarbeitung)
+        - numpy (Bilddaten als Arrays, Masken, Blending)
+
+  Webcam + Gesichtserkennung:
+  - Webcam-Stream über cv2.VideoCapture(...) öffnen
+  - Ausgabe als Live-Preview
+
+  Template
+  soll an der Loch-Position transparent sein, damit das eingefügte Gesicht sichtbar wird.
+  Mit Photoshop Bereich entfernt, Export als PNG
+
+  Quellen: 
+  - OpenCV (Python) – Install/Docs: https://pypi.org/project/opencv-python/
+  - Haar-Cascades (Face Detection, OpenCV Doku): https://docs.opencv.org/4.x/d7/d8b/tutorial_py_face_detection.html
+  - NumPy (für Arrays/Masken): https://numpy.org/doc/
+  - ChatGPT
+
+
+## 20.01.2026
+
+## Ziel für heute
+- Implementierung der Face-in-Hole-Funktion mit PNG-Template und Transparenz (Alpha)
+- Automatische Positionierung des Gesichts im Loch
+- Stabilisierung der Gesichtsdarstellung
+- Analyse von Problemen bei der Gesichtserkennung
+
+## Durchgeführte Arbeiten
+- Bestehenden Webcam- und Face-Detection-Code (OpenCV, Haar Cascade) analysiert
+- PNG-Template mit Alpha-Kanal in das Programm eingebunden
+- Alpha-Compositing implementiert (Webcam-Bild hinter PNG)
+- Verschiedene Ansätze zur Platzierung des Gesichts getestet:
+  - Einfügen eines ausgeschnittenen Gesichtsbereichs in das Loch
+  - Automatische Skalierung und Verschiebung des Gesichts
+  - Transformation des gesamten Kamerabildes (Affine Transformation)
+- Spiegelung des Kamerabildes (Selfie-Ansicht) umgesetzt
+- Debug-Ausgaben zur Gesichtserkennung ergänzt
+
+## Probleme / Schwierigkeiten
+- Die Haar-Cascade-Gesichtserkennung arbeitet nicht stabil genug
+- Gesicht wird nicht zuverlässig erkannt → teilweise nur Schulter oder Hintergrund sichtbar
+- Automatische Zentrierung des Gesichts im Loch funktioniert nicht zuverlässig
+- Unterschiedliches Verhalten je nach Abstand, Licht und Kamerawinkel
+
+
+
