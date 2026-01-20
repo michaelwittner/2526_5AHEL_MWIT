@@ -3,41 +3,76 @@ Individual Projects for MWIT
 
 # Programmdokumentation – Face in Hole
 
-## Projektziel
-Ziel dieses Projekts ist es, ein Webcam-Bild so mit einem PNG-Template zu kombinieren,  
-dass das Gesicht einer Person durch ein transparentes „Loch“ im Bild sichtbar wird  .
+## Projektübersicht
+Ziel des Projekts ist es, ein Webcam-Bild mit einem PNG-Template so zu kombinieren,  
+dass das Gesicht einer Person durch ein transparentes Loch im Bild sichtbar ist  
+(„Face in Hole“-Effekt).
 
-Dabei soll das Template im Vordergrund liegen, während das Kamerabild im Hintergrund sichtbar ist.
-
----
-
-## Verwendete Technologien
-- **Python 3**
-- **OpenCV (cv2)** für:
-  - Zugriff auf die Webcam
-  - Gesichtserkennung
-  - Bildverarbeitung
-- **PNG mit Alpha-Kanal** zur Darstellung des Vordergrund-Templates
-- **GitHub** zur Versionsverwaltung
+Das PNG-Template liegt dabei im Vordergrund, das Webcam-Bild im Hintergrund.
 
 ---
 
-## Programmübersicht
-Das Programm besteht aus folgenden Hauptschritten:
+## Aufbau des Projekts
+Das Projekt besteht aus mehreren Python-Dateien, die schrittweise entwickelt wurden.
 
-1. Laden des PNG-Templates mit Transparenz
-2. Initialisierung der Webcam
-3. Gesichtserkennung im Kamerabild
-4. Verarbeitung und Transformation des Kamerabildes
-5. Alpha-Compositing (Überlagerung von Template und Webcam)
-6. Anzeige des Ergebnisses
+### step1_webcam_face.py
+**Zweck:**
+- Testen der Webcam
+- Überprüfung der Gesichtserkennung
+
+**Funktion:**
+- Öffnet die Webcam
+- Erkennt Gesichter mit Haar Cascades
+- Zeichnet ein Rechteck um erkannte Gesichter
+
+Diese Datei dient ausschließlich als Test- und Einstiegscode.
 
 ---
 
-## Laden des Templates
-Das Template wird als PNG mit Alpha-Kanal geladen:
+### step2_face_in_hole.py
+**Zweck:**
+- Erstes „Face in Hole“-Prinzip ohne Transparenz
+
+**Funktion:**
+- Ein normales Bild (ohne Alpha) wird geladen
+- Das erkannte Gesicht wird direkt in das Bild eingefügt
+- Eine kreisförmige Maske simuliert das Loch
+
+Diese Variante überschreibt Bildpixel und nutzt noch keinen Alpha-Kanal.
+
+---
+
+### step2_face_in_hole_alpha.py
+**Zweck:**
+- Endversion mit echtem PNG-Template und Transparenz
+
+**Funktion:**
+- PNG mit Alpha-Kanal wird geladen
+- Webcam-Bild liegt im Hintergrund
+- Template liegt im Vordergrund
+- Das Gesicht ist nur im transparenten Bereich sichtbar
+
+Diese Datei bildet den Kern des Projekts.
+
+---
+
+## Was bedeutet der Alpha-Kanal?
+Ein PNG-Bild kann neben den Farbinformationen (BGR) einen **Alpha-Kanal** besitzen.
+
+Der Alpha-Kanal bestimmt die Transparenz eines Pixels:
+
+- Alpha = 255 → vollständig sichtbar
+- Alpha = 0 → vollständig transparent
+
+Im Projekt bedeutet das:
+- Der Körper, Rahmen und Hintergrund des Templates sind sichtbar
+- Das Loch im Gesicht ist transparent
+- Durch das Loch sieht man das Webcam-Bild
+
+---
+
+## Alpha-Compositing
+Die Überlagerung von Template und Webcam erfolgt mit folgender Formel:
 
 ```python
-template = cv2.imread(TEMPLATE_PATH, cv2.IMREAD_UNCHANGED)
-
-
+out = alpha * template + (1 - alpha) * webcam
