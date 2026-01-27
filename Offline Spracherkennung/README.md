@@ -77,3 +77,30 @@ Ein **Android-Tablet** soll **offline** Sprache erkennen (Dauerbetrieb), den erk
 * UI soll enthalten: **Live-Text**, **Start/Stop**, **Status/Logs** (übersichtlich + „schön“).
 
 Verwendet: https://chatgpt.com/
+
+
+---
+
+## 20.01.2026 ##
+
+
+### Funktioniert
+
+* **Vosk (Offline Speech-to-Text)** läuft.
+* **Keyword-Erkennung** ist implementiert.
+* Der Assistent **spricht mit einem** (Sprachausgabe aktiv).
+* **Schlafmodus** ist vorhanden.
+
+## Komponenten
+
+* **STT (Speech-to-Text):** Vosk (offline)
+* **Intent/Keyword-Logik:** Keyword/Trigger-System (aktiv)
+* **TTS (Text-to-Speech):** Sprachausgabe aktiv (Engine je nach Implementierung/System)
+* **Zustandslogik:** Normalmodus ↔ Schlafmodus
+
+## Referenzen / Links
+
+* **Vosk API (GitHub):** [https://github.com/alphacep/vosk-api](https://github.com/alphacep/vosk-api)
+* **SherpaTTS (F-Droid):** [https://f-droid.org/en/packages/org.woheller69.ttsengine/](https://f-droid.org/en/packages/org.woheller69.ttsengine/) ([f-droid.org][2])
+
+Verwendet: https://chatgpt.com/
