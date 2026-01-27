@@ -14,3 +14,5 @@ https://www.conrad.at/de/p/joy-it-mpu6050-beschleunigungssensor-1-st-passend-fue
 Da beim letzten Mal eine falsche Software auf den Pico gespielt wurde, musste dies noch ausgebessert werden.
 https://micropython.org/download/RPI_PICO_W/
 Als nun via "Thonny" die Verbindung zum Pico hergestellt wurde, wurde ein Python Projekt mit Chat GPT geschrieben, damit der Pico sich mit einen W-Lan verbindet. Die einfache HTML Datei wurde auch noch von Chat GPT generiert wurden. Da die Verbindung mit dem Schul-Wlan sich als etwas kompliziert herausstellte, erstellte ich einen Hot Spot mit meinem Handy. Der Pico hat sich perfekt verbunden und der Webserver funktioniert.
+
+Nachdem der neue bestellte Microkontroller und MPU6050 angekommen ist musste der Raspberry neue mit Micropython aufgesetzt werden. Danach wurde eine zweite php Datei erstellt um die Sensordaten auszulesen über I2C. Der Aufbau wurde auf einen Steckboard umgesetzt. Sensordaten können nun ausgelesen werden (Neigung, Beschleunigung und Temperatur).
