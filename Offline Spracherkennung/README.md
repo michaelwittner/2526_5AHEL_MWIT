@@ -155,7 +155,7 @@ praktisch für ein **mobiles Modell** entschieden, weil:
 ### Warum SherpaTTS?
 
 * **Offline-TTS-Engine** für Android, Open Source, als System-TTS nutzbar. ([GitHub][5])
-* Nutzt **Piper**- oder **Coqui**-Voices und basiert auf „Next-gen Kaldi“. ([GitHub][5])
+* Nutzt **Piper**-Voice und basirend auf „Next-gen Kaldi“. ([GitHub][5])
 * **Wichtig fürs Projektziel:** Nach einmaligem Voice-Setup funktioniert das Sprechen **komplett offline** → passt zu deinem Offline-Assistenten-Konzept. ([f-droid.org][6])
 
 ### Warum welches Voice-Modell?
