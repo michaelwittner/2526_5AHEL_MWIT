@@ -16,3 +16,14 @@ https://micropython.org/download/RPI_PICO_W/
 Als nun via "Thonny" die Verbindung zum Pico hergestellt wurde, wurde ein Python Projekt mit Chat GPT geschrieben, damit der Pico sich mit einen W-Lan verbindet. Die einfache HTML Datei wurde auch noch von Chat GPT generiert wurden. Da die Verbindung mit dem Schul-Wlan sich als etwas kompliziert herausstellte, erstellte ich einen Hot Spot mit meinem Handy. Der Pico hat sich perfekt verbunden und der Webserver funktioniert.
 
 Nachdem der neue bestellte Microkontroller und MPU6050 angekommen ist musste der Raspberry neue mit Micropython aufgesetzt werden. Danach wurde eine zweite php Datei erstellt um die Sensordaten auszulesen über I2C. Der Aufbau wurde auf einen Steckboard umgesetzt. Sensordaten können nun ausgelesen werden (Neigung, Beschleunigung und Temperatur).
+----------------------------------------
+Beschleunigung:
+  Links / Rechts (X): -0.00 g
+  Vor / Zurück  (Y): -0.02 g
+  Oben / Unten  (Z): 1.03 g
+Neigung:
+  Links / Rechts (Roll): -0.1 °
+Temperatur:
+  26.7 °C
+----------------------------------------
+
