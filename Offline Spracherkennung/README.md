@@ -1,7 +1,6 @@
 # 2526_5AHEL_MWIT
 
 ## 13.01.2026 ##
-Christoph, hier ist eine kurze Doku/Übersicht zu dem, was du herausgefunden hast und vorhast:
 
 ## Projektziel
 
@@ -44,3 +43,64 @@ https://amzn.eu/d/37imvau
 
 Verwendet: https://chatgpt.com/
 
+
+
+
+
+## 20.01.2026 ##
+
+
+## Ziel (neu festgelegt)
+
+Ein **Android-Tablet** soll **offline** Sprache erkennen (Dauerbetrieb), den erkannten Text als **Fließtext** anzeigen und bei **Triggern/Keywords** definierte **Aktionen/Routinen** auslösen.
+
+## Link
+
+* **Vosk API (GitHub):** [https://github.com/alphacep/vosk-api](https://github.com/alphacep/vosk-api)
+
+## Hardware / Ressourcen (Zielgerät)
+
+* Zielgerät: **Blackview Mega1**
+* Eckdaten (relevant fürs Projekt): **Android 13**, **16 GB RAM**, 256 GB Speicher (Reserve für größere Modelle / längere Sessions)
+* Einschätzung: Realtime-Performance hängt eher an **CPU/Latency** als nur an RAM.
+
+## Offline-Routinen (geplant)
+
+* Routinen werden als **Aktionen nach Keyword-Erkennung** umgesetzt (Mechanik steht, konkrete Liste kann wachsen).
+* Beispiel-Richtung: „Aufwachen“ / „Gute Nacht“ (Details werden bei der Implementierung finalisiert).
+  *(Wenn deine Freundin das Tablet nutzt, kann sie natürlich dieselben Routinen genauso auslösen.)*
+
+## UI / Design
+
+* Ziel-Seitenverhältnis fürs Layout: **16:9**
+* UI soll enthalten: **Live-Text**, **Start/Stop**, **Status/Logs** (übersichtlich + „schön“).
+
+Verwendet: https://chatgpt.com/
+
+
+
+
+
+## 27.01.2026 ##
+
+
+### Funktioniert
+
+* **Vosk (Offline Speech-to-Text)** läuft.
+* **Keyword-Erkennung** ist implementiert.
+* Der Assistent **spricht mit einem** (Sprachausgabe aktiv).
+* **Schlafmodus** ist vorhanden.
+
+## Komponenten
+
+* **STT (Speech-to-Text):** Vosk (offline)
+* **Intent/Keyword-Logik:** Keyword/Trigger-System (aktiv)
+* **TTS (Text-to-Speech):** Sprachausgabe aktiv (Engine je nach Implementierung/System)
+* **Zustandslogik:** Normalmodus ↔ Schlafmodus
+
+## Referenzen / Links
+
+* **Vosk API (GitHub):** [https://github.com/alphacep/vosk-api](https://github.com/alphacep/vosk-api)
+* **SherpaTTS (F-Droid):** [https://f-droid.org/en/packages/org.woheller69.ttsengine/](https://f-droid.org/en/packages/org.woheller69.ttsengine/) ([f-droid.org][2])
+
+Verwendet: https://chatgpt.com/
