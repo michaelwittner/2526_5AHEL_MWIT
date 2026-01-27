@@ -18,32 +18,12 @@
 
 ## Wie wird Audio verarbeitet?
 
-Es wird automatisch ein Eingabegerät (Mikrofon / Line-In) gesucht
+Siehe unter anderem Programm im Anhang!
 
-Danach wird eine funktionierende Samplerate gewählt
+Das Audiosignal wird vom Mikrofon als zeitdiskretes Signal mit einer festen Samplerate aufgenommen und in einem Puffer gespeichert (Funktion pick_samplerate). Dieser Datenblock wird mit einer Fensterfunktion (Hann-Fenster) multipliziert, für Reduktion der Störeffekte bei der Fourieranalyse. Anschließend wird mittels FFT das Zeitsignal in den Frequenzbereich umgerechnet. Die Beträge der FFT werden in Dezibel (dB) umgerechnet und zu logarithmischen Frequenzbändern zusammengefasst. Diese Pegel werden zeitlich geglättet und als Balkendiagramm mit Peak-Hold-Anzeige dargestellt.
 
-```
-DEVICE = pick_input_device()
+Darstellung erfolgt mittels Matplot-Lib.
 
-FS = pick_samplerate(DEVICE)
-```
-Fensterfunktion gegen Leakage
-```
-window = np.hanning(N)
-
-x = buffer * window
-```
-Danach wird die eigentliche FFT gemacht (Zeit -> Frequenz) und das Ergebnis in db umgerechnet.
-
-Damit man ein ruhigeres Bild bekommt, wird folgender Code verwendet:
-```
-smoothed = (1 - ALPHA) * smoothed + ALPHA * band_db
-```
-Abschließend mit matplot ausgegeben
-
-```
-FuncAnimation(fig, update, interval=30)
-```
 
 
 
