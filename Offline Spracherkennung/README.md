@@ -47,7 +47,6 @@ Verwendet: https://chatgpt.com/
 
 
 
-
 ## 20.01.2026 ##
 
 
@@ -79,9 +78,10 @@ Ein **Android-Tablet** soll **offline** Sprache erkennen (Dauerbetrieb), den erk
 Verwendet: https://chatgpt.com/
 
 
----
 
-## 20.01.2026 ##
+
+
+## 27.01.2026 ##
 
 
 ### Funktioniert
