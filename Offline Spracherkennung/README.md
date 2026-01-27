@@ -225,7 +225,7 @@ Typisch:
 * Vosk Android Hinweise (Assets/Unpack/UUID): ([alphacephei.com][4])
 * SherpaTTS (Engine, Piper/Coqui, Offline nach Download): ([GitHub][5])
 
----
+
 
 [1]: https://github.com/alphacep/vosk-api?utm_source=chatgpt.com "alphacep/vosk-api: Offline speech recognition ..."
 [2]: https://alphacephei.com/vosk/?utm_source=chatgpt.com "VOSK Offline Speech Recognition API"
