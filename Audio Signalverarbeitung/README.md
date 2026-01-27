@@ -24,6 +24,9 @@ Das Audiosignal wird vom Mikrofon als zeitdiskretes Signal mit einer festen Samp
 
 Darstellung erfolgt mittels Matplot-Lib.
 
+Das Programm wurde in einem Prinzip erweitert, wo alle Töne in einer gewissen Farbe angezeigt werden, in der Praxis kennt man so etwas öfters von z.B. einem Mischpult.
+
+Für weitere Details siehe Programmfortschritt -> audiovisu_27.01!
 
 
 
