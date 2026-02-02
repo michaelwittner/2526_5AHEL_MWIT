@@ -121,4 +121,26 @@ Offene Punkte
 
 Weitere Templates erstellen (PNG mit transparentem Oval) und ins GitHub-Repo aufnehmen.
 
-README und Quellenliste um neue Funktionen/Links ergänzen.
+OpenCV – Funktion fitEllipse / Ellipse-Verarbeitung
+
+https://docs.opencv.org/
+ (zuletzt besucht: 27.01.2026)
+Verwendet zur Überprüfung von Ellipse-Maske und Kontur-/Form-Funktionen.
+
+OpenCV – Konturen (findContours) und Masken
+
+https://docs.opencv.org/
+ (zuletzt besucht: 27.01.2026)
+Verwendet zur Überprüfung von Loch-Erkennung über Alpha-Kanal (Konturen der transparenten Fläche).
+
+OpenCV – Bildspiegelung (cv2.flip)
+
+https://docs.opencv.org/
+ (zuletzt besucht: 27.01.2026)
+Verwendet zur Verifikation der Mirror-Funktion für konsistente Selfie-Ansicht.
+
+KI-Unterstützung
+
+ChatGPT (OpenAI) (zuletzt besucht: 27.01.2026)
+Einsatz zur Entwicklung/Verbesserung von Code-Struktur, Steuerung per Tastatur, Maskenlogik.
+Inhalte wurden durch Tests im eigenen Projekt und Abgleich mit OpenCV-Dokumentation überprüft.
