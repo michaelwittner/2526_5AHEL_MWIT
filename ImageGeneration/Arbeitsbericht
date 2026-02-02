@@ -70,39 +70,55 @@
 - Einsatz zur Unterstützung bei Code-Analyse, Strukturierung und Erklärung
 - Inhalte wurden eigenständig überprüft und getestet
 
-Seit dem letzten Stand wurde die „Face in Hole“-Endversion erweitert:
+27.01.2026
+Ziel für heute
 
-Oval statt Kreis: Das Einfügen erfolgt nicht mehr mit einer Kreis-Maske, sondern als Ellipse/Oval, passend zum Loch im Template.
+Baseline stabil beibehalten (Face-in-Hole funktioniert)
 
-Automatische Loch-Erkennung: Die Position und Größe des Lochs wird pro Template automatisch über den Alpha-Kanal erkannt (transparenter Bereich) und als Ellipse angenähert (fitEllipse / Bounding-Box als Fallback).
+Oval/Template-Loch automatisch erkennen und korrekt verwenden
 
-Mirror dauerhaft aktiv: Das Webcam-Bild wird standardmäßig gespiegelt (cv2.flip(frame, 1)), damit es wie eine Selfie-Kamera wirkt.
+Template-Wechsel per Tastendruck implementieren
 
-Live-Zoom / Feinjustierung: Die Größe des sichtbaren Gesichts wird über skalierte ROI-Werte angepasst (mehr Gesicht / weniger Umfeld) ohne hartes Reinzoomen.
-Steuerung:
+Live-Steuerung für Zoom/Debug/Screenshot/Parameter-Ausgabe fertigstellen
 
-[ / ] → Zoom (FACE_SCALE_X/Y)
+Durchgeführte Arbeiten
 
-; / ' → vertikaler Zoom (FACE_SCALE_Y)
+Spiegelung des Webcam-Bildes dauerhaft aktiviert (cv2.flip(frame, 1)), damit die Darstellung konsistent „Selfie-like“ ist.
 
-d → Debug ein/aus
+Einfügen des Gesichts auf Oval/elliptische Maske umgestellt (statt Kreis).
 
-p → aktuelle Werte ausgeben (zum Fixieren)
+Loch-Erkennung automatisiert: transparentes Loch wird über den Alpha-Kanal des PNG gefunden und als Ellipse angenähert (cv2.fitEllipse, Fallback Bounding-Box).
 
-s → Screenshot speichern
+Gesichtsgröße stabilisiert: Gesicht wirkt zu klein/zu groß → ROI wird per Scale-Faktoren (FACE_SCALE_X/Y) angepasst, sodass weniger Umfeld sichtbar ist, ohne extremes Reinzoomen.
 
-ESC / q → beenden
+Tastensteuerung implementiert:
 
-Template-Wechsel per Tastendruck: Mehrere Templates werden in TEMPLATE_PATHS hinterlegt und können während der Laufzeit gewechselt werden:
+[ / ], ; / ' (Zoom)
 
-n / b → nächstes/vorheriges Template
+d (Debug)
 
-1–4 → direktes Auswählen
+p (Werte ausgeben)
 
-Hinweis zu Templates:
-Alle Templates müssen als PNG mit Transparenz (Alpha) vorliegen (Loch = transparent).
-Mein aktuelles Template heißt template_v2(.png) und muss in TEMPLATE_PATHS entsprechend eingetragen werden.
+s (Screenshot)
 
+ESC/q (Beenden)
 
+Template-Wechsel umgesetzt:
 
+Laden mehrerer Templates über TEMPLATE_PATHS
 
+Wechsel per n/b und 1–4
+
+Dateinamen-Thema festgehalten: aktuelles Template heißt template_v2 → Eintrag in TEMPLATE_PATHS angepasst/zu prüfen (inkl. .png).
+
+Ergebnis / Stand
+
+Programm läuft stabil mit Oval-Loch und Live-Justierung.
+
+Templates können während der Laufzeit gewechselt werden, sofern sie als PNG mit Alpha vorliegen.
+
+Offene Punkte
+
+Weitere Templates erstellen (PNG mit transparentem Oval) und ins GitHub-Repo aufnehmen.
+
+README und Quellenliste um neue Funktionen/Links ergänzen.
