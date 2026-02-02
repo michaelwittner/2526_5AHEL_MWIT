@@ -76,3 +76,27 @@ Die Überlagerung von Template und Webcam erfolgt mit folgender Formel:
 
 ```python
 out = alpha * template + (1 - alpha) * webcam
+
+Wichtig: Templates
+
+Templates müssen PNG mit Transparenz (Alpha) sein (Loch = transparent).
+
+Aktuelles Template: template_v2(.png) → in TEMPLATE_PATHS korrekt eintragen (inkl. .png falls vorhanden).
+
+Tastensteuerung
+
+[ / ] → Zoom (mehr/weniger Gesicht durch ROI-Skalierung)
+
+; / ' → vertikaler Zoom (FACE_SCALE_Y fein)
+
+d → Debug ein/aus
+
+p → aktuelle Parameter ausgeben (für Fixierung in Code/Doku)
+
+s → Screenshot speichern
+
+ESC / q → beenden
+
+n / b → nächstes/vorheriges Template
+
+1–4 → Template direkt wählen
