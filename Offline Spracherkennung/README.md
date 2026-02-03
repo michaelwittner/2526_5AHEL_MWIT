@@ -236,3 +236,15 @@ Typisch:
 
 
 Verwendet: https://chatgpt.com/
+
+
+---
+---
+
+
+## 03.02.2026 ##
+
+* Ideensammlung (keine weiteren Vorhaben)
+* Projekt-Vorstellung-Planung
+* Infomationssammlung bezüglich STT
+
