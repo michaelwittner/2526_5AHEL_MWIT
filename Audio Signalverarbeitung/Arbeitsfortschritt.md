@@ -27,7 +27,7 @@ Audio Dokumentation
 
 Darstellung eines Audiosignales in einem Diagramm (Zeit-/Amplitude)
 
-Das Siganl wird aus der audio.wave Datei gelesen und dementsprechend verarbeitet.
+Das Signal wird aus der audio.wave Datei gelesen und dementsprechend verarbeitet.
 
 Der Code zu folgendem Ergebnis befindet sich im Anhang -> soundfile.py
 ![Soundfile](soundfile.png) 
@@ -37,6 +37,12 @@ Danach können noch unterschiedlichste Funktionen angewendet werden z.B. Cut und
 Der Code zu folgendem Ergebnis befindet sich im Anhang -> soundfilewithfeatures.py
 ![Soundfile](soundfile1.png)
 
-Das Zeit/Amplitude Diagramm wurde mit einem Cut auf 2-5s (also insgesammt 3 Sekunden) gekürzt und mit 44.1kHz gesamplet.
+Folgende Ausgabe wurde erzeugt mit Cut und Lauter (+6.0 dB):
+
+Samplerate: 44100 Hz
+
+Cut: 2.0s .. 5.0s  |  Gain: +6.0 dB 
+
+Saved: output_cut_gain.wav
 
 Die neue Audio Datei wurde unter folgendem Namen gespeichert -> output_cut_gain.wav
