@@ -1,123 +1,102 @@
 <!DOCTYPE html>
-
-<html lang="de">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Pico W – Sensordaten</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
-            margin: 40px;
-        }
-
-```
-    h1 {
-        margin-bottom: 30px;
-    }
-
-    .container {
-        display: flex;
-        align-items: flex-start;
-        gap: 40px;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 600px;
-        background-color: #ffffff;
-    }
-
-    th, td {
-        border: 1px solid #cccccc;
-        padding: 10px;
-        text-align: center;
-    }
-
-    th {
-        background-color: #e9ecef;
-    }
-
-    caption {
-        caption-side: bottom;
-        margin-top: 10px;
-        font-size: 0.9em;
-        color: #555555;
-    }
-
-    .image-box {
-        width: 300px;
-    }
-
-    .image-box img {
-        width: 100%;
-        border: 1px solid #cccccc;
-        background-color: #ffffff;
-    }
-
-    .image-box p {
-        text-align: center;
-        font-size: 0.9em;
-        color: #555555;
-        margin-top: 8px;
-    }
+<meta charset="utf-8">
+<title>Pico W Fahrdaten</title>
+<style>
+body { background:#111; color:#eee; font-family:Arial }
+table { border-collapse:collapse; width:100% }
+td, th { border:1px solid #555; padding:6px; text-align:center }
+button { margin:4px; padding:6px }
 </style>
-```
-
 </head>
+
 <body>
+<h2>Motorrad Sensordaten</h2>
 
-```
-<h1>Motorrad-Sensordaten</h1>
+<table>
+<tr><th>Messwert</th><th>X</th><th>Y</th><th>Z</th></tr>
+<tr><td>Beschleunigung (g)</td><td id="ax"></td><td id="ay"></td><td id="az"></td></tr>
+<tr>
+<td>Max</td>
+<td><span id="max_ax"></span><br><button onclick="reset('ax')">Reset</button></td>
+<td><span id="max_ay"></span><br><button onclick="reset('ay')">Reset</button></td>
+<td><span id="max_az"></span><br><button onclick="reset('az')">Reset</button></td>
+</tr>
 
-<div class="container">
+<tr><th colspan="4">Neigung</th></tr>
+<tr><th colspan="4">Schräglage</th></tr>
+<tr>
+  <td>Aktuell (°)</td>
+  <td colspan="3" id="roll"></td>
+</tr>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Messgröße</th>
-                <th>X-Achse</th>
-                <th>Y-Achse</th>
-                <th>Z-Achse</th>
-                <th>Einheit</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Beschleunigung</td>
-                <td id="acc_x">–</td>
-                <td id="acc_y">–</td>
-                <td id="acc_z">–</td>
-                <td>m/s²</td>
-            </tr>
-            <tr>
-                <td>Neigung (Gyro)</td>
-                <td id="gyro_x">–</td>
-                <td id="gyro_y">–</td>
-                <td id="gyro_z">–</td>
-                <td>°/s</td>
-            </tr>
-            <tr>
-                <td>Winkel (Roll / Pitch)</td>
-                <td id="roll">–</td>
-                <td id="pitch">–</td>
-                <td>–</td>
-                <td>°</td>
-            </tr>
-        </tbody>
-        <caption>
-            Datenquelle: Raspberry Pi Pico W
-        </caption>
-    </table>
+<tr>
+  <td>Max Links (°)</td>
+  <td id="max_roll_left"></td>
+  <td colspan="2">
+    <button onclick="reset('roll_left')">Reset Links</button>
+  </td>
+</tr>
 
-    <div class="image-box">
-        <img src="bike.jpg" alt="Motorrad Darstellung">
-        <p>Fahrzeugansicht / Lagevisualisierung</p>
-    </div>
+<tr>
+  <td>Max Rechts (°)</td>
+  <td id="max_roll_right"></td>
+  <td colspan="2">
+    <button onclick="reset('roll_right')">Reset Rechts</button>
+  </td>
+</tr>
 
-</div>
-```
+
+
+<tr><th colspan="4">Temperatur</th></tr>
+<tr>
+<td>°C</td>
+<td colspan="2" id="temp"></td>
+<td>
+<span id="max_temp"></span><br>
+<button onclick="reset('temp')">Reset</button>
+</td>
+</tr>
+</table>
+
+<script>
+async function update() {
+  try {
+    const r = await fetch("/data");
+    const d = await r.json();
+
+    // Live-Werte
+    document.getElementById("ax").textContent = d.ax.toFixed(2);
+    document.getElementById("ay").textContent = d.ay.toFixed(2);
+    document.getElementById("az").textContent = d.az.toFixed(2);
+    document.getElementById("roll").textContent = d.roll.toFixed(1);
+    document.getElementById("temp").textContent = d.temp.toFixed(1);
+
+    // Maxima
+    document.getElementById("max_ax").textContent = d.max.ax.toFixed(2);
+    document.getElementById("max_ay").textContent = d.max.ay.toFixed(2);
+    document.getElementById("max_az").textContent = d.max.az.toFixed(2);
+    document.getElementById("max_temp").textContent = d.max.temp.toFixed(1);
+
+    document.getElementById("max_roll_left").textContent =
+      d.max.roll_left.toFixed(1);
+
+    document.getElementById("max_roll_right").textContent =
+      d.max.roll_right.toFixed(1);
+
+  } catch (e) {
+    console.log("Update error", e);
+  }
+}
+
+function reset(key) {
+  fetch("/reset?" + key);
+}
+
+setInterval(update, 200);
+</script>
+
 
 </body>
 </html>
-
