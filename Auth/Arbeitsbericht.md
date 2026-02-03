@@ -11,3 +11,7 @@ Arbeitsschritte am 20.01.2026
   d. [oAtuth Grafik](https://docs.moodle.org/501/de/OAuth2_Authentifizierung)
   e. [Spotifiy Authorization](https://developer.spotify.com/documentation/web-api)
 
+Arbeitsschritte am 3.2.2026
+
+# Einlesen und erstellen einer Anwendung mit oAuth
+[oAuth](https://auth0.com/docs/quickstart/spa/vanillajs)
