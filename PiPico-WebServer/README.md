@@ -27,3 +27,16 @@ Temperatur:
   26.7 °C
 ----------------------------------------
 
+### ToDo's
+* Grafische Anzeige der Beschleunigungsdaten (Fadenkreuz)
+* Setup-Seite für Einstellung von
+  * Uhrzeit
+  * Abtastrate / geplante Fahrtdauer 
+  * ...
+
+* Wieviele Daten werden pro Abtastung aufgenommen (Byte)
+* Wieviel Speicherplatz steht zur Verfügung - abzüglich der Firmware! 
+* Wie könnte die Daten komprimiert gespeichert werden - z.B. Delta
+
+* WebServer auf PiPico Erklärung
+* Sensormodul
