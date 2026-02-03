@@ -28,6 +28,22 @@ Das Programm wurde in einem Prinzip erweitert, wo alle Töne in einer gewissen F
 
 Für weitere Details siehe Programmfortschritt -> audiovisu_27.01!
 
+### Audioverarbeitung mit numpy
+Wie kann ich ein Audiosignal von einer Datei öffnen?
+Worauf ist bei der Bearbeitung von Audiosignalen zu achten (Abtastheorem)?
+Wie werden die Daten in numpy gespeichert?
+Wie ist ein Audiosignal "aufgebaut"?
+   Kanäle, Samplerate, ....
+
+Darstellung eines Audiosignales in einem Diagramm (Zeit-/Amplitude)?
+Audio-Bearbeitung:
+   Was bedeutet Audio Bearbeitung - welche Funktionen können realisiert werden.
+     - Cut
+     - Lauter/Leiser
+
+     - Filterung Höhen/Tiefen/Mittel 
+
+Funktioniert das auch "live"
 
 
 
