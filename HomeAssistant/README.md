@@ -1,85 +1,159 @@
 # 2526_5AHEL_MWIT
-Individual Projects for MWIT 
-                                                      HomeAssistant GUI
-                                                                                                                                 Julian Dietachmair
 
+**Individual Projects for MWIT**
+**Projekt:** Home Assistant GUI
+**Autor:** Julian Dietachmair
 
-- 13.01.2026
+---
 
-- Smartphone-Dashboard:
-  PopUps um PopUp Eltern erweitert
-  Anpassungen der Entitäten
-  Batteriestandanzeige des Temperaturfühlers hinzugefügt und versucht diese passend zu formatieren um die Temperatur & Luftfeuchtigkeitsanzeige noch     leserlich zu lassen und nicht abzuschneiden (im rechten 1/3 der Spalte platzieren)
+## Projektübersicht
 
-- Automatisierung für automatische Navigation vom Smartphone auf das Mobile Dashboard, da die Build In Lösung nicht zuverlässig funktioniert und         sich des öfteren zurücksetzt. Lösung mit bereits installierten BrowserMod AddOn von HACS. Bei diesem registriert sich jedes Gerät womit sich           unterscheiden lässt welches Gerät gerade Zugreift bzw das Dashboard anschauen will. So ist es mir möglich auf meinem Laptop automatisch auf der
-  Standard Oberfläche zu landen und auf meinem Smartphone auf die fürs Handy optimierte Version zu gelangen.
+Dieses Repository dokumentiert die Entwicklung und Konfiguration einer **Home‑Assistant‑Benutzeroberfläche**, mit besonderem Fokus auf ein **smartphone‑optimiertes Dashboard** sowie eine **zuverlässige Navigation mittels BrowserMod**.
 
-  YAML der Automatisierung:
-      alias: Smartphone → Smartphone Dashboard erzwingen
-    mode: single
-    
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.browser_mod_nothing_phone_2
-        to: "on"
-    
-    condition:
-      - condition: template
-        value_template: >
-          {{ state_attr('binary_sensor.browser_mod_nothing_phone_2', 'browser') == 'mobile' }}
-    
-    action:
-      - delay: "00:00:02"
-      - service: browser_mod.navigate
-        data:
-          deviceID:
-            - browser_mod_nothing_phone_2
-          path: /dashboard-smartphone
-  
+---
 
-  -20.01.2026
+## Änderungsprotokoll
 
-  BrowserMod automatisierung wurde die letzte Woche getestet und funktionierte zwar einigermaßen zuverlässig jedoch gab es den Fehler, dass sich ein   anderer Browser (also ein Gerät zB mein Tablet) ebenfalls zyklisch auf das Smartphone Dashboard navigiert wurde, obwohl ein Zielgerät definiert
-  wurde. Nach etwas recherge bin ich auf die GUI Variante davon gestoßen welche robuster sein soll, da diese keine Automatisierung darstellt sondern   von Browser Mod selbst verarbeitet wird. Damit klappts zum Aktuellen Zeitpunkt sehr gut und zuverlässig.
+### 📅 13.01.2026
 
-  HA OS auf Raspberry PI 3 Model B+ installieren
+#### Smartphone‑Dashboard
 
-  Zuerst Raspberry PI Imager installieren:
-  https://www.raspberrypi.com/software/
+* Pop-ups um **Eltern‑Pop-ups** erweitert
+* Anpassungen an den verwendeten **Entitäten**
+* **Batteriestandsanzeige** des Temperaturfühlers hinzugefügt
+* Layout‑Optimierung:
 
-  Mithilfe von dieser Doku SD Karte flashen:
-  https://www.home-assistant.io/installation/raspberrypi/#install-home-assistant-operating-system
-  -> Modell auswählen: Raspberry PI 3
-  -> Betriebssystem auswählen: Other specific- purpose OS -> Homeautomation -> Homeassistant OS
-  -> SD Karte auswählen
-  -> Schreiben
+  * Batterieanzeige im **rechten Drittel der Spalte** platziert
+  * Ziel: Temperatur- und Luftfeuchtigkeitsanzeige **leserlich halten** und **Abschneiden vermeiden**
 
-  Erster Start von HA:
-  -> PI anschließen und SD Karte einfügen
-  -> HA startet nun von selbst und öffnet nach vollständigen Start die HA CLI
-  -> HA zeigt die IP Adresse und Port des Servers an
-  -> IP: 192.168.98.154:8123
+#### Automatisierung: Smartphone → Mobile Dashboard
 
-    User anlegen:
-    Name: HTLSteyr
-    Benutzername: htlsteyr
-    Passwort: terra123
+Da die integrierte Home‑Assistant‑Lösung für die automatische Navigation unzuverlässig war (teilweise Zurücksetzen), wurde eine **eigene Lösung mit BrowserMod (HACS)** umgesetzt.
 
-  Nun landet man auf der Startseite
+**Funktionsweise:**
 
-  Erste Configs:
-  Einstellungen -> Add-ons:
-  
-  Mosquitto broker -> Zum verwenden und verwalten von MQTT Geräten
+* Jedes Gerät registriert sich bei BrowserMod
+* Geräte lassen sich eindeutig unterscheiden (Smartphone, Laptop, Tablet)
+* Ergebnis:
 
-  File editor -> Ermöglicht einfaches und unkompliziertes Arbeiten mit HA Files vorallem für YAML Configurationen wichtig
+  * **Laptop:** Standard‑Dashboard
+  * **Smartphone:** Mobile‑optimiertes Dashboard
 
-  
+**YAML – Automatisierung:**
 
-  
-  
-  
+```yaml
+alias: Smartphone → Smartphone Dashboard erzwingen
+mode: single
 
-     
-  
-  
+trigger:
+  - platform: state
+    entity_id: binary_sensor.browser_mod_nothing_phone_2
+    to: "on"
+
+condition:
+  - condition: template
+    value_template: >
+      {{ state_attr('binary_sensor.browser_mod_nothing_phone_2', 'browser') == 'mobile' }}
+
+action:
+  - delay: "00:00:02"
+  - service: browser_mod.navigate
+    data:
+      deviceID:
+        - browser_mod_nothing_phone_2
+      path: /dashboard-smartphone
+```
+
+---
+
+### 📅 20.01.2026
+
+#### BrowserMod – Optimierung
+
+Die oben genannte Automatisierung wurde über eine Woche getestet. Dabei trat folgendes Problem auf:
+
+* Andere Geräte (z. B. Tablet) wurden **zyklisch ebenfalls** auf das Smartphone‑Dashboard weitergeleitet
+* Dies geschah trotz definiertem Zielgerät
+
+**Lösung:**
+
+* Umstieg auf die **GUI‑basierte BrowserMod‑Konfiguration**
+* Vorteil:
+
+  * Keine klassische HA‑Automatisierung
+  * Verarbeitung direkt durch BrowserMod
+  * Deutlich **robuster und zuverlässiger**
+
+Aktueller Stand: **funktioniert stabil und korrekt**.
+
+---
+
+## Installation: Home Assistant OS
+
+### Hardware
+
+* **Raspberry Pi 3 Model B+**
+
+### Vorbereitung
+
+1. **Raspberry Pi Imager installieren:**
+   [https://www.raspberrypi.com/software/](https://www.raspberrypi.com/software/)
+
+2. **SD‑Karte flashen** (gemäß offizieller HA‑Dokumentation):
+   [https://www.home-assistant.io/installation/raspberrypi/#install-home-assistant-operating-system](https://www.home-assistant.io/installation/raspberrypi/#install-home-assistant-operating-system)
+
+   **Auswahl im Imager:**
+
+   * Modell: *Raspberry Pi 3*
+   * Betriebssystem:
+     *Other specific‑purpose OS → Home Automation → Home Assistant OS*
+   * SD‑Karte auswählen
+   * Schreiben starten
+
+---
+
+### Erster Start
+
+* Raspberry Pi anschließen
+* SD‑Karte einsetzen
+* Home Assistant startet automatisch
+* Nach dem vollständigen Start wird die **HA‑CLI** angezeigt
+
+**Zugriffsdaten:**
+
+* IP‑Adresse: `192.168.98.154`
+* Port: `8123`
+
+---
+
+### Benutzer anlegen
+
+* **Name:** HTLSteyr
+* **Benutzername:** htlsteyr
+* **Passwort:** terra123
+
+➡️ Danach Weiterleitung auf die Home‑Assistant‑Startseite
+
+---
+
+## Erste Konfigurationen
+
+**Pfad:** `Einstellungen → Add-ons`
+
+### Installierte Add-ons
+
+* **Mosquitto Broker**
+  Zum Verwalten und Verwenden von MQTT‑Geräten
+
+* **File Editor**
+  Ermöglicht einfaches Arbeiten mit Home‑Assistant‑Dateien
+  Besonders wichtig für **YAML‑Konfigurationen**
+
+---
+
+### 📅 27.01.2026
+
+* Nicht anwesend aufgrund von **Krankheit**
+
+---
+
