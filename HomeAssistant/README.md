@@ -157,11 +157,63 @@ Aktueller Stand: **funktioniert stabil und korrekt**.
 
 ---
 
-### 📅 03.02.2026
+## 📅 03.02.2026
 
-Homeassistant Core Update
-2026.1.2 -> 2026.1.3
-Versionshinweise: 
-https://www.home-assistant.io/blog/2026/01/07/release-20261/
+### Home Assistant Core Update
+- **Version:** 2026.1.2 → 2026.1.3  
+- **Art:** Minor Update  
+- **Versionshinweise:**  
+  https://www.home-assistant.io/blog/2026/01/07/release-20261/
+
 ---
+
+### Installation von HACS (Home Assistant Community Store)
+
+Zur Erweiterung von Home Assistant um Community-Integrationen und Custom Cards wurde **HACS** installiert.
+
+**Vorgehensweise:**
+1. Aufruf der offiziellen HACS-Dokumentation  
+   https://hacs.xyz/docs/use/download/download/#to-download-hacs
+2. Ausführen des **Get-HACS Installationsskripts**
+3. Warten, bis HACS vollständig heruntergeladen wurde
+4. Hinzufügen von **HACS** über  
+   *Einstellungen → Geräte & Dienste → Integration hinzufügen*
+5. Durchführung der **GitHub-Authentifizierung**
+6. **Neustart von Home Assistant**
+
+Nach dem Neustart steht HACS vollständig zur Verfügung.
+
+---
+
+### Raspberry Pi 3 – Systemüberwachung
+
+#### Systemdaten erfassen
+Zur Überwachung der Systemressourcen des Raspberry Pi 3 wurde die Integration **System Monitor** verwendet.
+
+**Schritte:**
+- Installation der Integration **System Monitor** über *Geräte & Dienste*
+- Aktivierung der gewünschten Entitäten (z. B. CPU-Temperatur, CPU-Auslastung, RAM)
+- Testweise Darstellung der Sensordaten in einem neu erstellten Dashboard (*Dashboard-Start*)
+
+---
+
+#### Visualisierung der Systemdaten
+
+Zur übersichtlichen Darstellung der Systemressourcen wurde eine Custom Card eingesetzt.
+
+- Installation der **RPi Monitor Card** über **HACS**
+- Einbindung der Card in ein Dashboard mittels YAML-Konfiguration
+- Darstellung folgender Systemwerte:
+  - CPU-Temperatur
+  - CPU-Auslastung
+  - Arbeitsspeicher-Auslastung
+  - Swap-Nutzung
+  - Systemlast (Load Average)
+  - Laufzeit (Uptime)
+oard-Start) dargestellt
+Installieren von RPi Monitor Card über HACS
+
+---
+
+
 
