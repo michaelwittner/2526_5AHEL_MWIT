@@ -157,3 +157,11 @@ Aktueller Stand: **funktioniert stabil und korrekt**.
 
 ---
 
+### 📅 03.02.2026
+
+Homeassistant Core Update
+2026.1.2 -> 2026.1.3
+Versionshinweise: 
+https://www.home-assistant.io/blog/2026/01/07/release-20261/
+---
+
