@@ -1,40 +1,49 @@
+# Arbeitsbericht – Face in Hole (OpenCV)
 
-13.01.2026
+---
 
-  Ziel:
-  Umsetzung eines Python-Projekts mit OpenCV (cv2):
-  Webcam-Bild erfassen, Gesicht erkennen und später das Gesicht in ein vorgegebenes Bild mit “Loch”    einsetzen.
+## 13.01.2026
 
-  Setup/Installation
-  - Projekt in PyCHarm angelegt und eine virtuelle Umgebung (.venv) verwendet
-  - Installierte Bibliotheken:
-        - opencv-python (Computer Vision / Kamera / Bildverarbeitung)
-        - numpy (Bilddaten als Arrays, Masken, Blending)
+### Ziel
+Umsetzung eines Python-Projekts mit OpenCV (cv2):  
+Webcam-Bild erfassen, Gesicht erkennen und später das Gesicht in ein vorgegebenes Bild mit „Loch“ einsetzen.
 
-  Webcam + Gesichtserkennung:
-  - Webcam-Stream über cv2.VideoCapture(...) öffnen
-  - Ausgabe als Live-Preview
+### Setup / Installation
+- Projekt in **PyCharm** angelegt
+- Verwendung einer virtuellen Umgebung (`.venv`)
+- Installierte Bibliotheken:
+  - **opencv-python** (Computer Vision, Kamera, Bildverarbeitung)
+  - **numpy** (Bilddaten als Arrays, Masken, Blending)
 
-  Template
-  soll an der Loch-Position transparent sein, damit das eingefügte Gesicht sichtbar wird.
-  Mit Photoshop Bereich entfernt, Export als PNG
+### Webcam + Gesichtserkennung
+- Webcam-Stream über `cv2.VideoCapture(...)` geöffnet
+- Ausgabe als Live-Preview
 
-  Quellen: 
-  - OpenCV (Python) – Install/Docs: https://pypi.org/project/opencv-python/
-  - Haar-Cascades (Face Detection, OpenCV Doku): https://docs.opencv.org/4.x/d7/d8b/tutorial_py_face_detection.html
-  - NumPy (für Arrays/Masken): https://numpy.org/doc/
-  - ChatGPT
+### Template
+- Template soll an der Loch-Position **transparent** sein, damit das eingefügte Gesicht sichtbar wird
+- Bereich in **Photoshop entfernt**
+- Export als **PNG mit Alpha-Kanal**
 
+### Quellen
+- OpenCV (Python) – Install / Docs:  
+  https://pypi.org/project/opencv-python/
+- Haar-Cascades (Face Detection, OpenCV):  
+  https://docs.opencv.org/4.x/d7/d8b/tutorial_py_face_detection.html
+- NumPy Dokumentation:  
+  https://numpy.org/doc/
+- ChatGPT (OpenAI)
+
+---
 
 ## 20.01.2026
 
-## Ziel für heute
+### Ziel für heute
 - Implementierung der Face-in-Hole-Funktion mit PNG-Template und Transparenz (Alpha)
 - Automatische Positionierung des Gesichts im Loch
 - Stabilisierung der Gesichtsdarstellung
 - Analyse von Problemen bei der Gesichtserkennung
 
-## Durchgeführte Arbeiten
+### Durchgeführte Arbeiten
 - Bestehenden Webcam- und Face-Detection-Code (OpenCV, Haar Cascade) analysiert
 - PNG-Template mit Alpha-Kanal in das Programm eingebunden
 - Alpha-Compositing implementiert (Webcam-Bild hinter PNG)
@@ -45,123 +54,112 @@
 - Spiegelung des Kamerabildes (Selfie-Ansicht) umgesetzt
 - Debug-Ausgaben zur Gesichtserkennung ergänzt
 
-## Probleme / Schwierigkeiten
-- Die Haar-Cascade-Gesichtserkennung arbeitet nicht stabil genug
-- Gesicht wird nicht zuverlässig erkannt → teilweise nur Schulter oder Hintergrund sichtbar
-- Automatische Zentrierung des Gesichts im Loch funktioniert nicht zuverlässig
-- Unterschiedliches Verhalten je nach Abstand, Licht und Kamerawinkel
+### Probleme / Schwierigkeiten
+- Haar-Cascade-Gesichtserkennung arbeitet nicht stabil
+- Gesicht wird nicht zuverlässig erkannt (teilweise Schulter oder Hintergrund)
+- Automatische Zentrierung im Loch nicht zuverlässig
+- Stark abhängig von Abstand, Licht und Kamerawinkel
 
-## Verwendete Quellen 
+### Verwendete Quellen
+- OpenCV Dokumentation:  
+  https://docs.opencv.org/  
+  *zuletzt besucht: 20.01.2026*
+- Haar Cascade Klassifikatoren:  
+  https://github.com/opencv/opencv/tree/master/data/haarcascades  
+  *zuletzt besucht: 20.01.2026*
+- Alpha-Blending mit OpenCV:  
+  https://learnopencv.com/alpha-blending-using-opencv-cpp-python/  
+  *zuletzt besucht: 20.01.2026*
+- ChatGPT (OpenAI)  
+  Inhalte wurden eigenständig überprüft und getestet
 
-### OpenCV – Dokumentation
-- https://docs.opencv.org/
-- zuletzt besucht: 20.01.2026
+---
 
-### Haar Cascade Klassifikatoren
-- https://github.com/opencv/opencv/tree/master/data/haarcascades
-- zuletzt besucht: 20.01.2026
+## 27.01.2026
 
-### Alpha-Compositing / Alpha-Blending
-- https://learnopencv.com/alpha-blending-using-opencv-cpp-python/
-- zuletzt besucht: 20.01.2026
+### Ziel für heute
+- Baseline stabil beibehalten (Face-in-Hole funktioniert)
+- Oval/Template-Loch automatisch erkennen und korrekt verwenden
+- Template-Wechsel per Tastendruck implementieren
+- Live-Steuerung für Zoom, Debug, Screenshot und Parameter-Ausgabe fertigstellen
 
-### KI-Unterstützung
+### Durchgeführte Arbeiten
+- Spiegelung des Webcam-Bildes dauerhaft aktiviert (`cv2.flip(frame, 1)`)
+- Einfügen des Gesichts auf **elliptische Maske** umgestellt (statt Kreis)
+- Loch-Erkennung automatisiert:
+  - Transparentes Loch über Alpha-Kanal erkannt
+  - Annäherung als Ellipse mittels `cv2.fitEllipse`
+  - Fallback über Bounding-Box
+- Gesichtsgröße stabilisiert:
+  - Anpassung über `FACE_SCALE_X` und `FACE_SCALE_Y`
+- Tastensteuerung implementiert:
+  - `[ / ]`, `; / '` → Zoom
+  - `d` → Debug
+  - `p` → Parameter-Ausgabe
+  - `s` → Screenshot
+  - `ESC / q` → Beenden
+- Template-Wechsel:
+  - Mehrere Templates über `TEMPLATE_PATHS`
+  - Wechsel per `n / b` und `1–4`
+- Dateinamen festgelegt:
+  - Aktuelles Template: `template_v2.png`
+
+### Ergebnis / Stand
+- Programm läuft stabil mit ovalem Loch
+- Templates können während der Laufzeit gewechselt werden
+- Live-Justierung der Gesichtsgröße möglich
+
+### Verwendete Quellen
+- OpenCV – Ellipse & Konturen:  
+  https://docs.opencv.org/  
+  *zuletzt besucht: 27.01.2026*
+- OpenCV – `cv2.flip`:  
+  https://docs.opencv.org/  
+  *zuletzt besucht: 27.01.2026*
 - ChatGPT (OpenAI)
-- Einsatz zur Unterstützung bei Code-Analyse, Strukturierung und Erklärung
-- Inhalte wurden eigenständig überprüft und getestet
 
-27.01.2026
-Ziel für heute
+---
 
-Baseline stabil beibehalten (Face-in-Hole funktioniert)
+## 03.02.2026
 
-Oval/Template-Loch automatisch erkennen und korrekt verwenden
+### Ziel
+Probleme beim Uploaden des Projekts (GitHub) beheben
 
-Template-Wechsel per Tastendruck implementieren
+### Durchgeführte Arbeiten
+- Analyse der Git-Remote-Konfiguration
+- Korrektur der Repository-URL
+- Einschränkung der Commits auf den eigenen Projektordner
+- Upload des Python-Projekts in den vorgesehenen Ordner
 
-Live-Steuerung für Zoom/Debug/Screenshot/Parameter-Ausgabe fertigstellen
+### Quelle
+- ChatGPT (OpenAI)  
+  *zuletzt besucht: 03.02.2026*
 
-Durchgeführte Arbeiten
+---
 
-Spiegelung des Webcam-Bildes dauerhaft aktiviert (cv2.flip(frame, 1)), damit die Darstellung konsistent „Selfie-like“ ist.
+## 10.02.2026
 
-Einfügen des Gesichts auf Oval/elliptische Maske umgestellt (statt Kreis).
+### Ziel
+Die Templates sollen so angepasst werden, dass das Gesicht **nicht mehr in eine Ellipse**, sondern in eine **frei geformte Gesichtskontur des Templates** eingesetzt wird.  
+Das Template bleibt fix, nur das Webcam-Bild wird skaliert.
 
-Loch-Erkennung automatisiert: transparentes Loch wird über den Alpha-Kanal des PNG gefunden und als Ellipse angenähert (cv2.fitEllipse, Fallback Bounding-Box).
-
-Gesichtsgröße stabilisiert: Gesicht wirkt zu klein/zu groß → ROI wird per Scale-Faktoren (FACE_SCALE_X/Y) angepasst, sodass weniger Umfeld sichtbar ist, ohne extremes Reinzoomen.
-
-Tastensteuerung implementiert:
-
-[ / ], ; / ' (Zoom)
-
-d (Debug)
-
-p (Werte ausgeben)
-
-s (Screenshot)
-
-ESC/q (Beenden)
-
-Template-Wechsel umgesetzt:
-
-Laden mehrerer Templates über TEMPLATE_PATHS
-
-Wechsel per n/b und 1–4
-
-Dateinamen-Thema festgehalten: aktuelles Template heißt template_v2 → Eintrag in TEMPLATE_PATHS angepasst/zu prüfen (inkl. .png).
-
-Ergebnis / Stand
-
-Programm läuft stabil mit Oval-Loch und Live-Justierung.
-
-Templates können während der Laufzeit gewechselt werden, sofern sie als PNG mit Alpha vorliegen.
-
-Offene Punkte
-
-Weitere Templates erstellen (PNG mit transparentem Oval) und ins GitHub-Repo aufnehmen.
-
-OpenCV – Funktion fitEllipse / Ellipse-Verarbeitung
-
-https://docs.opencv.org/
- (zuletzt besucht: 27.01.2026)
-Verwendet zur Überprüfung von Ellipse-Maske und Kontur-/Form-Funktionen.
-
-OpenCV – Konturen (findContours) und Masken
-
-https://docs.opencv.org/
- (zuletzt besucht: 27.01.2026)
-Verwendet zur Überprüfung von Loch-Erkennung über Alpha-Kanal (Konturen der transparenten Fläche).
-
-OpenCV – Bildspiegelung (cv2.flip)
-
-https://docs.opencv.org/
- (zuletzt besucht: 27.01.2026)
-Verwendet zur Verifikation der Mirror-Funktion für konsistente Selfie-Ansicht.
-
-KI-Unterstützung
-
-03.02.2026
-Probleme beim Uploaden des Projekts beheben
-
-ChatGPT (OpenAI) (zuletzt besucht: 27.01.2026)
-Einsatz zur Entwicklung/Verbesserung von Code-Struktur, Steuerung per Tastatur, Maskenlogik.
-Inhalte wurden durch Tests im eigenen Projekt und Abgleich mit OpenCV-Dokumentation überprüft.
-
-10.02.2026
-Die Templates sollen nun alle angepasst werden, sodass das Gesicht nicht mehr un eine Ellipse, sondern in eine frei geformte
-Gesichtskontur des Templates eingesetzt wird.
-Das Template selbst soll dabei fix bleiben, nur das Webcam-Bild wird skaliert.
-
--Überarbeitung des Templates in Photoshop:
-    - Gesichtskontur des Templates manuell eingestellt
-    - Verwendung von:
-              - Auswahlwerkzeug, Kanten-VErbesserung
-
+### Durchgeführte Arbeiten
+- Überarbeitung der Templates in **Photoshop**:
+  - Gesichtskontur manuell freigestellt
+  - Hintergrund im Gesichtsbereich vollständig transparent gemacht
+  - Verwendung von:
+    - Auswahlwerkzeug
+    - Kanten-Verbesserung
+  - Export als **PNG mit Alpha-Kanal**
 - Umstellung der technischen Umsetzung:
-    - Neues Phyton-Skript "step3_face_in_hole_mask_alpha_soft.py" erstellt
-    - Das Loch wird nicht mehr mathematisch berechnet, sondern direkt aus dem Alpha-Kanal des PNGs gelesen
-    - Der Alpha-Kanal definiert:
-            - Wo das Gesicht sichtbar ist
-            - Wie weich die Übergänge an den Rändern sind
+  - Neues Python-Skript erstellt:  
+    `step3_face_in_hole_mask_alpha_soft.py`
+  - Loch wird nicht mehr mathematisch berechnet
+  - Alpha-Kanal des PNGs definiert:
+    - Wo das Gesicht sichtbar ist
+    - Wie weich die Übergänge an den Rändern sind
 
+### Ergebnis
+- Deutlich natürlicher „Kopf-im-Loch“-Effekt
+- Keine sichtbaren Kanten oder Hintergrundreste
+- Grundlage für realistische Cartoon-Templates geschaffen
