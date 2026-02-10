@@ -147,3 +147,21 @@ Probleme beim Uploaden des Projekts beheben
 ChatGPT (OpenAI) (zuletzt besucht: 27.01.2026)
 Einsatz zur Entwicklung/Verbesserung von Code-Struktur, Steuerung per Tastatur, Maskenlogik.
 Inhalte wurden durch Tests im eigenen Projekt und Abgleich mit OpenCV-Dokumentation überprüft.
+
+10.02.2026
+Die Templates sollen nun alle angepasst werden, sodass das Gesicht nicht mehr un eine Ellipse, sondern in eine frei geformte
+Gesichtskontur des Templates eingesetzt wird.
+Das Template selbst soll dabei fix bleiben, nur das Webcam-Bild wird skaliert.
+
+-Überarbeitung des Templates in Photoshop:
+    - Gesichtskontur des Templates manuell eingestellt
+    - Verwendung von:
+              - Auswahlwerkzeug, Kanten-VErbesserung
+
+- Umstellung der technischen Umsetzung:
+    - Neues Phyton-Skript "step3_face_in_hole_mask_alpha_soft.py" erstellt
+    - Das Loch wird nicht mehr mathematisch berechnet, sondern direkt aus dem Alpha-Kanal des PNGs gelesen
+    - Der Alpha-Kanal definiert:
+            - Wo das Gesicht sichtbar ist
+            - Wie weich die Übergänge an den Rändern sind
+
