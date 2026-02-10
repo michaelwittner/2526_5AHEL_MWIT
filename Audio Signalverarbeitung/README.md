@@ -72,7 +72,6 @@ Audio-Bearbeitung:
 
      - Filterung Höhen/Tiefen/Mittel 
 
-Funktioniert das auch "live"
 
 
 
