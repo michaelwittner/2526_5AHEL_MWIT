@@ -28,7 +28,7 @@
 
 ## Wie wird Audio verarbeitet?
 
-Siehe unter anderem Programmfortschritt -> audiovisu_20.01!
+Siehe unter anderem Programmfortschritt -> [audiovisu_20.01](audiovisu_20.01.py) 
 
 Das Audiosignal wird vom Mikrofon als zeitdiskretes Signal mit einer festen Samplerate aufgenommen und in einem Puffer gespeichert (Funktion pick_samplerate). Dieser Datenblock wird mit einer Fensterfunktion (Hann-Fenster) multipliziert, für Reduktion der Störeffekte bei der Fourieranalyse. Anschließend wird mittels FFT das Zeitsignal in den Frequenzbereich umgerechnet. Die Beträge der FFT werden in Dezibel (dB) umgerechnet und zu logarithmischen Frequenzbändern zusammengefasst. Diese Pegel werden zeitlich geglättet und als Balkendiagramm mit Peak-Hold-Anzeige dargestellt.
 
@@ -36,7 +36,7 @@ Darstellung erfolgt mittels Matplot-Lib.
 
 Das Programm wurde in einem Prinzip erweitert, wo alle Töne in einer gewissen Farbe angezeigt werden, in der Praxis kennt man so etwas öfters von z.B. einem Mischpult.
 
-Für weitere Details siehe Programmfortschritt -> audiovisu_27.01!
+Für weitere Details siehe Programmfortschritt -> [audiovisu_27.01](audiovisu_27.01.py) 
 
 ### Audioverarbeitung mit numpy
 Wie kann ich ein Audiosignal von einer Datei öffnen?
@@ -51,15 +51,16 @@ Beim Bearbeiten von Audiosignalen ist das Abtasttheorem wichtig: Ein Signal wird
 
 Nach dem Einlesen werden die Werte in x und fs gespeichert.
 
-x: ein NumPy-Array mit Samples
-fs: Samplingrate in Hz
+```x```: ein NumPy-Array mit Samples
+
+```fs```: Samplingrate in Hz
 
 #### Mono und Stereo Signale werden folgendermaßen gespeichert:
 
-Mono Signal: x.shape == (N,)
+Mono Signal: ```x.shape == (N,)```
 → N Samples hintereinander
 
-Stereo/Mehrkanal: x.shape == (N, C)
+Stereo/Mehrkanal: ```x.shape == (N, C)```
 → N Samples, C -> wie viele Kanäle (z.B. 2)
 
 #### Viele WAVs (Soundfiles) kommen als Integer:
