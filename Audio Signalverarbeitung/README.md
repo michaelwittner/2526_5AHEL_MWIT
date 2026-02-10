@@ -8,7 +8,7 @@
   
   matplotlib -> zur Darstellung von Audio Aufzeichnungen
   
-  scipy -> falls aus einer Datei gelesen werden soll
+  [scipy](https://scipy.org/) -> falls aus einer Datei gelesen werden soll
   
 ## Links:
 
