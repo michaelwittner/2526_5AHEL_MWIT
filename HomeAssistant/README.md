@@ -215,5 +215,118 @@ Installieren von RPi Monitor Card über HACS
 
 ---
 
+### 📅 10.02.2026
+
+## Shelly H&T Gen1 – Temperatur- & Luftfeuchtesensor
+
+### Geräteübersicht
+
+Der **Shelly H&T Gen1** ist ein WLAN-basierter Temperatur- und Luftfeuchtigkeitssensor mit besonders langer Batterielaufzeit.
+
+🔗 Produktseite:  
+https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/
+
+#### Funktionsweise (Energiesparmodus)
+
+Der Shelly H&T arbeitet standardmäßig in einem **starken Energiesparmodus**:
+
+- Der WLAN-Controller ist die meiste Zeit **deaktiviert**
+- Das Gerät wacht nur auf bei:
+  - periodischen Intervallen
+  - einer **Änderung der Messwerte**, die den konfigurierten Schwellwert überschreitet
+- Nach dem Senden der Sensordaten wird das WLAN **sofort wieder abgeschaltet**
+
+➡️ Dadurch ergibt sich eine sehr lange Batterielaufzeit, jedoch **keine kontinuierliche Live-Verbindung**.
+
+---
+
+### Setup-Modus (manuelle Konfiguration)
+
+Durch **einmaliges Drücken der User-Taste** wechselt der Shelly H&T in den **Setup-Modus**:
+
+- WLAN bleibt für **3 Minuten aktiv**
+- Konfiguration über das Webinterface möglich
+- Ein weiterer kurzer Tastendruck versetzt das Gerät wieder in den Schlafmodus
+
+---
+
+### Factory Reset
+
+Um den Shelly H&T auf Werkseinstellungen zurückzusetzen:
+
+1. Gerät ggf. aufwecken
+2. **User-Taste gedrückt halten**
+3. Loslassen, sobald die LED **nicht mehr schnell blinkt**
+
+---
+
+## Home Assistant – MQTT-Konfiguration
+
+### MQTT-Broker (Mosquitto)
+
+Der Shelly H&T wird über den **Mosquitto MQTT-Broker** in Home Assistant eingebunden.
+
+**Angelegte Zugangsdaten:**
+
+- **Benutzername:** `shellyht3CBD1F`
+- **Passwort:** `terra123`
+
+---
+
+## Shelly H&T – Gerätekonfiguration
+
+📘 Offizielle Dokumentation:  
+https://shelly-api-docs.shelly.cloud/gen1/#mqtt-support
+
+Der Shelly H&T besitzt einen **integrierten Webserver** zur Konfiguration.
+
+### Zugriff auf das Webinterface
+
+1. Gerät in den **Setup-Modus** versetzen  
+   (User-Taste einmal drücken)
+2. Mit dem vom Shelly bereitgestellten WLAN-Access-Point verbinden
+3. Webinterface aufrufen über die feste IP-Adresse: **192.168.33.1**
+
+
+---
+
+### MQTT-Einstellungen im Shelly
+
+**Pfad:**  
+`Internet & Security → Advanced – Developer Settings`
+
+**Konfiguration:**
+
+- **MQTT aktivieren:** `true`
+- **MQTT-Server:** IP-Adresse von Home Assistant  
+  (nicht statisch, kann sich bei Neustart ändern)
+- **Port:** `1883`
+- **MQTT-Benutzer:** `shellyht3CBD1F`
+- **MQTT-Passwort:** `terra123`
+
+---
+
+### Beobachtetes Verhalten
+
+Nach der Konfiguration versucht sich der Shelly H&T mit dem MQTT-Broker zu verbinden.  
+Im Mosquitto-Protokoll erscheint dabei ein neues Gerät, das jedoch lediglich als: `Client unknown`
+angezeigt wird.
+
+---
+
+### Fehleranalyse / Vereinfachung
+
+Um mögliche Konfigurationsfehler auszuschließen, wurden die MQTT-Zugangsdaten testweise vereinfacht:
+
+- **MQTT-Benutzer:** `shelly`
+- **MQTT-Passwort:** `shelly123`
+
+➡️ Diese Anpassung führte **zu keiner Veränderung des Verhaltens**.  
+Das Gerät wird weiterhin nur als unbekannter Client im MQTT-Broker angezeigt.
+
+---
+
+**Aktueller Stand:**  
+Die MQTT-Verbindung kommt zustande, jedoch werden **keine Sensordaten erfolgreich verarbeitet**.
 
 
