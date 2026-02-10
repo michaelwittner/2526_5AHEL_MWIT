@@ -1,9 +1,5 @@
 # Methoden-/Aufrufliste (STT + TTS + Sleep) – aktueller Projektstand
 
-> Hinweis: Methodennamen können je nach letzter Umbenennung minimal abweichen. Die Logik/Callbacks entsprechen dem aktuellen Aufbau mit **Foreground-Service**, **Vosk (StorageService/SpeechService)** und **RecognitionListener**.
-
----
-
 ## A) App-Start → Service starten
 
 ### 1) `MainActivity.onCreate()`
