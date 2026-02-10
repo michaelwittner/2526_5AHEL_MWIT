@@ -135,7 +135,7 @@ praktisch für ein **mobiles Modell** entschieden, weil:
 * In der Android-Demo/typischen Einbindung wird das Modell aus **Assets entpackt**; dabei ist wichtig, dass die Modelldateien vollständig sind – inkl. **UUID** (die in manchen Setups über Gradle/Build-Schritte erzeugt/erwartet wird). ([alphacephei.com][4])
   **Warum das wichtig ist:** Ohne vollständige Modelstruktur kann „unpack/init model“ fehlschlagen (klassischer Stolperstein).
 
----
+
 
 ## 2) Keyword/Trigger-Logik auf STT-Text
 
@@ -150,7 +150,7 @@ praktisch für ein **mobiles Modell** entschieden, weil:
 * Dein Parser prüft: **Wake-Word/Keyword** vorhanden?
 * Dann wird in einen passenden **Zustand** gewechselt und die **Aktion** ausgelöst.
 
----
+
 
 ## 3) TTS (Text-to-Speech) mit SherpaTTS
 
@@ -179,7 +179,7 @@ SherpaTTS lädt beim ersten Start typischerweise das gewählte Voice-Modell; dan
 **Warum so?**
 Du musst keine „Spezial-TTS-API“ hart einbauen; du nutzt die Android-Standardstelle und kannst die Engine systemweit austauschen (praktisch fürs Testen).
 
----
+
 
 ## 4) STT + TTS Zusammenspiel (warum das entscheidend ist)
 
@@ -198,7 +198,7 @@ Du brauchst Zustände wie z. B.:
 
 **Wichtige Regel:** Während **SPEAKING** wird STT **pausiert oder ignoriert**, damit keine Selbst-Transkription passiert.
 
----
+
 
 ## 5) Schlafmodus (bezogen auf STT/TTS)
 
@@ -236,3 +236,15 @@ Typisch:
 
 
 Verwendet: https://chatgpt.com/
+
+
+---
+---
+
+
+## 03.02.2026 ##
+
+* Ideensammlung (keine weiteren Vorhaben)
+* Projekt-Vorstellung-Planung
+* Infomationssammlung bezüglich STT
+

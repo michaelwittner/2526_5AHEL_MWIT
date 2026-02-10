@@ -1,31 +1,47 @@
 # 2526_5AHEL_MWIT
 Individual Projects for MWIT 
-13.1.2026
-Informationen über die Pi-Pico-W wurden gesammelt und die MicroPython Version v1.27.0 (2025-12-09) .uf2 wurde raufgespielt.
-Pi Pico wird vom Gerätemanager erkannt: https://micropython.org/download/RPI_PICO_W/
-Danach wurde eine Tool gesucht um auf den Pi Pico einfach Daten spielen kann. Dabei wurde Thonny ausgewählt. 
-Thonny hat den Pi Pico erkannt.
+13.01.2026
+
+Zunächst wurden Informationen über den Raspberry Pi Pico W gesammelt.
+Anschließend wurde die MicroPython-Version v1.27.0 (2025-12-09) als .uf2-Datei auf den Pico W aufgespielt.
+
+Der Raspberry Pi Pico W wurde danach erfolgreich vom Gerätemanager erkannt.
+Downloadquelle für MicroPython:
+https://micropython.org/download/RPI_PICO_W/
+
+Als nächster Schritt wurde nach einem geeigneten Tool gesucht, um einfach Daten und Programme auf den Pico zu übertragen. Hierfür wurde Thonny ausgewählt.
+Thonny erkannte den Raspberry Pi Pico W korrekt und stellte eine Verbindung her.
 https://thonny.org/
 
-20.1.2026
-Ein Beschleunigungssensor und Neigungssensor wurden für die Datengewinnung gesucht.
-https://www.conrad.at/de/p/joy-it-mpu6050-beschleunigungssensor-1-st-passend-fuer-entwicklungskits-bbc-micro-bit-arduino-raspberry-pi-rock-p-2136256.html?insert=UP&utm_source=google-shopping-de&utm_source=google&utm_medium=search&utm_medium=cpc&utm_campaign=shopping-online-de&utm_campaign=Shopping_AT_2025&utm_content=shopping-ad_cpc&WT.srch=1&ef_id=CjwKCAiAybfLBhAjEiwAI0mBBr9C7ffb8zKMXnKoxc4loea1cZD2x9dRlVpK-wu9Pr6pGFt5EAWgyRoCacQQAvD_BwE:G:s&utm_id=22317741252&gad_source=1&gad_campaignid=22317741252&gbraid=0AAAAADoNYuy0NyCAPozyMTOhB8LFvJRIi&gclid=CjwKCAiAybfLBhAjEiwAI0mBBr9C7ffb8zKMXnKoxc4loea1cZD2x9dRlVpK-wu9Pr6pGFt5EAWgyRoCacQQAvD_BwE
+20.01.2026
 
-Da beim letzten Mal eine falsche Software auf den Pico gespielt wurde, musste dies noch ausgebessert werden.
+Für die geplante Datengewinnung wurden ein Beschleunigungs- und Neigungssensor recherchiert. Die Wahl fiel auf den MPU6050.
+Produktlink:
+https://www.conrad.at/de/p/joy-it-mpu6050-beschleunigungssensor-1-st-passend-fuer-entwicklungskits-bbc-micro-bit-arduino-raspberry-pi-rock-p-2136256.html
+
+Da beim vorherigen Versuch eine falsche Software auf den Pico aufgespielt worden war, musste dies korrigiert werden. Dazu wurde erneut die passende MicroPython-Version installiert:
 https://micropython.org/download/RPI_PICO_W/
-Als nun via "Thonny" die Verbindung zum Pico hergestellt wurde, wurde ein Python Projekt mit Chat GPT geschrieben, damit der Pico sich mit einen W-Lan verbindet. Die einfache HTML Datei wurde auch noch von Chat GPT generiert wurden. Da die Verbindung mit dem Schul-Wlan sich als etwas kompliziert herausstellte, erstellte ich einen Hot Spot mit meinem Handy. Der Pico hat sich perfekt verbunden und der Webserver funktioniert.
 
-Nachdem der neue bestellte Microkontroller und MPU6050 angekommen ist musste der Raspberry neue mit Micropython aufgesetzt werden. Danach wurde eine zweite php Datei erstellt um die Sensordaten auszulesen über I2C. Der Aufbau wurde auf einen Steckboard umgesetzt. Sensordaten können nun ausgelesen werden (Neigung, Beschleunigung und Temperatur).
-----------------------------------------
-Beschleunigung:
-  Links / Rechts (X): -0.00 g
-  Vor / Zurück  (Y): -0.02 g
-  Oben / Unten  (Z): 1.03 g
-Neigung:
-  Links / Rechts (Roll): -0.1 °
-Temperatur:
-  26.7 °C
-----------------------------------------
+Nachdem die Verbindung über Thonny hergestellt war, wurde mithilfe von ChatGPT ein Python-Projekt erstellt, das den Raspberry Pi Pico W mit einem WLAN verbindet. Zusätzlich wurde eine einfache HTML-Datei für den Webserver generiert.
+
+Da die Verbindung mit dem Schul-WLAN problematisch war, wurde ein Hotspot über das Handy eingerichtet. Die Verbindung funktionierte einwandfrei, und der Webserver lief erfolgreich.
+
+Weitere Arbeiten
+
+Nach dem Eintreffen des neu bestellten Microcontrollers und des MPU6050-Sensors wurde der Raspberry Pi Pico W erneut mit MicroPython aufgesetzt.
+
+Anschließend wurde eine zweite Datei (zur Sensorauslesung über I²C) erstellt.
+Der gesamte Aufbau wurde auf einem Steckbrett (Breadboard) realisiert.
+
+Die Sensordaten können nun erfolgreich ausgelesen werden, darunter:
+Beschleunigung
+Links / Rechts (X): −0.00 g
+Vor / Zurück (Y): −0.02 g
+Oben / Unten (Z): 1.03 g
+Neigung
+Links / Rechts (Roll): −0.1 °
+Temperatur
+26.7 °C
 
 ### ToDo's
 * Grafische Anzeige der Beschleunigungsdaten (Fadenkreuz)
@@ -35,8 +51,26 @@ Temperatur:
   * ...
 
 * Wieviele Daten werden pro Abtastung aufgenommen (Byte)
-* Wieviel Speicherplatz steht zur Verfügung - abzüglich der Firmware! 
+  Frühe Werte benötigen weniger Speicherplatz ca. 40 Byte
+  Negative Werte benötigen eine extra Byte wegen dem Minus
+  Spätere Werte benötigen ca. 45 Byte
+  Also ca 42 Byte pro Sample
+  Das Entspricht:
+  20 × 42 ≈ 840 Bytes/s
+  ~50 KB / Minute
+  ~3.0 MB / Stunde
+  Mit 1.2 MB Flash übrig ca. 20 bis 25 min Zeit
+
+* Wieviel Speicherplatz steht zur Verfügung - abzüglich der Firmware!
+  2 MB Flash Speicher.
+  MicroPython-Firmware (inkl. WLAN-Stack): ca. 600–700 KB
+  Verbleibender Flash für Dateien: ca. 1.2–1.3 MB
+  
 * Wie könnte die Daten komprimiert gespeichert werden - z.B. Delta
+  Indem man Binär Logged
 
 * WebServer auf PiPico Erklärung
+Dein Raspberry Pi Pico W läuft als einfacher HTTP-Webserver, der Sensordaten des MPU6050 bereitstellt und Steuerbefehle entgegennimmt. Beim Aufruf der Webseite lädt der Browser zunächst eine statische HTML-Datei vom Pico, die nur für Darstellung und Benutzeroberfläche zuständig ist. Anschließend fragt ein JavaScript-Timer alle 200 ms über die URL **/data** aktuelle Messwerte ab. Der Pico antwortet darauf mit einem JSON-Objekt, das die momentanen Beschleunigungen, die berechnete Schräglage, die Temperatur sowie die jeweils gespeicherten Maximalwerte enthält. Diese Daten werden im Browser ohne Neuladen der Seite direkt in die Tabelle eingetragen, sodass eine Live-Anzeige entsteht. Zusätzlich senden die Reset-Buttons einfache HTTP-Anfragen an **/reset** mit einem Parameter, der angibt, welcher Maximalwert zurückgesetzt werden soll. Der Pico verarbeitet diese Anfrage, setzt den entsprechenden Wert intern zurück und bestätigt dies mit einer kurzen HTTP-Antwort. Insgesamt übernimmt der Pico die Sensorik, Berechnung, Speicherung und Datenbereitstellung, während der Browser ausschließlich für Anzeige und Bedienung zuständig ist.
+
 * Sensormodul
+Der **MPU6050** ist ein kombiniertes **6-Achsen-Inertialsensormodul**, das aus einem **3-Achsen-Beschleunigungssensor** und einem **3-Achsen-Gyroskop** besteht. Der Beschleunigungssensor misst entlang der X-, Y- und Z-Achse sowohl Bewegungsbeschleunigungen als auch die Erdbeschleunigung, wodurch sich Neigung und Lage im Raum bestimmen lassen. Das Gyroskop misst die **Drehgeschwindigkeit** um diese Achsen und eignet sich zur Erfassung schneller Bewegungen und Rotationen. Intern wandelt der MPU6050 die analogen Sensordaten mit **16-Bit-AD-Wandlern** in digitale Werte um und stellt sie über den **I²C-Bus** dem Mikrocontroller zur Verfügung. Zusätzlich besitzt der Chip einen integrierten **Temperatursensor** zur Driftkorrektur. In deinem Programm nutzt du den Beschleunigungssensor, um aus der Richtung der Erdbeschleunigung die Schräglage zu berechnen, während das Gyroskop derzeit nicht ausgewertet wird.
