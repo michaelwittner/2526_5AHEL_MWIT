@@ -248,3 +248,8 @@ Verwendet: https://chatgpt.com/
 * Projekt-Vorstellung-Planung
 * Infomationssammlung bezüglich STT
 
+## 2026-02-10 
+
+* Präsentationsinhalt weiter ausgearbeitet. 
+* Zusätzlich wurde die Worterkennung für den Schlafmodus überarbeitet, um das Umschalten in den Schlafmodus zuverlässiger und stabiler zu machen.
+
