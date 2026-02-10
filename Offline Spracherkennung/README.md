@@ -248,6 +248,9 @@ Verwendet: https://chatgpt.com/
 * Projekt-Vorstellung-Planung
 * Infomationssammlung bezüglich STT
 
+---
+---
+
 ## 2026-02-10 
 
 * Präsentationsinhalt weiter ausgearbeitet. 
