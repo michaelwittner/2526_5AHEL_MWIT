@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auth0 Vanilla JS</title>
+  <title>Spotify OAuth Demo</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -23,11 +23,11 @@
       <!-- Main Content -->
       <div id="app" class="main-card-wrapper" style="display: none;">
         <img 
-          src="https://cdn.auth0.com/quantum-assets/dist/latest/logos/auth0/auth0-lockup-en-ondark.png" 
-          alt="Auth0 Logo" 
-          class="auth0-logo"
+          src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" 
+          alt="Spotify Logo" 
+          class="auth0-logo" style="height:48px;object-fit:contain;"
         />
-        <h1 class="main-title">Welcome to Sample0</h1>
+        <h1 class="main-title">Spotify OAuth Demo</h1>
         
         <!-- Logged Out State -->
         <div id="logged-out" class="action-card">
@@ -40,6 +40,12 @@
           <div class="logged-in-message">✅ Successfully authenticated!</div>
           <h2 class="profile-section-title">Your Profile</h2>
           <div id="profile" class="profile-card"></div>
+          <h3 style="color:#cbd5e1;margin-top:18px;">Top Tracks</h3>
+          <div id="top-tracks" style="margin-bottom:12px"></div>
+
+          <h3 style="color:#cbd5e1;margin-top:18px;">Playlists</h3>
+          <div id="playlists" style="margin-bottom:12px"></div>
+
           <button id="logout-btn" class="button logout">Log Out</button>
         </div>
       </div>
