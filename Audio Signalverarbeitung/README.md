@@ -2,13 +2,13 @@
 
 ## Folgende Bibliotheken werden für die Audio Verarbeitung benötigt:
 
-  sounddevice -> Zugriff auf Surface Mikro
+  sounddevice -> Play and Record Sound with Python (in meinem Fall Zugriff auf Mikro)
   
-  numpy -> Audio Verarbeitung
+  numpy -> NumPy ist eine Python-Bibliothek für schnelle    Berechnungen mit mehrdimensionalen Arrays (in meinem Fall für Audio Verarbeitung)
   
   matplotlib -> zur Darstellung von Audio Aufzeichnungen
   
-  scipy -> falls aus einer Datei gelesen werden soll
+  scipy -> SciPy ist eine Python-Bibliothek für wissenschaftliches Rechnen, die auf Numpy aufbaut (in meinem Fall, falls aus einer Datei gelesen werden soll)
   
 ## Links:
 
@@ -16,11 +16,19 @@
 
 [Processing Audio with python](https://medium.com/@mateus.d.assis.silva/processing-audio-with-python-b6ec37ac2f40) Zuletzt besucht am: 13.01.2026
 
-[ChatGPT](https://chatgpt.com/) Zuletzt besucht am: 27.01.2026
+[ChatGPT](https://chatgpt.com/) Zuletzt besucht am: 10.02.2026
+
+[Sounddevice](https://python-sounddevice.readthedocs.io/en/0.5.3/) Zuletzt besucht am: 10.02.2026
+
+[Scypi](https://scipy.org/) Zuletzt besucht am: 10.02.2026
+
+[Numpy](https://numpy.org/doc/stable/) Zuletzt besucht am: 10.02.2026
+
+[Matplotlib](https://matplotlib.org/) Zuletzt besucht am: 10.02.2026
 
 ## Wie wird Audio verarbeitet?
 
-Siehe unter anderem Programmfortschritt -> audiovisu_20.01!
+Siehe unter anderem Programmfortschritt -> [audiovisu_20.01](audiovisu_20.01.py) 
 
 Das Audiosignal wird vom Mikrofon als zeitdiskretes Signal mit einer festen Samplerate aufgenommen und in einem Puffer gespeichert (Funktion pick_samplerate). Dieser Datenblock wird mit einer Fensterfunktion (Hann-Fenster) multipliziert, für Reduktion der Störeffekte bei der Fourieranalyse. Anschließend wird mittels FFT das Zeitsignal in den Frequenzbereich umgerechnet. Die Beträge der FFT werden in Dezibel (dB) umgerechnet und zu logarithmischen Frequenzbändern zusammengefasst. Diese Pegel werden zeitlich geglättet und als Balkendiagramm mit Peak-Hold-Anzeige dargestellt.
 
@@ -28,7 +36,7 @@ Darstellung erfolgt mittels Matplot-Lib.
 
 Das Programm wurde in einem Prinzip erweitert, wo alle Töne in einer gewissen Farbe angezeigt werden, in der Praxis kennt man so etwas öfters von z.B. einem Mischpult.
 
-Für weitere Details siehe Programmfortschritt -> audiovisu_27.01!
+Für weitere Details siehe Programmfortschritt -> [audiovisu_27.01](audiovisu_27.01.py) 
 
 ### Audioverarbeitung mit numpy
 Wie kann ich ein Audiosignal von einer Datei öffnen?
@@ -43,20 +51,21 @@ Beim Bearbeiten von Audiosignalen ist das Abtasttheorem wichtig: Ein Signal wird
 
 Nach dem Einlesen werden die Werte in x und fs gespeichert.
 
-x: ein NumPy-Array mit Samples
-fs: Samplingrate in Hz
+```x```: ein NumPy-Array mit Samples
+
+```fs```: Samplingrate in Hz
 
 #### Mono und Stereo Signale werden folgendermaßen gespeichert:
 
-Mono Signal: x.shape == (N,)
+Mono Signal: ```x.shape == (N,)```
 → N Samples hintereinander
 
-Stereo/Mehrkanal: x.shape == (N, C)
+Stereo/Mehrkanal: ```x.shape == (N, C)```
 → N Samples, C -> wie viele Kanäle (z.B. 2)
 
 #### Viele WAVs (Soundfiles) kommen als Integer:
 
-int16 ->  Wertebereich -32768 … +32767
+Viele WAV-Dateien kommen als Integer (meist int16). Diese Werte liegen z.B. im Bereich -32768 … +32767 und werden für die Bearbeitung meist in float (typisch -1…+1) umgewandelt, weil Rechenoperationen (Gain, Filter, FFT) einfacher/sicherer sind.
 
 int32 -> im Sonderfall
 
@@ -64,13 +73,18 @@ int32 -> im Sonderfall
 
 Ein Audiosignal beschreibt Schall über die Zeit. Ein Mikrofon wandelt die Druckschwankungen der Luft in eine elektrische Spannung um, die sich ständig verändert. Digital wird dieses Signal als Folge von Messwerten (Samples) gespeichert: Die Samplerate gibt an, wie viele Samples pro Sekunde aufgenommen werden, die Bit-Tiefe bestimmt die Genauigkeit der Werte. Ein Audiosignal kann Mono (1 Kanal) oder Stereo (2 Kanäle: links/rechts) sein.
 
-Darstellung eines Audiosignales in einem Diagramm (Zeit-/Amplitude)?
-Audio-Bearbeitung:
-   Was bedeutet Audio Bearbeitung - welche Funktionen können realisiert werden.
-     - Cut
-     - Lauter/Leiser
+#### Was bedeutet Audiobearbeitung?
+Audio­bearbeitung bedeutet, ein Audiosignal gezielt zu verändern, um es z.B. zu verbessern, anzupassen oder zu analysieren. Typische Schritte sind:
 
-     - Filterung Höhen/Tiefen/Mittel 
+Cut/Trim: einen Abschnitt ausschneiden oder Stille am Anfang/Ende entfernen.
+
+Lauter/leiser: die Amplitude skalieren, also die Lautstärke erhöhen oder senken.
+
+Normalisieren: so verstärken, dass das Signal möglichst laut ist, ohne zu clippen.
+
+Filtern: bestimmte Frequenzbereiche verändern, z.B. Tiefen/Höhen betonen oder Störgeräusche entfernen (Lowpass/Highpass/Bandpass).
+
+
 
 
 
