@@ -14,7 +14,7 @@ body {
   justify-content: center;
   align-items: center;
   color: #e2e8f0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .app-container {
@@ -72,7 +72,7 @@ body {
   align-items: center;
   gap: 2rem;
   padding: 3rem;
-  max-width: 500px;
+  max-width: 1200px;
   width: 90%;
   animation: fadeInScale 0.8s ease-out forwards;
 }
@@ -165,6 +165,106 @@ body {
   width: 100%;
 }
 
+/* ── Profile Popup Modal ── */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-card {
+  background-color: #262a33;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  padding: 2.5rem 3rem;
+  max-width: 420px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  animation: scaleIn 0.4s ease-out forwards;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.modal-close:hover {
+  color: #fff;
+  transform: scale(1.2);
+}
+
+/* ── Lists content (after popup closed) ── */
+.lists-content {
+  width: 100%;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.lists-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.header-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid #4299e1;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.header-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(66, 153, 225, 0.5);
+}
+
+.lists-layout {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.list-column {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.list-title {
+  color: #cbd5e1;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
 .logged-in-message {
   font-size: 1.5rem;
   color: #68d391;
@@ -226,6 +326,7 @@ body {
   .main-card-wrapper {
     padding: 2rem;
     margin: 1rem;
+    max-width: 500px;
   }
   
   .main-title {
@@ -242,6 +343,14 @@ body {
   }
 
   .action-card {
+    padding: 2rem;
+  }
+
+  .lists-layout {
+    flex-direction: column;
+  }
+
+  .modal-card {
     padding: 2rem;
   }
 }

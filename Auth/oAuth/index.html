@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auth0 Vanilla JS</title>
+  <title>Spotify OAuth Demo</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -23,11 +23,11 @@
       <!-- Main Content -->
       <div id="app" class="main-card-wrapper" style="display: none;">
         <img 
-          src="https://cdn.auth0.com/quantum-assets/dist/latest/logos/auth0/auth0-lockup-en-ondark.png" 
-          alt="Auth0 Logo" 
-          class="auth0-logo"
+          src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Green.png" 
+          alt="Spotify Logo" 
+          class="auth0-logo" style="height:48px;object-fit:contain;"
         />
-        <h1 class="main-title">Welcome to Sample0</h1>
+        <h1 class="main-title">Spotify OAuth Demo</h1>
         
         <!-- Logged Out State -->
         <div id="logged-out" class="action-card">
@@ -37,10 +37,35 @@
 
         <!-- Logged In State -->
         <div id="logged-in" class="logged-in-section" style="display: none;">
-          <div class="logged-in-message">✅ Successfully authenticated!</div>
-          <h2 class="profile-section-title">Your Profile</h2>
-          <div id="profile" class="profile-card"></div>
-          <button id="logout-btn" class="button logout">Log Out</button>
+
+          <!-- Profile Popup Modal -->
+          <div id="profile-modal" class="modal-overlay">
+            <div class="modal-card">
+              <button id="modal-close-btn" class="modal-close" title="Close">&times;</button>
+              <div class="logged-in-message">✅ Successfully authenticated!</div>
+              <h2 class="profile-section-title">Your Profile</h2>
+              <div id="profile" class="profile-card"></div>
+            </div>
+          </div>
+
+          <!-- Main content: Top Tracks & Artists (visible after closing popup) -->
+          <div id="lists-content" class="lists-content" style="display: none;">
+            <div class="lists-header">
+              <img id="profile-avatar" class="header-avatar" src="" alt="Profile" title="Show Profile" />
+              <button id="logout-btn" class="button logout">Log Out</button>
+            </div>
+            <div class="lists-layout">
+              <div class="list-column">
+                <h3 class="list-title">Top Tracks</h3>
+                <div id="top-tracks"></div>
+              </div>
+              <div class="list-column">
+                <h3 class="list-title">Top Artists</h3>
+                <div id="top-artists"></div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

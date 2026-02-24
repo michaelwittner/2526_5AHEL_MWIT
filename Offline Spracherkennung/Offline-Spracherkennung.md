@@ -146,6 +146,10 @@ Ergebnisarten:
 - **Partial Results** (Zwischentext während gesprochen wird)
 - **Final Results** (Endergebnis nach Sprechpause/Äußerungsende)
 
+
+<img width="2379" height="1580" alt="stt_pipeline" src="https://github.com/user-attachments/assets/913bc716-46a5-471b-b394-6fb8aa44b98e" />
+
+
 ---
 
 ## 3) Welche Tools stehen zur Verfügung (Spracherkennung)

@@ -74,3 +74,23 @@ Dein Raspberry Pi Pico W läuft als einfacher HTTP-Webserver, der Sensordaten de
 
 * Sensormodul
 Der **MPU6050** ist ein kombiniertes **6-Achsen-Inertialsensormodul**, das aus einem **3-Achsen-Beschleunigungssensor** und einem **3-Achsen-Gyroskop** besteht. Der Beschleunigungssensor misst entlang der X-, Y- und Z-Achse sowohl Bewegungsbeschleunigungen als auch die Erdbeschleunigung, wodurch sich Neigung und Lage im Raum bestimmen lassen. Das Gyroskop misst die **Drehgeschwindigkeit** um diese Achsen und eignet sich zur Erfassung schneller Bewegungen und Rotationen. Intern wandelt der MPU6050 die analogen Sensordaten mit **16-Bit-AD-Wandlern** in digitale Werte um und stellt sie über den **I²C-Bus** dem Mikrocontroller zur Verfügung. Zusätzlich besitzt der Chip einen integrierten **Temperatursensor** zur Driftkorrektur. In deinem Programm nutzt du den Beschleunigungssensor, um aus der Richtung der Erdbeschleunigung die Schräglage zu berechnen, während das Gyroskop derzeit nicht ausgewertet wird.
+
+Zu Beginn hat sich der PICO mit einen W-Lan (Hotspot) verbunden. Der PICO kann aber auch sein eigenes W-Lan erstellen. Mit namen Telemetry und passwort speedlane kann man sich mit dem PICO verbinden und hat immer eine Vordefinierte IP Adresse. 
+
+Aktuell wird http Polling verwendet. Hier muss bei jeder Datenübertragung eine neue Verbindung zum PICO aufgebaut werden um die Sensordaten usw zu erhalten. Für eine Zeitnahe Anwändung benötigt man aber eine hohe refresh rate. Bei http Polling hängt die refresh rate auch sehr stark von der Distanz vom PICO zum Endgerät ab. Innerhalb von einen Halben Meter ändert sich die refresh rate von sehr instabile 10 Hz ca zu ein paar wenige Hz. Das Endgerät fragt ab ob er Daten bekommt und der PICO sendet.
+Lösung: Websocket. Die Verbindung zum PICO wird einmal aufgebaut und der PIOC sendet Daten ohne Abfrage. Somit kann die refresh rate auf lockerere 20 Hz erhöht worden und könnte noch mehr sein. 
+Aktuelle Werte auf der Website:
+Beschleunigung x und y Achse und die Schräglage nach links und rechts. Dabei noch alle Best of all Time werte welche auch zurück gesetzt werden können. 
+Ein Problem tritt auf wenn man den Sensor um 90° Dreht. Schräglage ist im Motorad normal somit musste das Problem behoben werden. Wenn sich der Pico um 90° dreht wird die X-Achse zur neuen Z-Achse. Also misst die X-Achse die Erdbeschleunigung. Das verfälscht das Ergebnis. Die Erdbeschleunigung beeinflusst die X-Achse bei Neigung mit einer Sinus Kurve. Mit Gemini Pro konnte aber eine Formel entwickelt werden die das ungefähr ausgleicht. 
+
+Um mehr Performance aus dem PICO zu holen werden alle zwei Cores verwendet. Der eine fokusiert sich auf dem Webserver und der andere kümmert sich um den Sensor, logging und SD Karte. Mit Thread konnte dies gelöst werden.
+
+Der PICO hat nur einen 2 MB flash Speicher. Wenn man aber Sensor Daten mit 20 Hz Speichern möchte benötigt man mehr Speicherplatz. 
+Wenn das Modulpacket fix verbaut werden soll muss man dem PICO zuerst sagen, wie er im Raum steht. Man muss ihn einmal Kalibrieren und die Werte dann im Flash speichern Dies ist extrem wichtig, um die unverfälschten Beschleunigungsdaten zu erhalten. Weiters wird der Sensor um 90° verdreht im Uhrzeigersinn verbaut, somit müssen die Achsen korrekt vertauscht werden für eine richtiges Ergebnis. 
+
+Weiters beeinflussten sich die Beschleunigungs/Bremsen und die Querbeschleunigungsachsen gegenseitig. Abhilfe um die Vektoren zu Isolieren schafft der Satz von Pythagoras (Idee von Gemini Pro):
+Der Satz des Pythagoras ($a^2 + b^2 = c^2$) hilft uns, die Gesamtlänge eines Kraftvektors im Raum zu berechnen, auch wenn dieser über mehrere Achsen verteilt ist.
+Um den echten Nickwinkel (Pitch) zu berechnen, nutzen wir $\sqrt{acc\_right^2 + acc\_up^2}$ als die "Basis", gegen die die Vorwärtsbeschleunigung gemessen wird.
+Durch diese Wurzelrechnung wird der Einfluss der seitlichen Schräglage (Roll) mathematisch aus der Vorwärtsachse herausgerechnet, sodass Kurvenfahrten die Steigungsanzeige nicht verfälschen.
+Wir isolieren also die Gravitationsanteile voneinander, damit das System versteht, welcher Anteil der Kraft durch die Erdanziehung und welcher durch die reine Fahrtbewegung entsteht.
+Ein Print muss Designed werden um eine passende Umgebung für eine SD Karte zu gewährleisten. Mit einem 3D gedruckten Gehäuse kann dann alles im Motorrad montiert werden.
