@@ -86,3 +86,11 @@ Ein Problem tritt auf wenn man den Sensor um 90° Dreht. Schräglage ist im Moto
 Um mehr Performance aus dem PICO zu holen werden alle zwei Cores verwendet. Der eine fokusiert sich auf dem Webserver und der andere kümmert sich um den Sensor, logging und SD Karte. Mit Thread konnte dies gelöst werden.
 
 Der PICO hat nur einen 2 MB flash Speicher. Wenn man aber Sensor Daten mit 20 Hz Speichern möchte benötigt man mehr Speicherplatz. 
+Wenn das Modulpacket fix verbaut werden soll muss man dem PICO zuerst sagen, wie er im Raum steht. Man muss ihn einmal Kalibrieren und die Werte dann im Flash speichern Dies ist extrem wichtig, um die unverfälschten Beschleunigungsdaten zu erhalten. Weiters wird der Sensor um 90° verdreht im Uhrzeigersinn verbaut, somit müssen die Achsen korrekt vertauscht werden für eine richtiges Ergebnis. 
+
+Weiters beeinflussten sich die Beschleunigungs/Bremsen und die Querbeschleunigungsachsen gegenseitig. Abhilfe um die Vektoren zu Isolieren schafft der Satz von Pythagoras (Idee von Gemini Pro):
+Der Satz des Pythagoras ($a^2 + b^2 = c^2$) hilft uns, die Gesamtlänge eines Kraftvektors im Raum zu berechnen, auch wenn dieser über mehrere Achsen verteilt ist.
+Um den echten Nickwinkel (Pitch) zu berechnen, nutzen wir $\sqrt{acc\_right^2 + acc\_up^2}$ als die "Basis", gegen die die Vorwärtsbeschleunigung gemessen wird.
+Durch diese Wurzelrechnung wird der Einfluss der seitlichen Schräglage (Roll) mathematisch aus der Vorwärtsachse herausgerechnet, sodass Kurvenfahrten die Steigungsanzeige nicht verfälschen.
+Wir isolieren also die Gravitationsanteile voneinander, damit das System versteht, welcher Anteil der Kraft durch die Erdanziehung und welcher durch die reine Fahrtbewegung entsteht.
+Ein Print muss Designed werden um eine passende Umgebung für eine SD Karte zu gewährleisten. Mit einem 3D gedruckten Gehäuse kann dann alles im Motorrad montiert werden.
