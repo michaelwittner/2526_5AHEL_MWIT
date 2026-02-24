@@ -53,9 +53,7 @@ Sprache ändert sich sehr schnell; kurze Fenster geben eine stabile Grundlage, u
 ---
 
 ### Schritt B: Feature-Extraktion
-Statt rohe Audiosamples direkt zu verarbeiten, berechnet man „Features“, z. B.:
-- Log-Mel-Filterbanks
-- MFCC-ähnliche Merkmale
+Statt rohe Audiosamples direkt zu verarbeiten, berechnet man „Features“
 
 **Warum Features?**  
 Features reduzieren irrelevante Details und heben sprachrelevante Muster hervor (Resonanzen, Formanten, Spektrum). Das verbessert Robustheit und erleichtert dem Modell das Lernen.
@@ -192,6 +190,8 @@ Bei Cloud-STT wird Audio häufig an externe Server übertragen. Das erzeugt:
 - Daten bleiben lokal
 - Konstante Latenz (kein Netzwerk)
 - Planbare Kosten
+
+https://alphacephei.com/vosk/models
 
 ### 5.2 Herausforderungen offline
 - Rechenleistung/Temperatur/Verbrauch
