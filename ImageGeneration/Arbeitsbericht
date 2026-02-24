@@ -163,3 +163,32 @@ Das Template bleibt fix, nur das Webcam-Bild wird skaliert.
 - Deutlich natürlicher „Kopf-im-Loch“-Effekt
 - Keine sichtbaren Kanten oder Hintergrundreste
 - Grundlage für realistische Cartoon-Templates geschaffen
+
+##24.03.2026  
+
+### 1. Unterstützung für zwei Löcher im Template
+- Transparente Bereiche (Alpha = 0) analysiert
+- Mit `cv2.connectedComponents` getrennte Loch-Bereiche erkannt
+- Für jedes Loch eine eigene Bounding Box berechnet
+- Löcher von links nach rechts sortiert
+
+### 2. Mehrere Gesichter erkennen
+- Gesichtserkennung auf max. zwei Gesichter erweitert
+- Gesichter nach X-Position sortiert
+- Linkes Gesicht → linkes Loch  
+- Rechtes Gesicht → rechtes Loch  
+
+### 3. Getrennte Zoom-Steuerung
+
+| Taste | Funktion |
+|-------|----------|
+| `+ / -` | Zoom linkes Gesicht |
+| `p / m` | Zoom rechtes Gesicht |
+| 1 Gesicht | `+ / -` aktiv |
+
+Zusätzlich beibehalten:
+- `s` → Screenshot
+- `d` → Debug-Modus
+- `ESC / q` → Beenden
+
+
