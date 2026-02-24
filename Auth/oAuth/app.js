@@ -209,8 +209,6 @@ async function loadUserData() {
     const top = await apiGet('/me/top/tracks?limit=10');
     renderTopTracks(top.items || []);
 
-    const playlists = await apiGet('/me/playlists?limit=10');
-    renderPlaylists(playlists.items || []);
   } catch (err) {
     showError(err.message);
   }
@@ -248,23 +246,7 @@ function renderTopTracks(items) {
   `).join('');
 }
 
-function renderPlaylists(items) {
-  if (!playlistsContainer) return;
-  if (!items.length) {
-    playlistsContainer.innerHTML = '<div style="color:#cbd5e1">No playlists found.</div>';
-    return;
-  }
 
-  playlistsContainer.innerHTML = items.map(p => `
-    <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px;color:#e2e8f0;">
-      <img src="${p.images[0]?.url || 'https://via.placeholder.com/64'}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;"/>
-      <div style="flex:1">
-        <div style="font-weight:600">${p.name}</div>
-        <div style="color:#94a3b8">${p.tracks.total} tracks${p.owner ? ' • ' + p.owner.display_name : ''}</div>
-      </div>
-    </div>
-  `).join('');
-}
 
 function millisToMinutesAndSeconds(ms) {
   const minutes = Math.floor(ms / 60000);
