@@ -37,16 +37,35 @@
 
         <!-- Logged In State -->
         <div id="logged-in" class="logged-in-section" style="display: none;">
-          <div class="logged-in-message">✅ Successfully authenticated!</div>
-          <h2 class="profile-section-title">Your Profile</h2>
-          <div id="profile" class="profile-card"></div>
-          <h3 style="color:#cbd5e1;margin-top:18px;">Top Tracks</h3>
-          <div id="top-tracks" style="margin-bottom:12px"></div>
 
-          <h3 style="color:#cbd5e1;margin-top:18px;">Playlists</h3>
-          <div id="playlists" style="margin-bottom:12px"></div>
+          <!-- Profile Popup Modal -->
+          <div id="profile-modal" class="modal-overlay">
+            <div class="modal-card">
+              <button id="modal-close-btn" class="modal-close" title="Close">&times;</button>
+              <div class="logged-in-message">✅ Successfully authenticated!</div>
+              <h2 class="profile-section-title">Your Profile</h2>
+              <div id="profile" class="profile-card"></div>
+            </div>
+          </div>
 
-          <button id="logout-btn" class="button logout">Log Out</button>
+          <!-- Main content: Top Tracks & Artists (visible after closing popup) -->
+          <div id="lists-content" class="lists-content" style="display: none;">
+            <div class="lists-header">
+              <img id="profile-avatar" class="header-avatar" src="" alt="Profile" title="Show Profile" />
+              <button id="logout-btn" class="button logout">Log Out</button>
+            </div>
+            <div class="lists-layout">
+              <div class="list-column">
+                <h3 class="list-title">Top Tracks</h3>
+                <div id="top-tracks"></div>
+              </div>
+              <div class="list-column">
+                <h3 class="list-title">Top Artists</h3>
+                <div id="top-artists"></div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

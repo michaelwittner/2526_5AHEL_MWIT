@@ -13,7 +13,11 @@ const loginBtn = document.getElementById('login-btn');
 const logoutBtn = document.getElementById('logout-btn');
 const profileContainer = document.getElementById('profile');
 const topTracksContainer = document.getElementById('top-tracks');
-const playlistsContainer = document.getElementById('playlists');
+const topArtistsContainer = document.getElementById('top-artists');
+const profileModal = document.getElementById('profile-modal');
+const modalCloseBtn = document.getElementById('modal-close-btn');
+const listsContent = document.getElementById('lists-content');
+const profileAvatar = document.getElementById('profile-avatar');
 
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 const REDIRECT_URI = "http://127.0.0.1:5173"; // must match the registered redirect URI
@@ -206,8 +210,20 @@ async function loadUserData() {
     const profile = await apiGet('/me');
     renderProfile(profile);
 
+    // Store avatar URL for the header
+    const placeholder = 'https://via.placeholder.com/44?text=U';
+    const avatarUrl = (profile.images && profile.images[0] && profile.images[0].url) || placeholder;
+    profileAvatar.src = avatarUrl;
+
     const top = await apiGet('/me/top/tracks?limit=10');
     renderTopTracks(top.items || []);
+
+    const topArtists = await apiGet('/me/top/artists?limit=10');
+    renderTopArtists(topArtists.items || []);
+
+    // Show profile popup first, lists hidden
+    profileModal.classList.remove('hidden');
+    listsContent.style.display = 'none';
 
   } catch (err) {
     showError(err.message);
@@ -246,6 +262,23 @@ function renderTopTracks(items) {
   `).join('');
 }
 
+function renderTopArtists(items) {
+  if (!topArtistsContainer) return; 
+  if (!items.length) {
+    topArtistsContainer.innerHTML = '<div style="color:#cbd5e1">No top artists found.</div>';
+    return;
+  }
+
+  topArtistsContainer.innerHTML = items.map((a, i) => `
+    <div class="artist" style="display:flex;gap:12px;align-items:center;margin-bottom:8px;">
+      <div style="width:48px;height:48px;flex:0 0 48px;"><img src="${a.images[2]?.url || a.images[0]?.url || ''}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;"/></div>
+      <div style="flex:1;color:#e2e8f0;">
+        <div style="font-weight:600">${i+1}. ${a.name}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
 
 
 function millisToMinutesAndSeconds(ms) {
@@ -263,6 +296,26 @@ function logout() {
 // Event listeners
 loginBtn.addEventListener('click', login);
 logoutBtn.addEventListener('click', logout);
+
+// Modal: close popup and show lists
+modalCloseBtn.addEventListener('click', () => {
+  profileModal.classList.add('hidden');
+  listsContent.style.display = 'block';
+});
+
+// Click on overlay backdrop to close
+profileModal.addEventListener('click', (e) => {
+  if (e.target === profileModal) {
+    profileModal.classList.add('hidden');
+    listsContent.style.display = 'block';
+  }
+});
+
+// Click avatar to re-open profile popup
+profileAvatar.addEventListener('click', () => {
+  profileModal.classList.remove('hidden');
+  listsContent.style.display = 'none';
+});
 
 // Init flow: check for code in URL, otherwise check stored auth
 (async function init() {
