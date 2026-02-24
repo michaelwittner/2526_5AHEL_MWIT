@@ -29,12 +29,12 @@ Darstellung eines Audiosignales in einem Diagramm (Zeit-/Amplitude)
 
 Das Signal wird aus der audio.wave Datei gelesen und dementsprechend verarbeitet.
 
-Der Code zu folgendem Ergebnis befindet sich im Anhang -> soundfile.py
+Der Code zu folgendem Ergebnis befindet sich im Anhang -> [soundfile.py](soundfile.py)
 ![Soundfile](soundfile.png) 
 
 Danach können noch unterschiedlichste Funktionen angewendet werden z.B. Cut und Lauter/Leiser
 
-Der Code zu folgendem Ergebnis befindet sich im Anhang -> soundfilewithfeatures.py
+Der Code zu folgendem Ergebnis befindet sich im Anhang -> [soundfilewithfeatures.py](soundfilewithfeatures.py)
 ![Soundfile](soundfile1.png)
 
 Folgende Ausgabe wurde erzeugt mit Cut und Lauter (+6.0 dB):
@@ -65,7 +65,7 @@ Oder im Falle von der Originallänge wird einfach ```none``` verwendet.
 
 Abschließend wurde noch die Filteroption hinzugefügt:
 
-Der Code zu folgendem Ergebnis befindet sich im Anhang -> soundfilewithfilter.py
+Der Code zu folgendem Ergebnis befindet sich im Anhang -> [soundfilewithfilter.py](soundfilewithfilter.py)
 
 ![Soundfile](Filter.png)
 
