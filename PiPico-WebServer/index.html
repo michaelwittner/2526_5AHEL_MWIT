@@ -1,102 +1,248 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-<meta charset="utf-8">
-<title>Pico W Fahrdaten</title>
-<style>
-body { background:#111; color:#eee; font-family:Arial }
-table { border-collapse:collapse; width:100% }
-td, th { border:1px solid #555; padding:6px; text-align:center }
-button { margin:4px; padding:6px }
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Moto Telemetrie Pro</title>
+    <style>
+        :root { --bg: #0f0f13; --card: #1e1e24; --accent: #00ff9d; --text: #f0f0f0; --warn: #ff4444; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
+        
+        h2 { margin: 10px 0; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; font-size: 1.2rem; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 450px; }
+        .card { background: var(--card); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid #333; position: relative; }
+        .full { grid-column: span 2; }
+        
+        .label { font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .val { font-size: 1.8rem; font-weight: bold; color: #fff; margin: 5px 0; font-variant-numeric: tabular-nums; }
+        .unit { font-size: 0.9rem; color: #666; }
+        .max-container { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.8rem; color: var(--warn); }
+        
+        /* G-METER */
+        .g-wrap { display: flex; justify-content: center; margin: 10px 0; }
+        .g-meter {
+            width: 220px; height: 220px; 
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #2a2a35 0%, #000 70%);
+            border: 2px solid #444; position: relative;
+            box-shadow: inset 0 0 20px #000;
+        }
+        .g-line { position: absolute; background: rgba(255,255,255,0.1); }
+        .hor { top: 50%; left: 0; right: 0; height: 1px; }
+        .ver { left: 50%; top: 0; bottom: 0; width: 1px; }
+        
+        .ring { 
+            position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            border: 1px dashed rgba(255,255,255,0.15); 
+            border-radius: 50%; pointer-events: none;
+        }
+        .r-05 { width: 25%; height: 25%; } 
+        .r-10 { width: 50%; height: 50%; border-color: rgba(255,255,255,0.3); }
+        .r-15 { width: 75%; height: 75%; }
+        
+        .dot {
+            width: 20px; height: 20px; 
+            background: var(--accent); border-radius: 50%;
+            position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--accent); 
+            will-change: transform; z-index: 10;
+        }
+        
+        /* BUTTONS */
+        button {
+            width: 100%; background: #333; color: #fff; border: none; 
+            padding: 15px; margin-top: 5px; border-radius: 10px; font-weight: bold;
+            font-size: 0.9rem; touch-action: manipulation; cursor: pointer;
+        }
+        button:active { background: var(--accent); color: #000; }
+        .btn-red:active { background: var(--warn); color: #fff; }
+
+        .mini-reset {
+            width: auto; padding: 4px 8px; margin: 0;
+            background: #333; color: var(--warn); border: 1px solid #444;
+            font-size: 0.7rem; border-radius: 5px; display: inline-flex; align-items: center;
+        }
+        
+        /* OVERLAY */
+        #calib-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .blink { animation: bl 1s infinite; color: orange; font-size: 1.5rem; font-weight: bold; }
+        @keyframes bl { 0% {opacity: 1;} 50% {opacity: 0.3;} 100% {opacity: 1;} }
+        #status { position: fixed; top: 10px; right: 10px; width: 10px; height: 10px; border-radius: 50%; background: red; z-index: 101; }
+    </style>
 </head>
-
 <body>
-<h2>Motorrad Sensordaten</h2>
 
-<table>
-<tr><th>Messwert</th><th>X</th><th>Y</th><th>Z</th></tr>
-<tr><td>Beschleunigung (g)</td><td id="ax"></td><td id="ay"></td><td id="az"></td></tr>
-<tr>
-<td>Max</td>
-<td><span id="max_ax"></span><br><button onclick="reset('ax')">Reset</button></td>
-<td><span id="max_ay"></span><br><button onclick="reset('ay')">Reset</button></td>
-<td><span id="max_az"></span><br><button onclick="reset('az')">Reset</button></td>
-</tr>
+<div id="status"></div>
 
-<tr><th colspan="4">Neigung</th></tr>
-<tr><th colspan="4">Schräglage</th></tr>
-<tr>
-  <td>Aktuell (°)</td>
-  <td colspan="3" id="roll"></td>
-</tr>
+<div id="calib-overlay">
+    <div class="blink" id="overlay-title">VERBINDE...</div>
+    <div style="color: #888; margin-top: 10px;" id="status-text">Warte auf Websocket</div>
+</div>
 
-<tr>
-  <td>Max Links (°)</td>
-  <td id="max_roll_left"></td>
-  <td colspan="2">
-    <button onclick="reset('roll_left')">Reset Links</button>
-  </td>
-</tr>
+<h2>MOTO TELEMETRY</h2>
 
-<tr>
-  <td>Max Rechts (°)</td>
-  <td id="max_roll_right"></td>
-  <td colspan="2">
-    <button onclick="reset('roll_right')">Reset Rechts</button>
-  </td>
-</tr>
+<div class="grid">
+    <div class="card full">
+        <div class="label">G-Force (2.0G)</div>
+        <div class="g-wrap">
+            <div class="g-meter">
+                <div class="g-line hor"></div><div class="g-line ver"></div>
+                <div class="ring r-05"></div><div class="ring r-10"></div><div class="ring r-15"></div>
+                <div id="dot" class="dot"></div>
+            </div>
+        </div>
+    </div>
 
+    <div class="card">
+        <div class="label">Bremsen / Gas</div>
+        <div class="val" id="ax">0.00</div>
+        <div class="max-container">
+            Max: <span id="m_ax">0.00</span>
+            <button class="mini-reset" onclick="sendReset('ax')">↺</button>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="label">Quer G</div>
+        <div class="val" id="ay">0.00</div>
+        <div class="max-container">
+            Max: <span id="m_ay">0.00</span>
+            <button class="mini-reset" onclick="sendReset('ay')">↺</button>
+        </div>
+    </div>
 
-
-<tr><th colspan="4">Temperatur</th></tr>
-<tr>
-<td>°C</td>
-<td colspan="2" id="temp"></td>
-<td>
-<span id="max_temp"></span><br>
-<button onclick="reset('temp')">Reset</button>
-</td>
-</tr>
-</table>
+    <div class="card full">
+        <div class="label">Schräglage (Roll)</div>
+        <div class="val" id="roll">0.0<span class="unit">°</span></div>
+        <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+            <div class="max-container">
+                L: <span id="m_roll_l">0.0</span>°
+                <button class="mini-reset" onclick="sendReset('roll_left')">↺</button>
+            </div>
+            <div class="max-container">
+                R: <span id="m_roll_r">0.0</span>°
+                <button class="mini-reset" onclick="sendReset('roll_right')">↺</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card full">
+         <div class="label">Daten Management</div>
+         <div style="display:flex; gap:10px; margin-top:5px;">
+             <a href="/download" style="flex:1; text-decoration:none;">
+                 <button style="margin-top:0;">CSV Download</button>
+             </a>
+             <button class="btn-red" onclick="deleteCsv()" style="flex:1; margin-top:0; background:#442222; color:#ff8888;">CSV Löschen</button>
+         </div>
+         <button onclick="sendReset('all')" style="background: #222; border: 1px solid #444; margin-top:10px;">ALLE MAX-WERTE RESET</button>
+    </div>
+</div>
 
 <script>
-async function update() {
-  try {
-    const r = await fetch("/data");
-    const d = await r.json();
+    const dot = document.getElementById("dot");
+    const overlay = document.getElementById("calib-overlay");
+    const overlayTitle = document.getElementById("overlay-title");
+    const statusText = document.getElementById("status-text");
+    const statusLed = document.getElementById("status");
+    
+    const METER_RADIUS_PX = 110; 
+    const MAX_G_SCALE = 2.0; 
 
-    // Live-Werte
-    document.getElementById("ax").textContent = d.ax.toFixed(2);
-    document.getElementById("ay").textContent = d.ay.toFixed(2);
-    document.getElementById("az").textContent = d.az.toFixed(2);
-    document.getElementById("roll").textContent = d.roll.toFixed(1);
-    document.getElementById("temp").textContent = d.temp.toFixed(1);
+    let ws;
+    let lastRawMessage = null; 
+    let targetData = null; 
+    let currentData = { ax: 0, ay: 0, roll: 0 };
+    const SMOOTHING = 0.3; 
 
-    // Maxima
-    document.getElementById("max_ax").textContent = d.max.ax.toFixed(2);
-    document.getElementById("max_ay").textContent = d.max.ay.toFixed(2);
-    document.getElementById("max_az").textContent = d.max.az.toFixed(2);
-    document.getElementById("max_temp").textContent = d.max.temp.toFixed(1);
+    function connect() {
+        const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+        ws = new WebSocket(protocol + window.location.host);
 
-    document.getElementById("max_roll_left").textContent =
-      d.max.roll_left.toFixed(1);
+        ws.onopen = function() {
+            statusLed.style.background = "#00ff9d";
+            statusText.innerText = "Verbunden.";
+        };
 
-    document.getElementById("max_roll_right").textContent =
-      d.max.roll_right.toFixed(1);
+        ws.onmessage = function(event) { lastRawMessage = event.data; };
 
-  } catch (e) {
-    console.log("Update error", e);
-  }
-}
+        ws.onclose = function() {
+            statusLed.style.background = "red";
+            overlay.style.display = "flex";
+            overlayTitle.innerText = "OFFLINE";
+            setTimeout(connect, 1000); 
+        };
+    }
 
-function reset(key) {
-  fetch("/reset?" + key);
-}
+    function sendReset(key) {
+        if (ws && ws.readyState === WebSocket.OPEN) ws.send("reset:" + key);
+    }
+    
+    function deleteCsv() {
+        if(confirm("Bist du sicher? Die CSV Datei auf der SD-Karte wird unwiderruflich gelöscht.")) {
+            window.location.href = "/delete";
+        }
+    }
 
-setInterval(update, 200);
+    function updateTextValues(d) {
+        document.getElementById("ax").innerText = d.ax.toFixed(2);
+        document.getElementById("ay").innerText = d.ay.toFixed(2);
+        document.getElementById("roll").innerText = Math.abs(d.roll).toFixed(1);
+        
+        if (targetData && targetData.max) {
+            document.getElementById("m_ax").innerText = targetData.max.ax.toFixed(2);
+            document.getElementById("m_ay").innerText = targetData.max.ay.toFixed(2);
+            document.getElementById("m_roll_l").innerText = targetData.max.roll_left.toFixed(1);
+            document.getElementById("m_roll_r").innerText = targetData.max.roll_right.toFixed(1);
+        }
+    }
+
+    function draw() {
+        if (lastRawMessage) {
+            try {
+                targetData = JSON.parse(lastRawMessage);
+                lastRawMessage = null;
+                // Overlay weg wenn calibrated true oder 1 ist
+                overlay.style.display = (targetData.calibrated === true || targetData.calibrated === 1) ? "none" : "flex";
+            } catch (e) { }
+        }
+
+        if (targetData) {
+            currentData.ax += (targetData.ax - currentData.ax) * SMOOTHING;
+            currentData.ay += (targetData.ay - currentData.ay) * SMOOTHING;
+            currentData.roll += (targetData.roll - currentData.roll) * SMOOTHING;
+
+            // --- Achsen Mapping für Anzeige ---
+            // ay = Quer = Horizontal
+            let px_x = -( (currentData.ay / MAX_G_SCALE) * METER_RADIUS_PX ); 
+            
+            // ax = Bremsen = Vertikal
+            // Wir nutzen hier targetData.ax (welches in python schon negiert wurde für "Bremsen")
+            // Bremsen (Negativ) soll Punkt nach OBEN wandern lassen? 
+            // Normales G-Meter: Bremsen (Negative G) -> Punkt nach OBEN. 
+            // Beschleunigen (Positive G) -> Punkt nach UNTEN.
+            let px_y = -( (currentData.ax / MAX_G_SCALE) * METER_RADIUS_PX );
+
+            let dist = Math.sqrt(px_x*px_x + px_y*px_y);
+            if (dist > METER_RADIUS_PX) {
+                let scale = METER_RADIUS_PX / dist;
+                px_x *= scale; px_y *= scale;
+            }
+
+            dot.style.transform = `translate(-50%, -50%) translate3d(${px_x}px, ${px_y}px, 0)`;
+            updateTextValues(currentData);
+        }
+        requestAnimationFrame(draw);
+    }
+
+    connect();
+    draw();
 </script>
-
-
 </body>
 </html>
