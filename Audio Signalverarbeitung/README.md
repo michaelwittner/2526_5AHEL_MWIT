@@ -35,7 +35,7 @@ Ein Audiosignal beschreibt Schall über die Zeit. Ein Mikrofon wandelt die Druck
 
 Programm befindet sich um Anhang -> [soundfile.py](soundfile.py)
 
-![Audiosignal](Audiosignal.png)
+![Audiosignal](Bilder\Audiosignal.png)
 
 ## Wie wird Audio verarbeitet?
 
@@ -121,13 +121,13 @@ Audio­bearbeitung bedeutet, ein Audiosignal gezielt zu verändern, um es z.B. z
 
 Cut/Trim: einen Abschnitt ausschneiden oder Stille am Anfang/Ende entfernen.
 
-![Audiosignal](soundfile.png)
+![Audiosignal](Bilder\soundfile.png)
 
 Programm für CUT/TRIM und Lauter/leiser befindet sich im Anhang 
 
 -> [soundfilewithfeatures.py](soundfilewithfeatures.py) -> ```cut_audio``` und ```apply_gain_db```
 
-![Soundfile](soundfile1.png)
+![Soundfile](Bilder\soundfile1.png)
 
 Normalisieren: so verstärken, dass das Signal möglichst laut ist, ohne zu clippen.
 
@@ -135,7 +135,7 @@ Filtern: bestimmte Frequenzbereiche verändern, z.B. Tiefen/Höhen betonen oder 
 
 Programm befindet sich im Anhang -> [soundfilewithfilter.py](soundfilewithfilter.py) 
 
-![Soundfile](Filter.png)
+![Soundfile](Bilder\Filter.png)
 
 
 ```FILTER_MODE = "none"``` ... Keine Filter
