@@ -128,7 +128,7 @@ MFCC-Schritte:
 
 ---
 
-### Schritt C: Akustisches Modell (Audio → Laut-/Einheiten-Wahrscheinlichkeiten)  ✅ *mehr Detail*
+### Schritt C: Akustisches Modell (Audio → Laut-/Einheiten-Wahrscheinlichkeiten)  
 
 Das akustische Modell ist der Teil, der **aus den Features** ableitet, welche **sprachlichen Einheiten** gerade wahrscheinlich sind.
 

@@ -12,11 +12,13 @@ dass das Gesicht einer Person durch ein transparentes Loch im Bild sichtbar ist
 
 Das PNG-Template liegt dabei im Vordergrund, das Webcam-Bild im Hintergrund.
 
+Das Projekt wurde schrittweise erweitert und technisch verbessert.
+
 ---
 
 # Aufbau des Projekts
 
-Das Projekt besteht aus mehreren Python-Dateien, die schrittweise entwickelt wurden.
+Das Projekt besteht aus mehreren Python-Dateien, die nacheinander entwickelt wurden.
 
 ---
 
@@ -24,16 +26,15 @@ Das Projekt besteht aus mehreren Python-Dateien, die schrittweise entwickelt wur
 
 ### Zweck
 
-* Testen der Webcam
-* Überprüfung der Gesichtserkennung
+Grundlegender Test der Webcam und der Gesichtserkennung.
 
 ### Funktion
 
 * Öffnet die Webcam
 * Erkennt Gesichter mit Haar Cascades
-* Zeichnet ein Rechteck um erkannte Gesichter
+* Zeichnet eine Bounding Box um erkannte Gesichter
 
-Diese Datei dient ausschließlich als Test- und Einstiegscode.
+Diese Datei diente als technische Basis für alle weiteren Schritte.
 
 ---
 
@@ -41,15 +42,15 @@ Diese Datei dient ausschließlich als Test- und Einstiegscode.
 
 ### Zweck
 
-Erstes „Face in Hole“-Prinzip ohne Transparenz.
+Erstes funktionierendes „Face in Hole“-Prinzip ohne Transparenz.
 
 ### Funktion
 
-* Ein normales Bild (ohne Alpha) wird geladen
-* Das erkannte Gesicht wird direkt in das Bild eingefügt
-* Eine kreisförmige Maske simuliert das Loch
+* Ein normales Bild wird geladen
+* Das erkannte Gesicht wird skaliert
+* Eine kreisförmige Maske simuliert das Gesichtsloch
 
-Diese Variante überschreibt Bildpixel und nutzt noch keinen Alpha-Kanal.
+Diese Variante überschreibt Pixel direkt und nutzt noch keinen Alpha-Kanal.
 
 ---
 
@@ -57,7 +58,7 @@ Diese Variante überschreibt Bildpixel und nutzt noch keinen Alpha-Kanal.
 
 ### Zweck
 
-Endversion mit echtem PNG-Template und Transparenz.
+Einführung von echtem PNG-Template mit Transparenz.
 
 ### Funktion
 
@@ -66,66 +67,135 @@ Endversion mit echtem PNG-Template und Transparenz.
 * Template liegt im Vordergrund
 * Das Gesicht ist nur im transparenten Bereich sichtbar
 
-Diese Datei bildet den Kern des Projekts.
+Diese Version bildet die technische Grundlage für alle späteren Erweiterungen.
 
 ---
 
-# Erweiterte Version (Auto-Loch, mehrere Templates, Live-Steuerung)
+# Erweiterte Version – Finale Implementierung
 
-Die aktuelle Version wurde technisch deutlich erweitert.
+Die aktuelle Version wurde technisch deutlich erweitert und optimiert.
 
 ---
 
 ## Automatische Loch-Erkennung
 
-Das Template wird als PNG mit Alpha-Kanal geladen.
+Das Template wird als PNG mit einem sogenannten *Alpha-Kanal* geladen.
+  * Alpha gehört zu RGB dazu, wenn ein Bild Transparenz speichern kann
+  * RGB beschreibt die Farbe eines Pixels, Alpha beschreibt wie sichtbar es ist (RGBA)
 
-Transparente Bereiche werden erkannt durch:
+Der Alpha-Kanal enthält die Transparenz jedes Pixels:
 
-Alpha = 0 → transparent
-Alpha = 255 → sichtbar
+* Alpha = 0 → Pixel ist vollständig transparent
+* Alpha = 255 → Pixel ist sichtbar
 
-Die transparenten Bereiche werden analysiert, indem alle Pixel mit Alpha = 0
-als Maske extrahiert werden.
+Zuerste wird nur dieser Alpha-Kanal ausgelesen:
 
-Bei mehreren getrennten Löchern werden diese mit
-`cv2.connectedComponents()` als separate Bereiche erkannt.
+`alpha = template[:, :, 3]
+hole_mask = (alpha == 0).astype(np.uint8) * 255`
+Wo alpha == 0 → True → wird zu 1 → 255 ⇒ weiß(transparent)
+sonst → False → wird zu 0 ⇒ schwarz(sichtbares Template)
 
-Für jeden Bereich wird eine eigene Bounding Box berechnet.
-Diese Bounding Box definiert Position und Größe des Gesichtslochs.
+  * --> Alle transparenten Pixel (Alpha=0) werden als Maske markiert.
+  * --> Diese Maske zeigt die Position der Öffnung für das Fesicht.
+
+Wenn mehrere getrennte transparenten Bereiche vorhanden sind, werden diese
+mit OpenCV automatisch erkannt:
+`num_labels, labels = cv2.connectedComponents(hole_mask)`
+Damit weden mehrere Löcher voneinander getrennt.
+
+OpenCV(Open Source Computer Vision Library):
+  Bibliothek für Bild- und Videobearbeitung
+  - Webcam lesen
+  - Gesichter erkennen (Haar Cascades)
+  - Masken bearbeiten
+  - Bildbereiche ausschneiden/skalieren
+  - Bilder zusammensetzen 
+
+Für jedes Loch wird anschließend eine sogenannte *Bounding Box* berechnet:
+`y0, y1 = ys.min(), ys.max()
+x0, x1 = xs.min(), xs.max()`
+
+= der rechteckige Bereich, der ein Loch vollständig umschließt.
+
+Diese Bounding Box definiert:
+* Wo das Gesicht eingesetzt wird
+* Wie groß das Gesicht werden muss
+  
+Dadurch funktionieren verschiedene Templates Automatisch, ohne dass die Koordinaten
+für das Gesicht jedes mal manuell angepasst werden muss. 
 
 ---
 
 ## Unterstützung von bis zu zwei Gesichtern
 
-* Es werden maximal zwei Gesichter erkannt.
-* Die Gesichter werden nach X-Position (links → rechts) sortiert.
-* Das linke Gesicht wird dem linken Loch zugeordnet.
-* Das rechte Gesicht wird dem rechten Loch zugeordnet.
+Die Gesichtserkennung erfolgt mit einer _Haar Cascade_:
 
-Damit können Templates mit zwei transparenten Bereichen verwendet werden.
+→ vortrainiertes Klassifikationsmodell zur Objekterkennung
+  * sucht im Bild nach typischen Kontrastmustern z.B.:
+      *  Augenbereich dunkler als Stirn
+      *  Nase heller als Augen
+      *  Symmetrische Strukturen
+   
+
+`faces = face_cascade.detectMultiScale(gray, 1.05, 4)`
+
+Diese Funktion liefert für jedes erkannte Gesicht:
+`(x, y, w, h)` → Position und Größe des Gesichts
+
+Die Gesichter werden anschließend nach ihrer horizontalen Position sortiert:
+`faces = sorted(faces, key=lambda f: f[0])[:2]`
+Das heißt:
+  - Linkes Gesicht → linkes Loch
+  - Rechtes Gesicht → rechtes Loch
+    
+Falls nur ein Gesicht erkannt wird, wird nur das erste Loch verwendet.
+
+
+
+## Gesichtsstabilisierung
+
+Problem:
+Die Gesichtserkennung schwankt leicht zwischen einzelnen Frames.
+
+Lösung:
+Exponentielle Glättung der Position.
+
+Die aktuelle Position wird mit der vorherigen Position kombiniert.
+Dadurch werden kleine Sprünge reduziert.
+
+Ergebnis:
+
+* Ruhigere Darstellung
+* Weniger Zittern
+* Natürlichere Bewegung
 
 ---
 
-## Oval statt Kreis
+## Erweiterter Kamera-Spielraum
 
-Statt einer festen Kreis-Maske wird:
+Die Kameraaufnahme wird vor der Verarbeitung vergrößert.
 
-* Entweder eine Ellipse angepasst
-* Oder die Bounding Box des Lochs verwendet
+Dadurch entsteht mehr Bewegungsfreiheit innerhalb des Templates.
 
-Dadurch passt sich das Gesicht besser an unregelmäßige Lochformen an.
+Vorteile:
+
+* Gesicht wird nicht sofort abgeschnitten
+* Bewegungen wirken natürlicher
+* Bessere Zentrierung möglich
 
 ---
 
-## Mirror dauerhaft aktiv
+## Freeze-Edit-Modus
 
-Das Webcam-Bild wird mit:
+Mit der Taste `s` kann der aktuelle Frame eingefroren werden.
 
-`cv2.flip(frame, 1)`
+Im Freeze-Modus:
 
-horizontal gespiegelt.
-Dadurch wirkt die Darstellung wie eine Selfie-Kamera.
+* Zoom kann weiter angepasst werden
+* Das Bild bleibt stabil
+* Feine Nachjustierung ist möglich
+
+Erneutes Drücken von `s` kehrt in den Live-Modus zurück.
 
 ---
 
@@ -140,7 +210,7 @@ Der Alpha-Kanal bestimmt die Transparenz eines Pixels:
 
 Im Projekt bedeutet das:
 
-* Der Körper, Rahmen und Hintergrund des Templates sind sichtbar
+* Der Körper und Hintergrund des Templates sind sichtbar
 * Das Loch im Gesicht ist transparent
 * Durch das Loch sieht man das Webcam-Bild
 
@@ -158,6 +228,8 @@ Dabei gilt:
 
 * Template wird nur dort angezeigt, wo Alpha > 0
 * Webcam wird nur dort angezeigt, wo Alpha = 0
+
+Dies ist der zentrale technische Mechanismus des Projekts.
 
 ---
 
@@ -180,35 +252,44 @@ Bei zwei Gesichtern:
 
 ## Weitere Steuerung
 
+* `s` → Freeze / Edit-Modus
 * `d` → Debug-Modus (Bounding Box anzeigen)
-* `p` → aktuelle Parameter ausgeben
-* `s` → Screenshot speichern
+* `n` → nächstes Template
+* `b` → vorheriges Template
 * `ESC / q` → Programm beenden
 
 ---
 
-# Template-Wechsel während der Laufzeit
-
-Mehrere Templates werden in `TEMPLATE_PATHS` definiert.
-
-Wechsel während der Laufzeit:
-
-* `n` → nächstes Template
-* `b` → vorheriges Template
-* `1–4` → direktes Auswählen
-
----
-
-# Anforderungen an Templates
+# Template-Anforderungen
 
 * Format: PNG
 * Muss einen Alpha-Kanal besitzen
 * Gesichtslöcher müssen vollständig transparent sein (Alpha = 0)
 * Getrennte Löcher dürfen nicht verbunden sein
 
-Beispiel:
-`template_v2.png`
+---
+
+# Technische Besonderheiten der finalen Version
+
+* Automatische Loch-Erkennung über Alpha-Maske
+* Unterstützung von ein oder zwei Gesichtern
+* Dynamische Template-Wechsel während der Laufzeit
+* Stabilisierung der Gesichtserkennung
+* Erweiterter Kamera-Spielraum
+* Benutzerfreundliche Live-Steuerung
 
 ---
 
+# Aktueller Stand
+
+Das Projekt ist funktionsfähig, stabil und präsentationsbereit.
+
+Es erfüllt die Anforderungen:
+
+* Gesicht hinter PNG
+* Transparente Loch-Erkennung
+* Mehrere Templates
+* Zwei-Gesichter-Unterstützung
+* Stabilisierung
+* Benutzerinteraktion während der Laufzeit
 
