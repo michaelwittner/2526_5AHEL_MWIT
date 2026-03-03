@@ -1,14 +1,16 @@
 # Audio Verarbeitung mit numpy
 
+## Audiosignale sollten auf unterschiedliche Weise be- und verarbeitet werden.
+
 ## Folgende Bibliotheken werden für die Audio Verarbeitung benötigt:
 
-  sounddevice -> Play and Record Sound with Python (in meinem Fall Zugriff auf Mikro)
+  ```sounddevice``` -> Play and Record Sound with Python (in meinem Fall Zugriff auf Mikro)
   
-  numpy -> NumPy ist eine Python-Bibliothek für schnelle    Berechnungen mit mehrdimensionalen Arrays (in meinem Fall für Audio Verarbeitung)
+ ``` numpy``` -> NumPy ist eine Python-Bibliothek für schnelle    Berechnungen mit mehrdimensionalen Arrays (in meinem Fall für Audio Verarbeitung)
   
-  matplotlib -> zur Darstellung von Audio Aufzeichnungen
+ ``` matplotlib``` -> zur Darstellung von Audio Aufzeichnungen
   
-  scipy -> SciPy ist eine Python-Bibliothek für wissenschaftliches Rechnen, die auf Numpy aufbaut (in meinem Fall, falls aus einer Datei gelesen werden soll)
+  ```scipy``` -> SciPy ist eine Python-Bibliothek für wissenschaftliches Rechnen, die auf Numpy aufbaut (in meinem Fall, falls aus einer Datei gelesen werden soll)
   
 ## Links:
 
