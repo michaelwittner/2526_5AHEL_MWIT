@@ -211,4 +211,180 @@ Terminologie:
 Besonderheiten:  
 - Einheitlicher Standard für unterschiedliche Hersteller  
 - Plug & Play, herstellerübergreifend  
-- Cloud optional, Geräte können lokal gesteuert werden  
+- Cloud optional, Geräte können lokal gesteuert werden
+
+
+  #Installieren von Homeassistant auf einem Raspberry PI 3 Modell B+
+
+  ---
+
+# Praktischer Teil: Installation und Konfiguration
+
+Für den praktischen Teil wurde Home Assistant auf einem Raspberry Pi 3 installiert und anschließend ein Sensor über MQTT und eine Steckdose über Zigbee integriert.
+
+---
+
+# Installation von Home Assistant
+
+## Verwendete Hardware
+
+- Raspberry Pi 3 Model B+
+- microSD-Karte
+- Netzwerkverbindung
+
+---
+
+## Vorbereitung
+
+Installation des Raspberry Pi Imagers:
+
+https://www.raspberrypi.com/software/
+
+Flashen der SD-Karte gemäß offizieller Dokumentation:
+
+https://www.home-assistant.io/installation/raspberrypi/
+
+Auswahl im Imager:
+
+- Modell: Raspberry Pi 3
+- Betriebssystem:  
+  Other specific-purpose OS → Home Automation → Home Assistant OS
+- SD-Karte auswählen
+- Schreibvorgang starten
+
+---
+
+## Erster Start
+
+Nach dem Einschalten startet Home Assistant automatisch.
+
+Zugriff über Webbrowser:
+
+http://192.168.98.154:8123
+Homeassistant IP Adresse der Instanz + Port -> 8123
+
+
+Beim ersten Start wird ein Benutzerkonto erstellt.
+
+Name: HTLSteyr  
+Benutzername: htlsteyr
+
+Danach öffnet sich das Home-Assistant Dashboard.
+
+---
+
+# Erste Erweiterungen
+
+## Mosquitto MQTT Broker
+
+Über die Add-on Verwaltung wurde der **Mosquitto Broker** installiert.
+
+Pfad:
+
+Einstellungen → Add-ons
+
+Der Broker ermöglicht die Kommunikation zwischen IoT-Geräten über das MQTT-Protokoll.
+
+Typische Anwendungen:
+
+- Sensorwerte übertragen
+- Geräte steuern
+- Kommunikation zwischen verschiedenen Systemen
+
+---
+
+## File Editor
+
+Der File Editor ermöglicht das Bearbeiten von Konfigurationsdateien direkt im Browser.
+
+Besonders wichtig für:
+
+- YAML-Konfigurationen
+- Automationen
+- Dashboard-Konfigurationen
+
+---
+
+# Integration eines Sensors über MQTT
+
+## Shelly H&T Gen1 – Temperatur- und Luftfeuchtesensor
+
+Der Shelly H&T Gen1 ist ein WLAN-basierter Temperatur- und Luftfeuchtigkeitssensor.
+
+Produktseite:  
+https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/
+
+---
+
+## Funktionsweise
+
+Der Sensor arbeitet in einem Energiesparmodus.
+
+- WLAN ist die meiste Zeit deaktiviert
+- Gerät wacht nur bei Messwertänderungen oder periodisch auf
+- Daten werden gesendet
+- anschließend wird WLAN wieder deaktiviert
+
+Dadurch erreicht das Gerät eine sehr lange Batterielaufzeit.
+
+---
+
+## Konfiguration des Sensors
+
+Der Shelly besitzt einen integrierten Webserver.
+
+Zugriff:
+
+1. Gerät in den Setup-Modus versetzen (User-Taste drücken)
+2. Mit dem vom Shelly bereitgestellten WLAN verbinden
+3. Webinterface öffnen
+
+http://192.168.33.1
+
+
+---
+
+## MQTT Konfiguration
+
+Pfad im Webinterface:
+
+Internet & Security → Advanced – Developer Settings
+
+Konfiguration:
+
+- MQTT aktivieren
+- MQTT Server: IP-Adresse von Home Assistant
+- Port: 1883
+- Benutzername und Passwort für MQTT festlegen
+
+Nach der Konfiguration sendet der Sensor seine Daten an den MQTT Broker.
+
+---
+
+# Einbindung in Home Assistant
+
+Der Shelly H&T Gen1 unterstützt kein MQTT Auto Discovery.
+
+Daher müssen die Sensoren manuell in der Datei `configuration.yaml` angelegt werden.
+
+````yaml
+mqtt:
+  sensor:
+    - name: "Shelly H&T Temperatur"
+      state_topic: "shellies/shellyht-3CBD1F/sensor/temperature"
+      unit_of_measurement: "°C"
+      device_class: temperature
+
+    - name: "Shelly H&T Luftfeuchtigkeit"
+      state_topic: "shellies/shellyht-3CBD1F/sensor/humidity"
+      unit_of_measurement: "%"
+      device_class: humidity
+
+    - name: "Shelly H&T Batterie"
+      state_topic: "shellies/shellyht-3CBD1F/sensor/battery"
+      unit_of_measurement: "%"
+      device_class: battery
+
+
+
+
