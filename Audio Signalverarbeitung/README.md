@@ -1,17 +1,15 @@
-# Audio Verarbeitung mit numpy
-
 ## Einführung und Aufgabenstellung
 Audiosignale können auf unterschiedliche Weise be- und verarbeitet werden. Ziel dieses Projekts ist es, ein Audiosignal aufzunehmen oder aus einer Datei zu laden, es anschließend digital zu bearbeiten (z.B. Cut/Trim, Gain, Filter) und sowohl im Zeit- als auch im Frequenzbereich anschaulich darzustellen. Außerdem wird eine Visualisierung umgesetzt, wie man sie aus der Praxis (Equalizer/Mischpult) kennt.
 
 ## Folgende Bibliotheken werden für die Audio Verarbeitung benötigt:
 
-  ```sounddevice``` -> Play and Record Sound with Python (in meinem Fall Zugriff auf Mikro)
+  ```sounddevice``` -> Play and Record Sound with Python (Zugriff auf Mikro)
   
  ``` numpy``` -> NumPy ist eine Python-Bibliothek für schnelle    Berechnungen mit mehrdimensionalen Arrays (in meinem Fall für Audio Verarbeitung)
   
  ``` matplotlib``` -> zur Darstellung von Audio Aufzeichnungen
   
-  ```scipy``` -> SciPy ist eine Python-Bibliothek für wissenschaftliches Rechnen, die auf Numpy aufbaut (in meinem Fall, falls aus einer Datei gelesen werden soll)
+  ```scipy``` -> SciPy ist eine Python-Bibliothek für wissenschaftliches Rechnen, die auf Numpy aufbaut (in meinem Fall, zum Einlesen von Audiodateien)
   
 ## Links:
 
@@ -23,7 +21,7 @@ Audiosignale können auf unterschiedliche Weise be- und verarbeitet werden. Ziel
 
 [Sounddevice](https://python-sounddevice.readthedocs.io/en/0.5.3/) Zuletzt besucht am: 10.02.2026
 
-[Scypi](https://scipy.org/) Zuletzt besucht am: 10.02.2026
+[Scipy](https://scipy.org/) Zuletzt besucht am: 10.02.2026
 
 [Numpy](https://numpy.org/doc/stable/) Zuletzt besucht am: 10.02.2026
 
@@ -33,9 +31,11 @@ Audiosignale können auf unterschiedliche Weise be- und verarbeitet werden. Ziel
 
 Ein Audiosignal beschreibt Schall über die Zeit. Ein Mikrofon wandelt die Druckschwankungen der Luft in eine elektrische Spannung um, die sich ständig verändert. Digital wird dieses Signal als Folge von Messwerten (Samples) gespeichert: Die Samplerate gibt an, wie viele Samples pro Sekunde aufgenommen werden, die Bit-Tiefe bestimmt die Genauigkeit der Werte. Ein Audiosignal kann Mono (1 Kanal) oder Stereo (2 Kanäle: links/rechts) sein.
 
-Programm befindet sich um Anhang -> [soundfile.py](soundfile.py)
-
 ![Audiosignal](Bilder\Audiosignal.png)
+
+bei 44,1 kHz → 44100 × 3,5 = 154.350 Samples
+
+bei 48 kHz → 48000 × 3,5 = 168.000 Samples
 
 ## Wie wird Audio verarbeitet?
 
@@ -48,6 +48,24 @@ Darstellung erfolgt mittels Matplot-Lib.
 Das Programm wurde nach dem Prinzip erweitert, alle Frequenzbereiche farblich darzustellen, ähnlich wie man es in der Praxis von Equalizern oder Mischpulten kennt.
 
 Für weitere Details siehe Programmfortschritt -> [audiovisu_27.01](audiovisu_27.01.py) 
+
+### Spektogramm
+
+![Spektrogramm](Bilder\Spektrogramm.jpg)
+
+Das Spektrogramm zeigt, welche Frequenzen zu welchem Zeitpunkt im Signal enthalten sind. Helle bzw. warme Farben bedeuten eine hohe Amplitude, dunklere bzw. kühlere Farben eine geringere Amplitude.
+
+Ein Spektrogramm ist eine grafische Darstellung eines Audiosignals, bei der sichtbar wird, welche Frequenzen zu welchem Zeitpunkt auftreten. Es verbindet also Zeit- und Frequenzbereich in einer gemeinsamen Darstellung.
+
+x-Achse: Zeit
+
+y-Achse: Frequenz
+
+Farbe/Helligkeit: Stärke des Signals bzw. Intensität in dB
+
+Während eine normale FFT nur das Frequenzspektrum eines einzelnen Zeitabschnitts zeigt, besteht ein Spektrogramm aus vielen aufeinanderfolgenden FFT-Berechnungen. Dazu wird das Audiosignal in kurze Abschnitte zerlegt, oft mit Überlappung und einer Fensterfunktion wie dem Hann-Fenster. Für jeden Abschnitt wird die FFT berechnet und das Ergebnis anschließend nebeneinander dargestellt.
+
+Dadurch kann man erkennen, wie sich Frequenzanteile im Laufe der Zeit verändern. Das ist besonders hilfreich bei Sprache, Musik oder Störgeräuschen, weil man nicht nur sieht, welche Frequenzen vorhanden sind, sondern auch wann sie auftreten.
 
 ### Audioverarbeitung mit numpy
 
@@ -72,7 +90,7 @@ Eine Audio-CD speichert Musik im Vergleich zu MP4 nicht komprimiert und auch ohn
 Das heißt: Eine CD ist vom Prinzip her eher wie eine WAV-Datei ohne Zusatzfunktionen, nur mit dem Dateisystem-Overhead und einer festen Struktur für Tracks. MP4 dagegen ist ein Container, der Audio/Video meist komprimiert speichert und zusätzlich Timing/Indexdaten für Synchronisation enthält.
 
 
-#### Die audio.wav Datei ist 2,01MB in MP4 wäre sie ca. 0.2-0.3MB!
+#### Die audio.wav Datei ist 2,01MB groß, in MP4 wäre sie ca. 0.2-0.3MB groß!
 
 #### Wie kann ich ein Audiosignal von einer Datei öffnen?
 
@@ -106,6 +124,15 @@ Zugriff auf linker oder rechter Kanal:
 
 Es können auch durchaus mehr als 2 Kanäle genutzt werden, um z.B. einen Surround mit 6 oder sogar 8 Kanälen zu erzeugen.
 
+### Audioverarbeitung mit Librosa
+Librosa ist ebenfalls eine Python-Bibliothek für die Audioverarbeitung, sie wird aber vor allem für die Analyse von Audiosignalen verwendet. Während man mit NumPy eher direkt mit den einzelnen Samples arbeitet, bietet Librosa viele fertige Funktionen, um wichtige Eigenschaften eines Audiosignals zu untersuchen.
+
+Beim Arbeiten mit Librosa wird eine Audiodatei zuerst geladen. Dabei erhält man das Signal als NumPy-Array und zusätzlich die Samplingrate. Anschließend kann das Signal weiter analysiert werden. So lassen sich zum Beispiel Spektrogramme, Mel-Spektrogramme, MFCCs, Tonhöhen, Beats oder das Tempo berechnen. Dadurch eignet sich Librosa besonders gut für Musik- und Sprachverarbeitung.
+
+Ein großer Vorteil von Librosa ist, dass viele aufwendige Berechnungen bereits als fertige Funktionen vorhanden sind. Man muss also nicht alles selbst mit NumPy programmieren, sondern kann direkt auf typische Audioanalyse-Werkzeuge zugreifen. Deshalb wird Librosa oft verwendet, wenn man ein Audiosignal nicht nur bearbeiten, sondern auch genauer untersuchen möchte.
+
+Zusammengefasst kann man sagen: NumPy ist eher die Grundlage für die Arbeit mit Rohdaten, während Librosa speziell für die Analyse und Auswertung von Audiosignalen gedacht ist. Für einfache Änderungen wie Schneiden oder Lautstärkeanpassung reicht NumPy oft aus, für weitergehende Untersuchungen ist Librosa meist die bessere Wahl.
+
 #### Worauf ist bei der Bearbeitung von Audiosignalen zu achten?
 
 Beim Bearbeiten von Audiosignalen ist das Abtasttheorem wichtig: Ein Signal wird als viele einzelne Messwerte pro Sekunde gespeichert (Samplerate, z.B. 44,1 kHz oder 48 kHz). Damit man eine bestimmte maximale Frequenz im Signal korrekt darstellen kann, muss man mit mindestens der doppelten Frequenz abtasten (Samplerate ≥ 2 · f_max). Das bedeutet, man kann nur Frequenzen bis zur Hälfte der Samplerate korrekt darstellen (Nyquist-Grenze). Frequenzen darüber führen zu Aliasing, also “falschen” Frequenzen im unteren Bereich. Besonders beim Downsampling muss man deshalb vorher mit einem Tiefpass (Anti-Aliasing-Filter) alles oberhalb der neuen Nyquist-Grenze entfernen. Für FFT-Auswertungen nutzt man oft Fensterfunktionen (z.B. Hann, Rechteck, ...), damit das Spektrum sauberer und stabiler wird.
@@ -120,6 +147,8 @@ int32 -> im Sonderfall
 Audio­bearbeitung bedeutet, ein Audiosignal gezielt zu verändern, um es z.B. zu verbessern, anzupassen oder zu analysieren. Typische Schritte sind:
 
 Cut/Trim: einen Abschnitt ausschneiden oder Stille am Anfang/Ende entfernen.
+
+Programm befindet sich um Anhang -> [soundfile.py](soundfile.py)
 
 ![Audiosignal](Bilder\soundfile.png)
 
