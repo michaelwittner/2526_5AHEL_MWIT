@@ -1,3 +1,5 @@
+# Audioverarbeitung
+
 ## Einführung und Aufgabenstellung
 Audiosignale können auf unterschiedliche Weise be- und verarbeitet werden. Ziel dieses Projekts ist es, ein Audiosignal aufzunehmen oder aus einer Datei zu laden, es anschließend digital zu bearbeiten (z.B. Cut/Trim, Gain, Filter) und sowohl im Zeit- als auch im Frequenzbereich anschaulich darzustellen. Außerdem wird eine Visualisierung umgesetzt, wie man sie aus der Praxis (Equalizer/Mischpult) kennt.
 
