@@ -51,10 +51,6 @@ Für weitere Details siehe Programmfortschritt -> [audiovisu_27.01](audiovisu_27
 
 ### Spektogramm
 
-![Spektrogramm](Bilder\Spektrogramm.jpg)
-
-Das Spektrogramm zeigt, welche Frequenzen zu welchem Zeitpunkt im Signal enthalten sind. Helle bzw. warme Farben bedeuten eine hohe Amplitude, dunklere bzw. kühlere Farben eine geringere Amplitude.
-
 Ein Spektrogramm ist eine grafische Darstellung eines Audiosignals, bei der sichtbar wird, welche Frequenzen zu welchem Zeitpunkt auftreten. Es verbindet also Zeit- und Frequenzbereich in einer gemeinsamen Darstellung.
 
 x-Achse: Zeit
@@ -62,6 +58,10 @@ x-Achse: Zeit
 y-Achse: Frequenz
 
 Farbe/Helligkeit: Stärke des Signals bzw. Intensität in dB
+
+![Spektrogramm](Bilder\Spektrogramm.jpg)
+
+Das Spektrogramm zeigt, welche Frequenzen zu welchem Zeitpunkt im Signal enthalten sind. Helle bzw. warme Farben bedeuten eine hohe Amplitude, dunklere bzw. kühlere Farben eine geringere Amplitude.
 
 Während eine normale FFT nur das Frequenzspektrum eines einzelnen Zeitabschnitts zeigt, besteht ein Spektrogramm aus vielen aufeinanderfolgenden FFT-Berechnungen. Dazu wird das Audiosignal in kurze Abschnitte zerlegt, oft mit Überlappung und einer Fensterfunktion wie dem Hann-Fenster. Für jeden Abschnitt wird die FFT berechnet und das Ergebnis anschließend nebeneinander dargestellt.
 
