@@ -259,8 +259,6 @@ Bei Cloud-STT wird Audio häufig an externe Server übertragen. Das erzeugt:
 - Konstante Latenz (kein Netzwerk)
 - Planbare Kosten
 
-https://alphacephei.com/vosk/models
-
 ### 5.2 Herausforderungen offline
 - Rechenleistung/Temperatur/Verbrauch
 - Modellgröße vs. Genauigkeit
