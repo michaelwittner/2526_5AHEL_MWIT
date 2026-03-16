@@ -359,8 +359,9 @@ Ohne Zustandsmodell entstehen typische Probleme:
 - wiederholte Prompt-Sätze,
 - Selbst-Trigger durch TTS (TTS wird von STT wieder erkannt),
 - unzuverlässiger Schlafmodus.
+- 
+<img width="2122" height="635" alt="Zustandsdiagramm" src="https://github.com/user-attachments/assets/9f02f489-6277-4be5-b751-60d5e8ed966d" />
 
--FOTO Zustandsdiagramm
 
 Ein solides Zustandsmodell trennt klar:
 - Wake-Word-Warten (leicht)
