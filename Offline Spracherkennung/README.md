@@ -251,8 +251,12 @@ Verwendet: https://chatgpt.com/
 ---
 ---
 
-## 2026-02-10 
+## 10.02.2026 ##
 
 * Präsentationsinhalt weiter ausgearbeitet. 
 * Zusätzlich wurde die Worterkennung für den Schlafmodus überarbeitet, um das Umschalten in den Schlafmodus zuverlässiger und stabiler zu machen.
 
+
+## 24.02.2026 und 03.03.2026##
+* Präsentationsinhalt weiter ausgearbeitet.
+* siehe Präsentationsdatei
