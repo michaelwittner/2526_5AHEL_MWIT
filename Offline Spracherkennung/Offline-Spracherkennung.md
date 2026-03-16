@@ -289,6 +289,8 @@ Vosk ist geeignet, weil:
 - **Small**: geringer Speicherbedarf, schneller, stabiler für Dauerbetrieb.
 - **Big**: potenziell bessere Genauigkeit, aber deutlich höherer Ressourcenbedarf.
 
+Zeige: https://alphacephei.com/vosk/models
+
 
 ### 6.3 Einbindung (prinzipieller Ablauf)
 1. Modell liegt lokal (z. B. entpackt im App-Speicher).  
