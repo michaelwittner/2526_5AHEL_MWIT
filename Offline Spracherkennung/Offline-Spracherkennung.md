@@ -362,6 +362,14 @@ Ohne Zustandsmodell entstehen typische Probleme:
 - 
 <img width="2122" height="635" alt="Zustandsdiagramm" src="https://github.com/user-attachments/assets/9f02f489-6277-4be5-b751-60d5e8ed966d" />
 
+Konfig:
+private enum State { IDLE, ARMED }
+private State state = State.IDLE;
+
+Im Programm:
+private void armSession()
+//Schlafmodus
+//Aufwachen
 
 Ein solides Zustandsmodell trennt klar:
 - Wake-Word-Warten (leicht)
