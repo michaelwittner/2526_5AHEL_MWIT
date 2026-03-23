@@ -1,5 +1,4 @@
-# Methoden-/Aufrufliste (STT + TTS + Sleep) – **korrigiert nach deinem Code**
-
+# Methoden-/Aufrufliste (STT + TTS + Sleep)
 ## A) App-Start → Service starten (MainActivity)
 
 ### 1) `MainActivity.onCreate(Bundle savedInstanceState)`

@@ -329,4 +329,100 @@ Das Gerät wird weiterhin nur als unbekannter Client im MQTT-Broker angezeigt.
 **Aktueller Stand:**  
 Die MQTT-Verbindung kommt zustande, jedoch werden **keine Sensordaten erfolgreich verarbeitet**.
 
+---
+
+### 📅 24.02.2026
+
+## Shelly H&T Gen1 – Neuinstallation & erfolgreiche MQTT-Anbindung
+
+### WLAN-Neukonfiguration
+
+Der Shelly H&T wurde vollständig neu konfiguriert und erneut mit dem WLAN verbunden.
+
+**WLAN-Zugangsdaten:**
+
+- **SSID:** `HTLGuest`
+- **Passwort:** `Guest2024`
+
+Anschließend erfolgte die erneute MQTT-Konfiguration  
+(siehe Dokumentation vom 10.02.2026).
+
+---
+
+## Erfolgreiche MQTT-Datenübertragung
+
+Nach der Neukonfiguration sendet der Sensor nun erfolgreich Messwerte an Home Assistant.
+
+---
+
+## Erstellung der Sensor-Entitäten in Home Assistant
+
+Da der Shelly H&T Gen1 kein MQTT Auto-Discovery unterstützt, mussten die Sensoren manuell per YAML definiert werden.
+
+### YAML-Konfiguration (`configuration.yaml`)
+
+```yaml
+mqtt:
+  sensor:
+    - name: "Shelly H&T Temperatur"
+      state_topic: "shellies/shellyht-3CBD1F/sensor/temperature"
+      unit_of_measurement: "°C"
+      device_class: temperature
+
+    - name: "Shelly H&T Luftfeuchtigkeit"
+      state_topic: "shellies/shellyht-3CBD1F/sensor/humidity"
+      unit_of_measurement: "%"
+      device_class: humidity
+
+    - name: "Shelly H&T Batterie"
+      state_topic: "shellies/shellyht-3CBD1F/sensor/battery"
+      unit_of_measurement: "%"
+      device_class: battery
+```
+
+Nach dem Neuladen der YAML-Konfiguration bzw. einem Neustart von Home Assistant erscheinen die Sensor-Entitäten korrekt im System.
+
+---
+
+## Anpassung der Temperatureinheit
+
+Die Temperatur wurde zunächst in Fahrenheit (°F) angezeigt.
+
+Zur Umstellung auf Celsius:
+
+Profil → Einheiten → Temperatur → °C
+
+Nach der Anpassung werden die Werte korrekt in Grad Celsius dargestellt.
+
+---
+
+## Visuelle Optimierung des Dashboards
+
+Zur optischen Verbesserung der Benutzeroberfläche wurden mehrere Custom-Komponenten über HACS (Home Assistant Community Store) installiert.
+
+### Installierte Komponenten
+
+- Frosted Glass Theme  
+  https://github.com/wessamlauf/homeassistant-frosted-glass-themes
+
+- Frosted Glass Theme Manager  
+  https://github.com/wessamlauf/frosted-glass-manager
+
+- Lovelace Card Mod  
+  https://github.com/thomasloven/lovelace-card-mod
+
+- Clock Weather Card (HUI Icons Version)  
+  https://github.com/samuelgoodell/clock-weather-card-hui-icons
+
+---
+
+## Design-Anpassungen
+
+- Aktivierung des Frosted Glass Themes
+- Integration der Weather Card in das Dashboard
+
+
+
+
+
 

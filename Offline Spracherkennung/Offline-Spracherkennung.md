@@ -53,16 +53,82 @@ Sprache ändert sich sehr schnell; kurze Fenster geben eine stabile Grundlage, u
 ---
 
 ### Schritt B: Feature-Extraktion
-Statt rohe Audiosamples direkt zu verarbeiten, berechnet man „Features“, z. B.:
-- Log-Mel-Filterbanks
-- MFCC-ähnliche Merkmale
+Statt rohe Audiosamples direkt zu verarbeiten, berechnet man „Features“
 
 **Warum Features?**  
 Features reduzieren irrelevante Details und heben sprachrelevante Muster hervor (Resonanzen, Formanten, Spektrum). Das verbessert Robustheit und erleichtert dem Modell das Lernen.
 
+
+### Mel-Filterbank (Mel Filterbank Energies / Log-Mel)
+
+Idee: Das Modell soll nicht das rohe Zeitsignal sehen, sondern eine kompakte Darstellung davon, **welche Frequenzbereiche wie stark** sind – und zwar so, wie das menschliche Gehör Frequenzen ungefähr wahrnimmt.
+
+So entsteht eine Mel-Filterbank:
+
+1. **STFT / Spektrum**
+
+* Man zerlegt das Audio in kurze Frames (z. B. 25 ms) und berechnet pro Frame eine Fourier-Transformation.
+* Ergebnis: ein **Leistungsspektrum** (Power Spectrum) über Frequenzen.
+
+2. **Mel-Skala**
+
+* Frequenzen werden nicht linear aufgeteilt, sondern auf einer **Mel-Skala**:
+
+  * niedrige Frequenzen fein
+  * hohe Frequenzen grober
+    (weil Menschen dort weniger „Auflösung“ haben)
+
+3. **Filterbank anwenden**
+
+* Man legt viele **dreieckige Bandpass-Filter** über das Spektrum (z. B. 40, 64 oder 80 Filter).
+* Jeder Filter summiert Energie in „seinem“ Frequenzband.
+* Ergebnis pro Frame: ein Vektor aus **Bandenergien** (z. B. 80 Zahlen).
+
+4. **Logarithmus**
+
+* Man nimmt oft den **Log** der Energien (log-mel):
+
+  * macht Werteverteilung besser handhabbar
+  * entspricht eher Lautstärke-Wahrnehmung (dB-ähnlich)
+
+Das sind dann die **(Log-)Mel-Filterbank-Features**.
+
+----
+
+### MFCC (Mel-Frequency Cepstral Coefficients)
+
+MFCCs sind im Prinzip eine „weiter verarbeitete“ Mel-Filterbank, die noch kompakter und statistisch günstiger wird.
+
+MFCC-Schritte:
+
+1. **Log-Mel-Filterbank** (wie oben)
+
+* Man startet praktisch mit den log-mel Bandenergien.
+
+2. **DCT (Diskrete Kosinus-Transformation)**
+
+* Danach nimmt man eine DCT über diese Werte.
+* Zweck:
+
+  * die stark korrelierten Filterbank-Werte werden „entkoppelt“
+  * Informationen werden in wenigen Koeffizienten konzentriert
+
+3. **Nur die ersten Koeffizienten behalten**
+
+* Typisch behält man z. B. **12–13 MFCCs** (manchmal plus „Energy“).
+* Höhere Koeffizienten werden oft weggelassen, weil sie eher feines Spektralrauschen repräsentieren.
+
+4. **Deltas / Delta-Deltas (optional, aber häufig)**
+
+* Man berechnet zusätzlich:
+
+  * **Δ (Delta)** = zeitliche Änderung (erste Ableitung)
+  * **ΔΔ (Delta-Delta)** = Änderung der Änderung (zweite Ableitung)
+* Das hilft, Dynamik/Übergänge in Sprache zu erfassen.
+
 ---
 
-### Schritt C: Akustisches Modell (Audio → Laut-/Einheiten-Wahrscheinlichkeiten)  ✅ *mehr Detail*
+### Schritt C: Akustisches Modell (Audio → Laut-/Einheiten-Wahrscheinlichkeiten)  
 
 Das akustische Modell ist der Teil, der **aus den Features** ableitet, welche **sprachlichen Einheiten** gerade wahrscheinlich sind.
 
@@ -146,6 +212,10 @@ Ergebnisarten:
 - **Partial Results** (Zwischentext während gesprochen wird)
 - **Final Results** (Endergebnis nach Sprechpause/Äußerungsende)
 
+
+<img width="2379" height="1580" alt="stt_pipeline" src="https://github.com/user-attachments/assets/913bc716-46a5-471b-b394-6fb8aa44b98e" />
+
+
 ---
 
 ## 3) Welche Tools stehen zur Verfügung (Spracherkennung)
@@ -217,6 +287,8 @@ Vosk ist geeignet, weil:
 - **Small**: geringer Speicherbedarf, schneller, stabiler für Dauerbetrieb.
 - **Big**: potenziell bessere Genauigkeit, aber deutlich höherer Ressourcenbedarf.
 
+Zeige: https://alphacephei.com/vosk/models
+
 
 ### 6.3 Einbindung (prinzipieller Ablauf)
 1. Modell liegt lokal (z. B. entpackt im App-Speicher).  
@@ -287,6 +359,17 @@ Ohne Zustandsmodell entstehen typische Probleme:
 - wiederholte Prompt-Sätze,
 - Selbst-Trigger durch TTS (TTS wird von STT wieder erkannt),
 - unzuverlässiger Schlafmodus.
+- 
+<img width="2122" height="635" alt="Zustandsdiagramm" src="https://github.com/user-attachments/assets/9f02f489-6277-4be5-b751-60d5e8ed966d" />
+
+Konfig:
+private enum State { IDLE, ARMED }
+private State state = State.IDLE;
+
+Im Programm:
+private void armSession()
+//Schlafmodus
+//Aufwachen
 
 Ein solides Zustandsmodell trennt klar:
 - Wake-Word-Warten (leicht)
