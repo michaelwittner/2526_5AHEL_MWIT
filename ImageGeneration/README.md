@@ -30,7 +30,7 @@ Das Projekt besteht aus mehreren Python-Dateien, die nacheinander entwickelt wur
 <img width="412" height="55" alt="grafik" src="https://github.com/user-attachments/assets/b36aaaf5-4bfe-4967-b83a-824e3d31e261" />
 
 
-## step1_webcam_face.py
+## Zweites Testfile: step1_webcam_face.py
 
 ### Zweck
 
@@ -66,18 +66,18 @@ Diese Variante überschreibt Pixel direkt und nutzt noch keinen Alpha-Kanal.
 
 ### Zweck
 
-Einführung von echtem PNG-Template mit Transparenz.
+Einführung von PNG-Template mit Transparenz.
 
 ### Funktion
 
-* PNG mit Alpha-Kanal wird geladen
+* PNG wird geladen
 * Webcam-Bild liegt im Hintergrund
 * Template liegt im Vordergrund
 * Das Gesicht ist nur im transparenten Bereich sichtbar
 
-Diese Version bildet die technische Grundlage für alle späteren Erweiterungen.
-
 ---
+
+## 
 
 # Erweiterte Version – Finale Implementierung
 
