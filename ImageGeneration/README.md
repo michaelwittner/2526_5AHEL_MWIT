@@ -10,14 +10,25 @@ Das PNG-Template liegt dabei im Vordergrund, das Webcam-Bild im Hintergrund.
 
 Das Projekt wurde schrittweise erweitert und technisch verbessert.
 
+_Voraussetzungen_: Python, OpenCV, Numpy
+_Entwicklungsumgebung_: PyCharm
+
+# Voraussetzungen
+_Installation_
+`pip install opencv-python numpy` 
+
 ---
 
-#Vorr
+
 # Aufbau des Projekts
 
 Das Projekt besteht aus mehreren Python-Dateien, die nacheinander entwickelt wurden.
 
 ---
+
+## Erstes Testprojekt
+<img width="412" height="55" alt="grafik" src="https://github.com/user-attachments/assets/b36aaaf5-4bfe-4967-b83a-824e3d31e261" />
+
 
 ## step1_webcam_face.py
 
