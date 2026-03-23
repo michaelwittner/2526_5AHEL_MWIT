@@ -1,4 +1,4 @@
-# OAuth – Autorisierung im modernen Web
+# OAuth – Authorisierung
 
 ---
 
