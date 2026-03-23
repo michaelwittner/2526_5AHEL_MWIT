@@ -1,387 +1,333 @@
-# 2526_5AHEL_MWIT
-Individual Projects for MWIT 
+# Videobearbeitung
 
-[Einführung](https://pytutorial.com/python-opencv-cv2videocapture-guide/?utm_source=copilot.com)
+## Einführung und Aufgabenstellung
 
+Videosignale können auf unterschiedliche Weise be- und verarbeitet werden. Ziel dieses Projekts ist es, ein vorhandenes Video einzulesen, es digital zu bearbeiten (z.B. Skalierung, FPS-Anpassung, Format-Konvertierung) und das Ergebnis in eine neue Ausgabedatei zu schreiben. Die Steuerung erfolgt über ein grafisches Benutzeroberfläche (GUI), die mit **tkinter** umgesetzt wurde.
 
-1.Test ob das video funktioniert:
+Dieses Projekt entstand als Erweiterung zur Audioverarbeitung und zeigt, wie ähnliche Prinzipien – Frame-basiertes Einlesen, Verarbeiten, Ausgeben – auch im Videobereich Anwendung finden.
 
+## Folgende Bibliotheken werden für die Videobearbeitung benötigt:
 
-````
+```opencv-python``` (cv2) → Die zentrale Bibliothek für Computer Vision und Videobearbeitung in Python. Ermöglicht das Einlesen, Skalieren und Schreiben von Video-Frames.
+
+```tkinter``` → GUI-Bibliothek aus der Python-Standardinstallation. Wird für das Benutzeroberfläche (Eingabefelder, Buttons, Dialoge) verwendet.
+
+```threading``` → Ermöglicht das Ausführen der Videokonvertierung in einem separaten Thread, damit die GUI während der Verarbeitung nicht einfriert.
+
+```os``` → Betriebssystemfunktionen wie Dateipfad-Operationen und Existenzprüfungen.
+
+## Links:
+
+[OpenCV Dokumentation](https://docs.opencv.org/) Zuletzt besucht am: 20.03.2026
+
+[OpenCV Python Tutorial](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html) Zuletzt besucht am: 20.03.2026
+
+[tkinter Dokumentation](https://docs.python.org/3/library/tkinter.html) Zuletzt besucht am: 20.03.2026
+
+[Python threading](https://docs.python.org/3/library/threading.html) Zuletzt besucht am: 20.03.2026
+
+[ChatGPT](https://chatgpt.com/) Zuletzt besucht am: 20.03.2026
+
+---
+
+## Was ist OpenCV (cv2)?
+
+OpenCV steht für **Open Source Computer Vision Library** und ist eine der meistgenutzten Bibliotheken für Bild- und Videobearbeitung in Python. Sie wurde ursprünglich von Intel entwickelt und 2000 veröffentlicht. Heute wird sie von der OpenCV-Foundation weiterentwickelt.
+
+In Python wird OpenCV über das Paket `opencv-python` installiert und als `cv2` importiert:
+
+```python
 import cv2
-# Create a VideoCapture object
-cap = cv2.VideoCapture('vid.mov')
+```
 
-while cap.isOpened():
+OpenCV ist in C++ geschrieben, besitzt aber Python-Bindings, was bedeutet: Man schreibt Python-Code, aber die eigentliche Verarbeitung läuft performant im Hintergrund in C++.
+
+---
+
+## Wie ist ein Videosignal „aufgebaut"?
+
+Ein Video ist im Grunde eine Abfolge von Einzelbildern (Frames), die schnell genug hintereinander abgespielt werden, damit das menschliche Auge Bewegung wahrnimmt. Ähnlich wie bei Audio gibt es auch beim Video bestimmte technische Kenngrößen:
+
+**FPS (Frames per Second)** gibt an, wie viele Bilder pro Sekunde im Video enthalten sind. Typische Werte sind 24 FPS (Film), 25 FPS (PAL/Europa), 30 FPS (NTSC/Amerika) und 60 FPS (Sport/Gaming).
+
+**Auflösung** beschreibt die Bildgröße in Pixeln. Verbreitete Auflösungen sind z.B. 1280×720 (HD), 1920×1080 (Full HD) oder 3840×2160 (4K).
+
+**Codec** ist das Kompressionsverfahren, mit dem die Frames gespeichert werden. Bekannte Codecs sind H.264, H.265, XVID oder MP4V.
+
+**Container** ist das Dateiformat, das Video- und Audiodaten (und Metadaten) zusammenhält – z.B. `.mp4`, `.avi`, `.mkv`.
+
+Ein einzelner Frame wird von OpenCV als **NumPy-Array** gespeichert, in der Form `(Höhe, Breite, 3)` – die 3 steht dabei für die drei Farbkanäle **BGR** (Blau, Grün, Rot). Wichtig: OpenCV verwendet standardmäßig BGR und nicht RGB wie viele andere Bibliotheken.
+
+```python
+# Beispiel: Einlesen eines Videos und Ausgabe der Frame-Größe
+cap = cv2.VideoCapture("video.mp4")
+ret, frame = cap.read()
+print(frame.shape)  # z.B. (720, 1280, 3)
+```
+
+---
+
+## Wichtige Funktionen von cv2 in diesem Projekt
+
+### `cv2.VideoCapture()`
+
+Öffnet eine Videodatei (oder Kamera) zum Lesen. Rückgabe ist ein `VideoCapture`-Objekt.
+
+```python
+cap = cv2.VideoCapture("video.mp4")
+```
+
+Über `cap.get()` lassen sich Metadaten wie FPS, Breite, Höhe und Frameanzahl abfragen:
+
+```python
+fps    = cap.get(cv2.CAP_PROP_FPS)
+width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+total  = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+```
+
+### `cap.read()`
+
+Liest den nächsten Frame aus der geöffneten Datei. Rückgabe ist ein Tupel `(ret, frame)`:
+- `ret`: `True` wenn erfolgreich, `False` am Ende des Videos
+- `frame`: das Bild als NumPy-Array
+
+```python
 ret, frame = cap.read()
 if not ret:
-break
-cv2.imshow('Frame', frame)
-if cv2.waitKey(25) & 0xFF == ord('q'):
-break
+    break  # Kein Frame mehr → Video ist zu Ende
+```
 
+### `cv2.VideoWriter_fourcc()`
+
+Definiert den Codec (FourCC-Code) für die Ausgabedatei. FourCC steht für „Four Character Code" – ein 4-Buchstaben-Kode, der den Codec identifiziert.
+
+```python
+fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # für .mp4
+fourcc = cv2.VideoWriter_fourcc(*"XVID")  # für .avi
+```
+
+### `cv2.VideoWriter()`
+
+Erstellt eine Ausgabedatei zum Schreiben von Frames. Benötigt Pfad, Codec, FPS und Zielgröße.
+
+```python
+out = cv2.VideoWriter("output.mp4", fourcc, 25.0, (1280, 720))
+```
+
+### `cv2.resize()`
+
+Skaliert einen Frame auf eine neue Größe. Das `interpolation`-Argument bestimmt die Methode – `cv2.INTER_AREA` eignet sich gut beim Verkleinern.
+
+```python
+frame = cv2.resize(frame, (1280, 720), interpolation=cv2.INTER_AREA)
+```
+
+### `cap.release()` / `out.release()`
+
+Schließen die Eingabe- bzw. Ausgabedatei und geben Ressourcen frei. Wichtig, damit keine Speicherlecks entstehen.
+
+```python
 cap.release()
-cv2.destroyAllWindows()
-````
-2. Video Schneiden
+out.release()
+```
 
-````
-import cv2
+---
 
-# --- Einstellungen ---
-input_path = 'vid.mov'          # Eingabevideo
-output_path = 'cut.mov'         # Ausgabedatei
+## Wie funktioniert die Videokonvertierung im Programm?
 
-start_sec = 5                   # Startzeitpunkt in Sekunden
-end_sec = 12                    # Endzeitpunkt in Sekunden
+Der Ablauf der Konvertierung folgt einem klaren Frame-für-Frame-Prinzip:
 
-# VideoCapture erstellen
-cap = cv2.VideoCapture(input_path)
+1. Die Eingabedatei wird mit `cv2.VideoCapture()` geöffnet und die Metadaten (FPS, Breite, Höhe, Frameanzahl) werden ausgelesen.
+2. Zielwerte für FPS und Auflösung werden festgelegt – entweder aus den Benutzereingaben oder, falls leer, aus den Originaldaten übernommen.
+3. Der passende FourCC-Code wird anhand der Dateiendung der Ausgabedatei gewählt.
+4. Der `VideoWriter` wird mit den Zielparametern erstellt.
+5. In einer Schleife wird Frame für Frame gelesen, bei Bedarf mit `cv2.resize()` skaliert und anschließend in die Ausgabedatei geschrieben.
+6. Alle 30 Frames wird der Fortschritt in Prozent berechnet und über einen Callback an die GUI übergeben.
+7. Am Ende werden beide Dateien geschlossen.
 
-if not cap.isOpened():
-    print("Fehler: Video konnte nicht geöffnet werden.")
-    exit()
-
-# Videodaten auslesen
-fps = cap.get(cv2.CAP_PROP_FPS)
-width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
-# Frame-Bereiche berechnen
-start_frame = int(start_sec * fps)
-end_frame = int(end_sec * fps)
-
-# VideoWriter vorbereiten
-fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # funktioniert auch für .mov
-out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
-
-# Zum Startframe springen
-cap.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
-
-# --- Video durchgehen ---
-while cap.isOpened():
+```python
+while True:
     ret, frame = cap.read()
     if not ret:
         break
+    if (tw, th) != (width, height):
+        frame = cv2.resize(frame, (tw, th), interpolation=cv2.INTER_AREA)
+    out.write(frame)
+```
 
-    current_frame = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
+---
 
-    # Nur Frames im gewünschten Bereich speichern
-    if current_frame <= end_frame:
-        out.write(frame)
+## Threading – warum und wie?
 
-    # Optional: Vorschau anzeigen
-    cv2.imshow('Frame', frame)
+Ohne Threading würde die Konvertierung im Hauptthread der GUI laufen. Das Ergebnis: Das Fenster friert ein und reagiert nicht mehr auf Benutzereingaben. Deshalb wird die Konvertierung in einem separaten **Daemon-Thread** gestartet:
 
-    # Mit 'q' abbrechen
-    if cv2.waitKey(25) & 0xFF == ord('q'):
-        break
-
-    # Wenn wir über das Endframe hinaus sind → stoppen
-    if current_frame > end_frame:
-        break
-
-# Aufräumen
-cap.release()
-out.release()
-cv2.destroyAllWindows()
-
-print("Geschnittenes Video gespeichert als:", output_path)
-
-````
-
-3. Video schneiden mit richtiger skalierung und fenstergröße
-
-````
-import cv2
-import pyautogui
-
-def cut_video(input_path, output_path, start_sec, end_sec):
-    # Bildschirmauflösung holen
-    screen_width, screen_height = pyautogui.size()
-
-    # VideoCapture erstellen
-    cap = cv2.VideoCapture(input_path)
-
-    if not cap.isOpened():
-        print("Fehler: Video konnte nicht geöffnet werden.")
-        return
-
-    # Videodaten auslesen
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
-    # Frame-Bereiche berechnen
-    start_frame = int(start_sec * fps)
-    end_frame = int(end_sec * fps)
-
-    # VideoWriter vorbereiten
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
-
-    # Zum Startframe springen
-    cap.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
-
-    # --- Video durchgehen ---
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        current_frame = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
-
-        # Nur Frames im gewünschten Bereich speichern
-        if current_frame <= end_frame:
-            out.write(frame)
-
-        # --- Frame für Vorschau skalieren ---
-        scale = min(screen_width / width, screen_height / height)
-        new_w = int(width * scale)
-        new_h = int(height * scale)
-
-        resized_frame = cv2.resize(frame, (new_w, new_h), interpolation=cv2.INTER_AREA)
-
-        # Vorschau anzeigen
-        cv2.imshow('Frame', resized_frame)
-
-        # Wenn Fenster per X geschlossen wurde → sofort abbrechen
-        if cv2.getWindowProperty('Frame', cv2.WND_PROP_VISIBLE) < 1:
-            break
-
-        # Mit 'q' abbrechen
-        if cv2.waitKey(25) & 0xFF == ord('q'):
-            break
-
-        # Wenn wir über das Endframe hinaus sind → stoppen
-        if current_frame > end_frame:
-            break
-
-    # Aufräumen
-    cap.release()
-    out.release()
-    cv2.destroyAllWindows()
-
-    print("Geschnittenes Video gespeichert als:", output_path)
-
-
-# --- Aufruf der Funktion ---
-cut_video(
-    input_path='vid.mov',
-    output_path='cut.mov',
-    start_sec=5,
-    end_sec=12
+```python
+thread = threading.Thread(
+    target=self.run_conversion,
+    args=(input_path, output_path, fps, width, height)
 )
+thread.daemon = True  # Thread endet automatisch mit dem Programm
+thread.start()
+```
 
+Der Callback `update_status()` wird aus dem Thread heraus aufgerufen und aktualisiert das Status-Label in der GUI mit dem aktuellen Fortschritt.
 
+---
 
-````
-<h2></h2>
+## Die GUI mit tkinter
 
-#!/usr/bin/env python3
-"""
-video_bearbeitung.py
+Die Benutzeroberfläche besteht aus folgenden Elementen:
 
-Einfacher Video-Konverter/-Resizer mit OpenCV (cv2).
-Dieses Skript liest ein Eingabevideo ein, optional werden Bildgröße und Ziel-fps
-angepasst und das Ergebnis in eine Ausgabedatei geschrieben.
+**Eingabefelder:** Für Eingabedatei, Ausgabedatei, Ziel-FPS, Ziel-Breite und Ziel-Höhe. Alle sind optional außer Eingabe- und Ausgabedatei.
 
-WICHTIG:
-- OpenCV schreibt keine Audiospuren — das Ausgabefile enthält KEIN Audio.
-- Die verfügbaren Codecs/Container hängen vom OpenCV-Build und den auf dem System
-  verfügbaren Backends (ggf. libav/ffmpeg) ab. mp4v/XVID sind häufig verwendete
-  FourCCs, funktionieren aber nicht in allen Umgebungen.
-- Feinsteuerung der Qualität (CRF, Presets, Bitrate) ist mit OpenCV nicht möglich.
-  Für genaue Kontrolle und Audio-Muxing ist ffmpeg die bessere Wahl.
+**Datei-Dialoge:** Über die „Durchsuchen"-Buttons öffnen sich native Betriebssystem-Dialoge zum Auswählen (`askopenfilename`) bzw. Speichern (`asksaveasfilename`) von Dateien.
 
-Benutzung (Kommandozeile):
-    python3 video_bearbeitung.py input.mov output.mp4 --fps 25 --width 1280 --height 720
+**Status-Label:** Zeigt den aktuellen Status der Konvertierung an – „Bereit", „Konvertierung läuft... X%", „✓ Erfolgreich" oder „✗ Fehler".
 
-Benutzung (Interaktiv in PyCharm oder direkt):
-    Wenn das Skript ohne Kommandozeilen-Argumente aufgerufen wird, werden Sie
-    zur Eingabe der Parameter aufgefordert.
+**Zurücksetzen-Button:** Leert alle Eingabefelder und setzt den Status zurück.
 
-Abhängigkeiten:
-    pip install opencv-python
+---
 
-Autorenhinweis:
-    Dieses Skript ist bewusst einfach gehalten und für schnelle, einfachen
-    frame-basierten Konvertierungen/Resizings ohne Audio gedacht.
-"""
+## Wichtige Einschränkung: Kein Audio!
 
-import cv2
-import argparse
-import sys
-import os
+OpenCV ist eine Bibliothek für **Bildverarbeitung**, nicht für Audioverarbeitung. Der `VideoWriter` schreibt nur Video-Frames – **keine Audiospur**. Das bedeutet: Das konvertierte Video ist stumm, auch wenn die Originaldatei Ton enthielt.
 
+Für eine vollständige Video-Konvertierung inklusive Audio müsste man z.B. `ffmpeg` als externen Prozess aufrufen oder eine Bibliothek wie `moviepy` verwenden.
 
-def convert_cv2(input_path, output_path, out_fps=None, out_width=None, out_height=None):
-    """
-    Konvertiert ein Video mit OpenCV.
+---
 
-    Parameter:
-    - input_path: Pfad zur Eingabedatei (z. B. "in.mov")
-    - output_path: Pfad zur Ausgabedatei inklusive Endung (z. B. "out.mp4")
-    - out_fps: gewünschte Ziel-FPS (float) oder None, um input-FPS zu verwenden
-    - out_width: gewünschte Ziel-Breite (int) oder None, um input-Breite zu verwenden
-    - out_height: gewünschte Ziel-Höhe (int) oder None, um input-Höhe zu verwenden
+## Vorteile von OpenCV (cv2)
 
-    Rückgabe:
-    - True bei Erfolg, False bei Fehlern.
-    """
+**Sehr hohe Performance:** Da OpenCV intern in C++ implementiert ist, läuft die Frame-Verarbeitung deutlich schneller als in reinem Python.
 
-    # Öffne die Eingabedatei
-    cap = cv2.VideoCapture(input_path)
-    if not cap.isOpened():
-        # Datei konnte nicht geöffnet werden (falscher Pfad, kein Codec, etc.)
-        print("Fehler: Eingabevideo konnte nicht geöffnet werden.")
-        return False
+**Riesige Funktionssammlung:** OpenCV enthält neben Videobearbeitung auch Bildfilter, Kanten- und Objekterkennung, Gesichtserkennung, optischen Fluss, Kamerakalibrierung und vieles mehr.
 
-    # Lese Input-Metadaten
-    # Manche Container liefern 0.0 oder None für FPS; daher Default-Wert
-    in_fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
-    # Breite/Höhe in Pixeln (ganzzahlig)
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+**Große Community und gute Dokumentation:** Es gibt tausende Tutorials, StackOverflow-Antworten und offizielle Dokumentation.
 
-    # Bestimme Zielwerte: falls None übernehme die Input-Werte
-    target_fps = float(out_fps) if out_fps else in_fps
-    tw = int(out_width) if out_width else width
-    th = int(out_height) if out_height else height
+**Plattformübergreifend:** OpenCV läuft auf Windows, macOS und Linux ohne Anpassungen.
 
-    # FourCC-Code wählen basierend auf Ausgabedateiendung
-    # Hinweis: mp4v ist ein verbreiteter Fallback, H.264 (x264) ist nicht zuverlässig
-    # über OpenCV schreibbar, abhängig vom Build. Für verlässliches H.264-Output
-    # empfiehlt sich ffmpeg.
-    ext = os.path.splitext(output_path)[1].lower()
-    if ext == ".mp4":
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    elif ext in (".avi", ".divx"):
-        fourcc = cv2.VideoWriter_fourcc(*"XVID")
-    else:
-        # Fallback: mp4v für unbekannte Endungen
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+**Kostenlos und Open Source:** Lizenziert unter der BSD-Lizenz, also frei für kommerzielle und private Nutzung.
 
-    # Erzeuge den VideoWriter: öffnet die Ausgabedatei zum Schreiben
-    # Parameter: Pfad, FourCC, fps, (width, height)
-    out = cv2.VideoWriter(output_path, fourcc, target_fps, (tw, th))
-    if not out.isOpened():
-        # Fehler beim Öffnen/Erstellen der Ausgabedatei (Berechtigungen, ungültiger FourCC, ...)
-        print("Fehler: Ausgabedatei konnte nicht geöffnet werden.")
-        cap.release()
-        return False
+**Einfache Installation:**
 
-    # Lese Frames in einer Schleife und schreibe sie in den Writer
-    # Wenn die Zielauflösung anders ist, werden Frames mit INTER_AREA skaliert
-    # (gute Qualität beim Verkleinern).
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            # Ende des Videos oder Lese-Fehler
-            break
+```bash
+pip install opencv-python
+```
 
-        # Falls Zielgröße unterschiedlich zur Quellgröße ist, skaliere
-        if (tw, th) != (width, height):
-            # cv2.resize erwartet (width, height)
-            frame = cv2.resize(frame, (tw, th), interpolation=cv2.INTER_AREA)
+---
 
-        # Schreibe Frame in Ausgabedatei
-        out.write(frame)
+## Nachteile von OpenCV (cv2)
 
-    # Ressourcen freigeben: Capture und Writer schließen
-    cap.release()
-    out.release()
-    return True
+**Kein Audio-Support:** OpenCV kann Audiospuren weder lesen noch schreiben. Für Videos mit Ton braucht man immer eine zusätzliche Lösung.
 
+**Eingeschränkte Codec-Kontrolle:** Feineinstellungen wie Bitrate, Qualitätsstufe (CRF), Encoding-Preset oder Hardware-Beschleunigung sind mit OpenCV kaum oder gar nicht möglich.
 
-def get_input_interactive():
-    """
-    Interaktiver Modus: Fragt den Nutzer nach Eingabe- und Ausgabepfad
-    sowie optionalen Parametern.
+**BGR statt RGB:** OpenCV verwendet BGR als Farbkanalreihenfolge. Das kann zu Farbfehlern führen, wenn man Frames an andere Bibliotheken (z.B. matplotlib, PIL) weitergibt, ohne vorher zu konvertieren:
 
-    Rückgabe:
-    - Tupel (input_path, output_path, fps, width, height)
-    """
-    print("\n" + "=" * 60)
-    print("VIDEO-BEARBEITUNG - Interaktiver Modus")
-    print("=" * 60 + "\n")
+```python
+frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+```
 
-    # Eingabedatei
-    input_path = input("Eingabedatei (z. B. input.mov): ").strip()
-    if not input_path:
-        print("Fehler: Eingabedatei ist erforderlich!")
-        return None
+**Containerformat-Unterstützung begrenzt:** Nicht alle Kombinationen aus Container und Codec funktionieren auf allen Systemen. Die Verfügbarkeit hängt vom OpenCV-Build und den installierten Backend-Bibliotheken (libav, ffmpeg) ab.
 
-    # Ausgabedatei
-    output_path = input("Ausgabedatei mit Endung (z. B. output.mp4): ").strip()
-    if not output_path:
-        print("Fehler: Ausgabedatei ist erforderlich!")
-        return None
+**Kein direktes Streaming:** OpenCV ist nicht optimal für Live-Streaming oder Echtzeit-Broadcasting ausgelegt.
 
-    # Optionale Parameter
-    print("\nOptionale Parameter (Eingeben zum Überspringen):")
+---
 
-    fps_input = input("Ziel-FPS (z. B. 25.0) [optional]: ").strip()
-    fps = float(fps_input) if fps_input else None
+## Alternativen zu OpenCV
 
-    width_input = input("Ziel-Breite in Pixel (z. B. 1280) [optional]: ").strip()
-    width = int(width_input) if width_input else None
+| Bibliothek | Stärken | Schwächen |
+|---|---|---|
+| **ffmpeg** (via subprocess) | Volle Codec-Kontrolle, Audio, sehr schnell | Kein Python-native, schwierige API |
+| **moviepy** | Audio + Video, einfache API, Python-nativ | Langsamer, braucht ffmpeg im Hintergrund |
+| **imageio** | Einfaches Lesen/Schreiben, auch ffmpeg-Backend | Weniger Funktionen als OpenCV |
+| **PyAV** | Python-Bindings für libav/ffmpeg, Audio+Video | Komplexere API |
+| **GStreamer** | Professionelles Streaming, Pipeline-basiert | Sehr komplexe Einrichtung |
 
-    height_input = input("Ziel-Höhe in Pixel (z. B. 720) [optional]: ").strip()
-    height = int(height_input) if height_input else None
+### ffmpeg (Kommandozeile)
 
-    return (input_path, output_path, fps, width, height)
+`ffmpeg` ist das mächtigste Werkzeug für Videokonvertierung, kann aber auch direkt aus Python über `subprocess` aufgerufen werden:
 
+```python
+import subprocess
+subprocess.run([
+    "ffmpeg", "-i", "input.mp4",
+    "-vf", "scale=1280:720",
+    "-r", "25",
+    "output.mp4"
+])
+```
 
-def main():
-    """
-    CLI-Entrypoint. Parst Kommandozeilen-Argumente oder startet
-    interaktiven Modus, falls keine Argumente vorhanden sind.
-    """
+Im Gegensatz zu OpenCV behält ffmpeg dabei auch die Audiospur und erlaubt genaue Qualitätssteuerung.
 
-    # Prüfe, ob Kommandozeilen-Argumente vorhanden sind
-    if len(sys.argv) > 1:
-        # Kommandozeilen-Modus
-        p = argparse.ArgumentParser(description="Einfacher Video-Konverter mit OpenCV (ohne Audio).")
-        # Positionale Argumente: input und output
-        p.add_argument("input", help="Eingabedatei (z. B. input.mov)")
-        p.add_argument("output", help="Ausgabedatei inkl. Endung (z. B. output.mp4)")
-        # Optionale Parameter: fps, width, height
-        p.add_argument("--fps", type=float,
-                       help="Ziel-fps (z. B. 25.0). Wenn weggelassen, bleibt die Original-fps erhalten.")
-        p.add_argument("--width", type=int,
-                       help="Ziel-Breite in Pixel (z. B. 1280). Wenn weggelassen, bleibt die Original-Breite erhalten.")
-        p.add_argument("--height", type=int,
-                       help="Ziel-Höhe in Pixel (z. B. 720). Wenn weggelassen, bleibt die Original-Höhe erhalten.")
-        args = p.parse_args()
+### moviepy
 
-        input_path = args.input
-        output_path = args.output
-        fps = args.fps
-        width = args.width
-        height = args.height
-    else:
-        # Interaktiver Modus (PyCharm oder direkt ausgeführt)
-        result = get_input_interactive()
-        if result is None:
-            sys.exit(1)
-        input_path, output_path, fps, width, height = result
+`moviepy` bietet eine einfachere, Python-native API und unterstützt sowohl Video als auch Audio:
 
-    # Aufruf der Konvertierungsfunktion mit den geparsten Argumenten
-    ok = convert_cv2(input_path, output_path, fps, width, height)
-    if not ok:
-        # Fehlercode ≠ 0 signalisiert dem Aufrufer, dass etwas schief lief
-        sys.exit(1)
+```python
+from moviepy.editor import VideoFileClip
+clip = VideoFileClip("input.mp4").resize((1280, 720))
+clip.write_videofile("output.mp4", fps=25)
+```
 
-    # Erfolgsmeldung und Hinweis, dass kein Audio enthalten ist
-    print("\n" + "=" * 60)
-    print("Konvertierung fertig (ohne Audio):", output_path)
-    print("=" * 60)
-    print("Hinweis: Audio wurde NICHT übernommen. Für Audio/Muxing nutze ffmpeg oder ähnliche Tools.")
+Intern nutzt moviepy ebenfalls ffmpeg, bietet aber eine bequemere Schnittstelle. Für Schnitt, Effekte und Texteinblendungen ist moviepy oft die bessere Wahl gegenüber OpenCV.
 
+### Zusammenfassung der Abwägung
 
-    if __name__ == "__main__":
-    main()
+OpenCV ist ideal für **frame-basierte Bildverarbeitung**, Computer Vision und schnelle Skalierungen ohne Audio. Für Projekte, bei denen Audio erhalten bleiben soll, oder bei denen genaue Kontrolle über Codec und Qualität gefragt ist, ist **ffmpeg** oder **moviepy** die bessere Wahl.
 
-    ----
-    
+---
+
+## Wie werden Videodaten intern gespeichert?
+
+### In einer MP4-Datei
+
+Eine MP4-Datei ist ein Containerformat. Sie enthält mindestens eine Video- und eine Audiospur sowie Timing- und Indexdaten. Video wird typischerweise mit H.264 oder H.265 komprimiert, Audio meist als AAC. Der Container sorgt dafür, dass Bild und Ton beim Abspielen synchron bleiben.
+
+### In einer AVI-Datei
+
+AVI (Audio Video Interleave) ist ein älteres Microsoft-Format. Video und Audio werden abwechselnd in Blöcken gespeichert. AVI ist weniger effizient komprimiert als MP4, dafür breiter unterstützt von älteren Software-Tools.
+
+### Wie speichert OpenCV einen Frame?
+
+OpenCV speichert jeden Frame als NumPy-Array mit der Form `(Höhe, Breite, 3)`. Die drei Kanäle sind in der Reihenfolge **B, G, R** gespeichert (Blau, Grün, Rot). Jeder Kanalwert liegt zwischen 0 und 255 (uint8). Ein Full-HD-Frame (1920×1080) hat damit genau `1920 × 1080 × 3 = 6.220.800 Bytes ≈ 6 MB` unkomprimiert.
+
+Das ist auch der Grund, warum Videocompression so wichtig ist: Ein unkomprimiertes 10-Sekunden-Video bei 30 FPS würde `30 × 10 × 6 MB = 1.800 MB ≈ 1,8 GB` benötigen. Codecs wie H.264 komprimieren das auf einen Bruchteil davon.
+
+---
+
+## Programmfortschritt und Struktur
+
+Das Programm ist nach dem objektorientierten Prinzip mit einer Klasse `VideoConverterGUI` und einer separaten Funktion `convert_cv2()` aufgebaut.
+
+**`VideoConverterGUI`** verwaltet die gesamte GUI: Fenster erstellen, Widgets platzieren, Benutzereingaben validieren und den Konvertierungs-Thread starten.
+
+**`convert_cv2()`** ist die eigentliche Verarbeitungsfunktion. Sie ist bewusst unabhängig von der GUI gehalten (kein tkinter-Code darin), damit sie im Prinzip auch ohne GUI aufgerufen werden könnte.
+
+Diese Trennung von GUI-Logik und Verarbeitungslogik ist ein gutes Software-Design-Prinzip, das Wartbarkeit und Wiederverwendbarkeit verbessert.
+
+### Unterstützte Eingabeformate
+
+`.mov`, `.mp4`, `.avi`, `.mkv` und weitere Formate, je nach installierten Codecs auf dem System.
+
+### Unterstützte Ausgabeformate
+
+```
+.mp4  →  FourCC: mp4v
+.avi  →  FourCC: XVID
+andere → FourCC: mp4v (Default)
+```
+
+---
+
+## Benutzung
+
+```bash
+pip install opencv-python
+python3 video_bearbeitung.py
+```
+
+Das Programm öffnet ein GUI-Fenster. Dort können Eingabedatei, Ausgabedatei sowie optional Ziel-FPS, -Breite und -Höhe angegeben werden. Mit „Konvertierung starten" wird die Verarbeitung gestartet, der Fortschritt ist im Status-Label sichtbar.
+
+**Hinweis:** Das Ausgabevideo enthält **keine Audiospur**, da OpenCV keine Audioverarbeitung unterstützt. Für Videos mit Audio ist `ffmpeg` oder `moviepy` empfohlen.
