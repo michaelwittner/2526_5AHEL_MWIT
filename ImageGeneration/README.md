@@ -139,6 +139,8 @@ Die Überlagerung von Template und Webcam erfolgt mit folgender Formel:
 ```
 out = alpha * template + (1 - alpha) * webcam
 ```
+<img width="505" height="117" alt="grafik" src="https://github.com/user-attachments/assets/69bdb50c-5586-4d51-846f-06baca7b6778" />
+
 
 Dabei gilt:
 
@@ -172,6 +174,67 @@ Die Bounding Box umschließt das Loch vollständig.
 Sie definiert Position und Größe des Gesichtsbereichs.
 
 ## 10. Gesichtsstabilisierung
+Die Gesichtsposition wird geglättet, um Zittern zu reduziere
+<img width="542" height="421" alt="grafik" src="https://github.com/user-attachments/assets/fc38d2f5-0e9c-42f3-bb65-b648edb34d7c" />
+Alte und neue Werte werden gemischt.
+Kleine Schwankungen werden reduziert.
+Das Ergebnis wirkt ruhiger.
+
+## 11.Initialisierung im Hauptprogramm
+Im Hauptprogramm werden Template, Kamera und Gesichtserkennung vorbereitet.
+<img width="722" height="142" alt="grafik" src="https://github.com/user-attachments/assets/c2bb0318-a8b0-48d8-aebd-1c0a02ddbd77" />
+`template_bgr` enthält die Farbinformation.
+`alpha` wird auf den Bereich 0 bis 1 normiert.
+`CAP_DSHOW` wird unter Windows verwendet.
+
+## 12.Gesichtserkennung
+Die Haar Cascade erkennt Gesichter im Graustufenbild.
+<img width="538" height="211" alt="grafik" src="https://github.com/user-attachments/assets/72c8559e-bfc2-4b01-98d2-140805e3a3b3" />
+Das Bild wird in Graustufen umgewandelt.
+`detectMultiScale` erkennt Gesichter verschiedener Größe.
+Rückgabe pro Gesicht: `(x, y, w, h)`
+
+## 13.Sortierung der Gesichter
+Damit linkes Gesicht ins linke Loch kommt, werden die Gesichter nach X-Position sortiert
+<img width="478" height="40" alt="grafik" src="https://github.com/user-attachments/assets/59954e2c-43d2-457c-bee5-f7e040bc4df6" />
+`f[0]` ist die X-Position.
+Es werden maximal zwei Gesichter verwendet.
+Links → links, rechts → rechts.
+
+## 14. Kamera-Spielraum vergrößern
+Vor der Verarbeitung wird das Kamerabild vergrößert, damit mehr Bewegungsfreiheit entsteht.
+<img width="789" height="110" alt="grafik" src="https://github.com/user-attachments/assets/75b91c0e-4bbc-466b-a38c-34933da7f3d1" />
+Das Bild wird zuerst größer gemacht.
+Danach wird mittig ausgeschnitten.
+Dadurch entsteht mehr Spielraum.
+
+## 15. Gesicht ins Loch einsetzen
+Das Gesicht wird auf die Lochgröße skaliert und an der richtigen Stelle eingesetzt.
+<img width="567" height="121" alt="grafik" src="https://github.com/user-attachments/assets/fc50ac0d-df1a-4c5f-824b-54adb39b1d36" />
+<img width="604" height="46" alt="grafik" src="https://github.com/user-attachments/assets/636428e9-216e-4282-ae40-dfbd84808c1a" />
+Das Gesicht wird proportional skaliert.
+`OVERFILL` sorgt dafür, dass das Loch gut ausgefüllt wird.
+`zoom` erlaubt manuelle Nachjustierung.
+
+## 16. Template-Wechsel
+<img width="831" height="212" alt="grafik" src="https://github.com/user-attachments/assets/79a26d1f-1caf-47a2-bb76-3ede1d08d027" />
+n = nächstes Template
+b = vorheriges Template
+
+## 17.Steuerung
+| Taste     | Funktion             |
+| --------- | -------------------- |
+| `+ / -`   | Zoom linkes Gesicht  |
+| `p / m`   | Zoom rechtes Gesicht |
+| `s`       | Freeze/Edit-Modus    |
+| `d`       | Debug-Modus          |
+| `n / b`   | Template wechseln    |
+| `ESC / q` | Beenden              |
+
+
+
+
+
 
 
 
