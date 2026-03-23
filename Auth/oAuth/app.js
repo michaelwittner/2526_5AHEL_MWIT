@@ -35,15 +35,6 @@ function showLoading() {
   app.style.display = 'none';
 }
 
-// DEBUG: log important values to help diagnose INVALID_CLIENT redirect URI errors
-// Remove these logs in production
-try {
-  console.log('DEBUG: VITE_SPOTIFY_CLIENT_ID =', CLIENT_ID);
-  console.log('DEBUG: computed REDIRECT_URI =', REDIRECT_URI);
-} catch (e) {
-  /* ignore logging errors in some environments */
-}
-
 function hideLoading() {
   loading.style.display = 'none';
   app.style.display = 'flex';
@@ -81,10 +72,6 @@ async function sha256(plain) {
 }
 
 function generateCodeVerifier() {
-  // PKCE requires the code_verifier to be between 43 and 128 characters.
-  // Using 128 random bytes can produce a base64url string >128 chars which
-  // causes some providers to reject it as invalid. Use 64 bytes to stay well
-  // within the 43-128 range while keeping strong entropy.
   const array = new Uint8Array(64);
   crypto.getRandomValues(array);
   return base64UrlEncode(array);
@@ -102,9 +89,7 @@ async function login() {
     const codeVerifier = generateCodeVerifier();
     const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-  // DEBUG: show PKCE values just before redirect (remove in production)
-  try { console.log('DEBUG PKCE: generated code_verifier =', codeVerifier); } catch(e){}
-  try { console.log('DEBUG PKCE: generated code_challenge =', codeChallenge); } catch(e){}
+
 
   sessionStorage.setItem('spotify_code_verifier', codeVerifier);
 
@@ -124,7 +109,6 @@ async function login() {
   }
 }
 
-// Exchange authorization code for tokens
 async function handleRedirectCallback() {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
@@ -139,8 +123,6 @@ async function handleRedirectCallback() {
     return;
   }
 
-  // DEBUG: log retrieved verifier before token exchange (remove in production)
-  try { console.log('DEBUG PKCE: retrieved code_verifier from sessionStorage =', codeVerifier); } catch(e){}
 
   try {
     const body = new URLSearchParams({
@@ -163,10 +145,8 @@ async function handleRedirectCallback() {
     }
 
     const data = await resp.json();
-    // access_token, token_type, scope, expires_in, refresh_token?
+    data.expires_at = Date.now() + data.expires_in * 1000;
     sessionStorage.setItem('spotify_auth', JSON.stringify(data));
-
-    // clean url
     window.history.replaceState({}, document.title, window.location.pathname);
 
     await loadUserData();
@@ -181,17 +161,71 @@ function getStoredAuth() {
   try { return JSON.parse(raw); } catch { return null; }
 }
 
-async function apiGet(path) {
+async function refreshAccessToken() {
   const auth = getStoredAuth();
+  if (!auth || !auth.refresh_token) {
+    throw new Error('No refresh token available. Please log in again.');
+  }
+
+  const body = new URLSearchParams({
+    grant_type: 'refresh_token',
+    refresh_token: auth.refresh_token,
+    client_id: CLIENT_ID
+  });
+
+  const resp = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString()
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`Token refresh failed: ${resp.status} ${text}`);
+  }
+
+  const data = await resp.json();
+  const newAuth = {
+    ...auth,
+    access_token: data.access_token,
+    expires_in: data.expires_in,
+    expires_at: Date.now() + data.expires_in * 1000,
+    ...(data.refresh_token ? { refresh_token: data.refresh_token } : {})
+  };
+  sessionStorage.setItem('spotify_auth', JSON.stringify(newAuth));
+  return newAuth;
+}
+
+async function apiGet(path) {
+  let auth = getStoredAuth();
   if (!auth || !auth.access_token) throw new Error('Not authenticated');
 
-  const resp = await fetch(`https://api.spotify.com/v1${path}`, {
+  if (auth.expires_at && Date.now() > auth.expires_at - 60000) {
+    try {
+      auth = await refreshAccessToken();
+    } catch {
+      throw new Error('Access token expired and refresh failed. Please log in again.');
+    }
+  }
+
+  let resp = await fetch(`https://api.spotify.com/v1${path}`, {
     headers: { Authorization: `Bearer ${auth.access_token}` }
   });
 
   if (resp.status === 401) {
-    // token expired; in a production app you should use refresh_token flow on server
-    throw new Error('Access token expired or invalid. Please log in again.');
+    try {
+      auth = await refreshAccessToken();
+    } catch {
+      throw new Error('Access token expired and refresh failed. Please log in again.');
+    }
+
+    resp = await fetch(`https://api.spotify.com/v1${path}`, {
+      headers: { Authorization: `Bearer ${auth.access_token}` }
+    });
+
+    if (resp.status === 401) {
+      throw new Error('Access token expired or invalid. Please log in again.');
+    }
   }
 
   if (!resp.ok) {
@@ -221,9 +255,8 @@ async function loadUserData() {
     const topArtists = await apiGet('/me/top/artists?limit=10');
     renderTopArtists(topArtists.items || []);
 
-    // Show profile popup first, lists hidden
-    profileModal.classList.remove('hidden');
-    listsContent.style.display = 'none';
+    profileModal.classList.add('hidden');
+    listsContent.style.display = 'block';
 
   } catch (err) {
     showError(err.message);
