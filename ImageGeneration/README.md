@@ -1,9 +1,5 @@
 # 2526_5AHEL_MWIT
 
-Individual Projects for MWIT
-
----
-
 # Projektübersicht
 
 Ziel des Projekts ist es, ein Webcam-Bild mit einem PNG-Template so zu kombinieren,
@@ -16,6 +12,7 @@ Das Projekt wurde schrittweise erweitert und technisch verbessert.
 
 ---
 
+#Vorr
 # Aufbau des Projekts
 
 Das Projekt besteht aus mehreren Python-Dateien, die nacheinander entwickelt wurden.
