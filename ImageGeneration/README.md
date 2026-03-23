@@ -77,15 +77,103 @@ Einführung von PNG-Template mit Transparenz.
 
 ---
 
-## 
+## step2_face_in_hole_auto_ellipse.py
+
+- mehrere PNG-Templates mit Alpha-Kanal geladen + automatisch analysiert.  
+- Ellipse/Bounding Box bestimmt, um das Gesicht passend einzusetzen.
+- wechsel zwischen mehreren Templates:
+    - n/b switch
+    - [] zoom
+    - ;/' y-zoom
+    - d debug
+    - p print (`FACE_SCALE_X`; `FACE_SCALE_Y`.   
+    - s shot (speichert Screenshot)
+
 
 # Erweiterte Version – Finale Implementierung
 
-Die aktuelle Version wurde technisch deutlich erweitert und optimiert.
-
 ---
 
-## Automatische Loch-Erkennung
+## 1. Bibliotheken 
+<img width="209" height="76" alt="grafik" src="https://github.com/user-attachments/assets/9ebefde8-5abf-4c94-b1ff-f7b83f0d1760" />
+
+- **cv2**: Kamera, Gesichtserkennung, Bildverarbeitung
+- **numpy**: Masken und Rechenoperationen
+- **time**: Zeitstempel für Screenshots / Hilfsfunktionen
+
+## 2. Template-Liste und Grundeinstellungen
+<img width="562" height="375" alt="grafik" src="https://github.com/user-attachments/assets/b6c18486-2cea-460c-92b5-86232b3a98cb" />
+
+`TEMPLATES` enthält PNG-Dateien
+`OVERFILL` macht Gesicht leicht größer als das Loch
+`CAMERA_SCALE` vergrößert Kamerabereich
+`zoom_left` und `zoom_right` speichern  Zoom für linkes und rechtes Gesicht
+
+## 3. Gesichtsstabilisierung vorbereiten
+Problem:
+Die Gesichtserkennung schwankt leicht zwischen einzelnen Frames.
+
+Lösung:
+glätten
+
+<img width="286" height="102" alt="grafik" src="https://github.com/user-attachments/assets/11003ff4-6407-4a26-8840-10d40e38590e" />
+
+## 4. Freeze-Edit-Modus
+`s` drücken: Bild wird eingefroren --> danach noch fein justierbar
+<img width="218" height="60" alt="grafik" src="https://github.com/user-attachments/assets/7c872c1f-e486-43e2-89f5-04ad366ffe95" />
+
+## 5.Alpha-Compositing und Alpha-Kanal
+
+
+# Was bedeutet der Alpha-Kanal?
+
+Ein PNG-Bild kann neben den Farbinformationen (BGR) einen Alpha-Kanal besitzen.
+
+Der Alpha-Kanal bestimmt die Transparenz eines Pixels:
+
+* Alpha = 255 → vollständig sichtbar
+* Alpha = 0 → vollständig transparent
+
+Die Überlagerung von Template und Webcam erfolgt mit folgender Formel:
+
+```
+out = alpha * template + (1 - alpha) * webcam
+```
+
+Dabei gilt:
+
+* Template wird nur dort angezeigt, wo Alpha > 0
+* Webcam wird nur dort angezeigt, wo Alpha = 0
+
+
+## 6. Template laden
+Das Template wird als PNG mit Alpha-Kanal geladen.
+Zusätzlich werden die transparenten Bereiche analysiert.
+<img width="633" height="245" alt="grafik" src="https://github.com/user-attachments/assets/923cab9d-fb41-434c-9ae1-96bc48e3ff7d" />
+
+`IMREAD_UNCHANGED` lädt auch den Alpha-Kanal mit.
+Es wird geprüft, ob das Template existiert und Transparenz besitzt.
+
+## 7. Automatische Loch-Erkennung
+Das Gesichtsloch wird automatisch über den Alpha-Kanal gefunden.
+<img width="521" height="90" alt="grafik" src="https://github.com/user-attachments/assets/061085f4-4449-4ed5-b0f9-f5a2b34e6d11" />
+
+## 8. Mehrere Löcher erkennen
+Falls ein Template mehrere Gesichtsöffnungen hat, werden diese getrennt erkannt.
+<img width="586" height="70" alt="grafik" src="https://github.com/user-attachments/assets/df2d3dfd-60f8-40fe-aac0-139e957cc86c" />
+
+`connectedComponents` trennt zusammenhängende Lochbereiche.
+So können z. B. zwei Gesichter in einem Template verwendet werden.
+
+## 9. Bounding Box der Löcher berechnen
+Für jedes Loch wird ein rechteckiger Bereich berechnet.
+<img width="416" height="169" alt="grafik" src="https://github.com/user-attachments/assets/962e7247-f632-4955-bbd0-4be54522b2e0" />
+Die Bounding Box umschließt das Loch vollständig.
+Sie definiert Position und Größe des Gesichtsbereichs.
+
+## 10. Gesichtsstabilisierung
+
+
 
 Das Template wird als PNG mit einem sogenannten *Alpha-Kanal* geladen.
   * Alpha gehört zu RGB dazu, wenn ein Bild Transparenz speichern kann
