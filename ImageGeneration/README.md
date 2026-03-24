@@ -258,27 +258,27 @@ b = vorheriges Template
 
 - OpenCV Dokumentation – CascadeClassifier / detectMultiScale  
   https://docs.opencv.org/4.x/d1/de5/classcv_1_1CascadeClassifier.html  
-  zuletzt besucht: 23.03.2026 :contentReference[oaicite:0]{index=0}
+  zuletzt besucht: 23.03.2026 
 
 - OpenCV Dokumentation – Connected Components / Shape Analysis  
   https://docs.opencv.org/4.x/d3/dc0/group__imgproc__shape.html  
-  zuletzt besucht: 23.03.2026 :contentReference[oaicite:1]{index=1}
+  zuletzt besucht: 23.03.2026 
 
 - OpenCV Dokumentation – VideoCapture  
   https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html  
-  zuletzt besucht: 23.03.2026 :contentReference[oaicite:2]{index=2}
+  zuletzt besucht: 23.03.2026 
 
 - OpenCV Dokumentation – Geometric Image Transformations  
   https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html  
-  zuletzt besucht: 23.03.2026 :contentReference[oaicite:3]{index=3}
+  zuletzt besucht: 23.03.2026 
 
 - NumPy Dokumentation – Grundlagen / Arrays  
   https://numpy.org/doc/stable/user/absolute_beginners.html  
-  zuletzt besucht: 23.03.2026 :contentReference[oaicite:4]{index=4}
+  zuletzt besucht: 23.03.2026 :
 
 - PyCharm Dokumentation – Installation Guide  
   https://www.jetbrains.com/help/pycharm/installation-guide.html  
-  zuletzt besucht: 23.03.2026 :contentReference[oaicite:5]{index=5}
+  zuletzt besucht: 23.03.2026 
 
 ## KI-Unterstützung
 
