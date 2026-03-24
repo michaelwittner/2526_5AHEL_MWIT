@@ -328,10 +328,7 @@ OAuth 2.1 empfiehlt entweder Rotation oder Sender-Constraining für alle Refresh
 | Bedrohung | Gegenmaßnahme |
 |-----------|----------------|
 | Authorization Code Diebstahl | PKCE, kurze Gültigkeit |
-| CSRF-Angriffe | `state`-Parameter |
 | Token-Diebstahl | Kurze Lebensdauer, ausschließlich HTTPS |
-| Token-Replay | Audience-Restriction, Token-Binding |
-| Offene Redirects | Exakte Validierung der `redirect_uri` |
 | Refresh-Token-Missbrauch | Token-Rotation, Sender-Constrained Tokens |
 
 ---
@@ -345,7 +342,6 @@ OAuth 2.1 konsolidiert bestehende Best Practices und Security-RFCs in eine einze
 | PKCE | Optional | Verpflichtend |
 | Implicit Flow | Definiert | Entfernt |
 | Password Grant | Definiert | Entfernt |
-| Redirect-URI-Vergleich | Flexibles Matching | Exakter String-Vergleich |
 | Refresh Tokens | Keine Vorgaben zur Rotation | Rotation oder Sender-Constraining empfohlen |
 
 ---
