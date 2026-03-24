@@ -39,15 +39,15 @@ Hostet die geschützten Ressourcen. Akzeptiert Zugriffe ausschließlich mit gül
 
 ```
 ┌──────────────┐                        ┌─────────────────────┐
-│   Resource    │── (1) Autorisierung ──▶│   Authorization     │
-│   Owner       │◀── (2) Zustimmung ────│   Server            │
+│   Resource   │── (1) Autorisierung ──▶│   Authorization     │
+│   Owner      │◀── (2) Zustimmung ──── │   Server            │
 └──────────────┘                        └─────────┬───────────┘
                                                   │
                                            (3) Access Token
                                                   │
 ┌──────────────┐                        ┌─────────▼───────────┐
-│   Client      │── (4) API-Request ───▶│   Resource          │
-│   (App)       │◀── (5) Daten ────────│   Server            │
+│   Client     │── (4) API-Request ───▶│   Resource          │
+│   (App)      │◀── (5) Daten ──────── │   Server            │
 └──────────────┘                        └─────────────────────┘
 ```
 
@@ -89,7 +89,7 @@ OAuth 2.0 definiert mehrere Flows für unterschiedliche Client-Typen. Die Wahl h
 
 ```
 Benutzer          Client (Backend)       Auth Server         Resource Server
-   │                    │                     │                     │
+   │                    │                      │                     │
    │─ (1) Aktion ──────▶│                     │                     │
    │                    │── (2) Redirect ─────▶│                     │
    │                    │   /authorize?        │                     │
@@ -97,17 +97,17 @@ Benutzer          Client (Backend)       Auth Server         Resource Server
    │                    │   &client_id=...     │                     │
    │                    │   &scope=calendar    │                     │
    │                    │   &redirect_uri=...  │                     │
-   │◀── (3) Login-Seite ─────────────────────│                     │
-   │── (4) Credentials + Zustimmung ────────▶│                     │
+   │◀── (3) Login-Seite ───────────────────── │                     │
+   │── (4) Credentials + Zustimmung ────────▶ │                     │
    │                    │◀─ (5) Redirect ─────│                     │
    │                    │   ?code=abc123       │                     │
-   │                    │                     │                     │
+   │                    │                      │                     │
    │                    │── (6) POST /token ──▶│                     │
    │                    │   code=abc123        │                     │
    │                    │   client_secret=...  │                     │
    │                    │◀─ (7) Access Token ──│                     │
    │                    │    + Refresh Token   │                     │
-   │                    │                     │                     │
+   │                    │                      │                     │
    │                    │── (8) API-Call ──────────────────────────▶│
    │                    │   Authorization:     │                     │
    │                    │   Bearer <token>     │                     │
