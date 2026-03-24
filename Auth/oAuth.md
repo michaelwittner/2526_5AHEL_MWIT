@@ -8,10 +8,10 @@ OAuth (Open Authorization) ist ein offenes Standardprotokoll zur delegierten Aut
 
 ### Authentifizierung vs. Autorisierung
 
-| Konzept             | Fragestellung              | Beispiel                          |
-|----------------------|----------------------------|-----------------------------------|
-| **Authentifizierung** | Wer ist der Benutzer?     | Login mit Benutzername & Passwort |
-| **Autorisierung**     | Was darf der Benutzer?    | Lesezugriff auf Kalender, kein Zugriff auf E-Mails |
+| Konzept              | Beispiel                                           |
+|----------------------|----------------------------------------------------|
+| **Authentifizierung**| Login mit Benutzername & Passwort                  |
+| **Autorisierung**    | Lesezugriff auf Kalender, kein Zugriff auf E-Mails |
 
 OAuth ist ein Autorisierungsprotokoll. Authentifizierung wird über **OpenID Connect (OIDC)** als Schicht auf OAuth 2.0 abgebildet.
 
