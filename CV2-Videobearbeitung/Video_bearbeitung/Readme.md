@@ -18,15 +18,15 @@ Dieses Projekt entstand als Erweiterung zur Audioverarbeitung und zeigt, wie äh
 
 ## Links:
 
-[OpenCV Dokumentation](https://docs.opencv.org/) Zuletzt besucht am: 20.03.2026
+[OpenCV Dokumentation](https://docs.opencv.org/) Zuletzt besucht am: 22.03.2026
 
-[OpenCV Python Tutorial](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html) Zuletzt besucht am: 20.03.2026
+[OpenCV Python Tutorial](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html) Zuletzt besucht am: 22.03.2026
 
-[tkinter Dokumentation](https://docs.python.org/3/library/tkinter.html) Zuletzt besucht am: 20.03.2026
+[tkinter Dokumentation](https://docs.python.org/3/library/tkinter.html) Zuletzt besucht am: 22.03.2026
 
-[Python threading](https://docs.python.org/3/library/threading.html) Zuletzt besucht am: 20.03.2026
+[Python threading](https://docs.python.org/3/library/threading.html) Zuletzt besucht am: 22.03.2026
 
-[ChatGPT](https://chatgpt.com/) Zuletzt besucht am: 20.03.2026
+[ChatGPT](https://claude.ai/) Zuletzt besucht am: 22.03.2026
 
 ---
 
