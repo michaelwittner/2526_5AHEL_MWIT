@@ -106,10 +106,10 @@ Einführung von PNG-Template mit Transparenz.
 
 <img width="562" height="375" alt="grafik" src="https://github.com/user-attachments/assets/b6c18486-2cea-460c-92b5-86232b3a98cb" />
 
-`TEMPLATES` enthält PNG-Dateien
-`OVERFILL` macht Gesicht leicht größer als das Loch
-`CAMERA_SCALE` vergrößert Kamerabereich
-`zoom_left` und `zoom_right` speichern  Zoom für linkes und rechtes Gesicht
+- `TEMPLATES` enthält PNG-Dateien
+- `OVERFILL` macht Gesicht leicht größer als das Loch
+- `CAMERA_SCALE` vergrößert Kamerabereich
+- `zoom_left` und `zoom_right` speichern  Zoom für linkes und rechtes Gesicht
 
 ## 3. Gesichtsstabilisierung vorbereiten
 Problem:
