@@ -197,7 +197,6 @@ Im Hauptprogramm werden Template, Kamera und Gesichtserkennung vorbereitet.
 
 `template_bgr` enthält die Farbinformation.
 `alpha` wird auf den Bereich 0 bis 1 normiert.
-`CAP_DSHOW` wird unter Windows verwendet.
 
 ## 12.Gesichtserkennung
 Die Haar Cascade erkennt Gesichter im Graustufenbild.
